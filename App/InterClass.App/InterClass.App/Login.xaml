@@ -1,38 +1,96 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InterClass.App.Login"
+             BackgroundColor="{StaticResource Background}"
+             Shell.NavBarIsVisible="False">
 
-<ContentPage
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="InterClass.App.Login">
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20" VerticalOptions="Center">
 
-    <VerticalStackLayout Padding="30">
+            <!-- LOGO / MARCA TOPO -->
+            <HorizontalStackLayout Spacing="8" Margin="0,10,0,0">
+                <Label Text="INTERCLASS" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Secondary}" VerticalTextAlignment="Center"/>
+            </HorizontalStackLayout>
 
-        <Entry x:Name="txt_email"
-               Placeholder="Email"
-               TextChanged="Campos_TextChanged"/>
+            <!-- CABEÇALHO DA TELA DE LOGIN -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="BEM-VINDO DE VOLTA" 
+                       TextColor="{StaticResource Primary}" 
+                       FontSize="11" 
+                       FontAttributes="Bold" />
 
-        <Entry
-            x:Name="txt_senha"
-            Placeholder="Senha"
-            IsPassword="True"
-            TextChanged="Campos_TextChanged"/>
-        <Button
-            Text="Entrar"
-            Clicked="Button_Clicked"/>
-        <Label
-            x:Name="resultado"
-            Text="Email ou Senha incorretos"
-            FontSize="20"
-            TextColor="Red"/>
-        <Label
-            x:Name="criarcontalink"
-            Text="Não tem uma conta? Faça seu cadastro">
+                <Label Text="Entre para a torcida." 
+                       Style="{StaticResource Titulo}" 
+                       FontSize="26"/>
 
-            <Label.GestureRecognizers>
-                <TapGestureRecognizer Tapped="IrParaCadastro"/>
-            </Label.GestureRecognizers>
+                <Label Text="Acompanhe o interclasse com sua turma." 
+                       Style="{StaticResource SubTitulo}" 
+                       FontSize="14"/>
+            </VerticalStackLayout>
 
-        </Label>
+            <!-- FORMULÁRIO -->
+            <VerticalStackLayout Spacing="16" Margin="0,10,0,0">
 
-    </VerticalStackLayout>
+                <!-- Campo E-mail -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="E-mail" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                    <Entry Placeholder="lucas.oliveira@aluno.senai.br"
+                           Text="{Binding Email}"
+                           Keyboard="Email"/>
+                </VerticalStackLayout>
+
+                <!-- Campo Senha -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Senha" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                    <Entry Placeholder="••••••••••"
+                           Text="{Binding Password}"
+                           IsPassword="True"/>
+                </VerticalStackLayout>
+
+                <!-- Link Esqueci minha senha -->
+                <HorizontalStackLayout HorizontalOptions="End">
+                    <Label Text="Esqueci minha senha" 
+                           TextColor="{StaticResource Primary}" 
+                           FontSize="13" 
+                           FontAttributes="Bold"/>
+                </HorizontalStackLayout>
+
+                <!-- Botão Entrar Principal -->
+                <Button Text="Entrar" 
+                        Command="{Binding LoginCommand}" 
+                        Margin="0,8,0,0"/>
+
+                <!-- Link de Cadastro -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" Margin="0,4,0,0">
+                    <Label Text="Ainda não tem uma conta?" FontSize="13" TextColor="{StaticResource TextSecondary}"/>
+                    <Label Text="Cadastre-se" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+            <!-- DIVISOR SUTIL -->
+            <BoxView HeightRequest="1" Color="{StaticResource BorderColor}" Margin="0,10"/>
+
+            <!-- Botão de Acesso do Administrador -->
+            <Button Text="Acesso do administrador →" 
+                    BackgroundColor="{StaticResource InputBackground}" 
+                    TextColor="{StaticResource Secondary}"
+                    FontSize="13"
+                    FontAttributes="Bold"
+                    CornerRadius="10"
+                    HeightRequest="48"
+                    BorderColor="{StaticResource BorderColor}"
+                    BorderWidth="1"/>
+
+            <!-- RODAPÉ / TERMOS -->
+            <Label Text="Ao entrar, você concorda com as regras do evento." 
+                   FontSize="11" 
+                   TextColor="{StaticResource TextSecondary}" 
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10,0,0"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Input;
+
 namespace InterClass.App
 {
     public partial class MainPage : ContentPage
@@ -10,18 +12,26 @@ namespace InterClass.App
             {
                 Time1_PJ = "Corinthians"
             };
+            LoginCommand = new Command(FazerLogin);
+            BindingContext = this;
+
         }
-        private async void Calendario(object sender, TappedEventArgs e)
+        public ICommand LoginCommand { get;  }
+        private async void IrCalendario(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync(nameof(Calendario));
         }
-        private async void MinhaSala(object sender, TappedEventArgs e)
+        private async void IrMinhaSala(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync(nameof(MinhaSala));
         }
-        private async void Classificacao(object sender, TappedEventArgs e)
+        private async void IrClassificacao(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync(nameof(Classificacao));
+        }
+        private async void FazerLogin()
+        {
+            await Shell.Current.GoToAsync(nameof(Login));
         }
     }
 }

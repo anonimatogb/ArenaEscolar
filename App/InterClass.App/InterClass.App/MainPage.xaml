@@ -23,7 +23,8 @@
                         HeightRequest="38"
                         FontSize="13"
                         CornerRadius="8"
-                        Padding="14,0"/>
+                        Padding="14,0"
+                        />
 
                         <VerticalStackLayout Grid.Column="1" IsVisible="{Binding IsLoggedIn}" HorizontalOptions="End" VerticalOptions="Center">
                             <Label Text="{Binding UserName}" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource TextPrimary}" HorizontalTextAlignment="End"/>
@@ -68,7 +69,7 @@
                                 HeightRequest="36" 
                                 CornerRadius="8"
                                 Padding="12,0"
-                                Clicked="Calendario"/>
+                                Clicked="IrCalendario"/>
                             </Grid>
                         </VerticalStackLayout>
                     </Frame>
@@ -96,7 +97,7 @@
                                 </VerticalStackLayout>
                             </Grid>
 
-                    <Button Text="Ver minha turma →" TextColor="{StaticResource Primary}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="MinhaSala"/>
+                    <Button Text="Ver minha turma →" TextColor="{StaticResource Primary}" BackgroundColor="{StaticResource White}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrMinhaSala"/>
                         </VerticalStackLayout>
                     </Frame>
 
@@ -175,7 +176,7 @@
                         <Label Grid.Column="2" Text="{Binding Pts_Sala3lugar}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center"/>
                             </Grid>
 
-                    <Button Text="Ver classificação completa →" TextColor="{StaticResource Primary}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrClassificacao"/>
+                    <Button Text="Ver classificação completa →" TextColor="{StaticResource Primary}" BackgroundColor="{StaticResource White}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrClassificacao"/>
                         </VerticalStackLayout>
                     </Frame>
             <Frame BackgroundColor="{StaticResource CardBackground}" 
@@ -186,7 +187,7 @@
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Modalidades" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource TextPrimary}"/>
                     <Label Text="Conheça as modalidade disponíveis no InterClasse" FontSize="11" TextColor="{StaticResource TextSecondary}"/>
-                    <Button Text="Ver classificação completa →" TextColor="{StaticResource Primary}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrClassificacao"/>
+                    <Button Text="Ver classificação completa →" TextColor="{StaticResource Primary}" BackgroundColor="{StaticResource White}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrClassificacao"/>
                 </VerticalStackLayout>
             </Frame>
 

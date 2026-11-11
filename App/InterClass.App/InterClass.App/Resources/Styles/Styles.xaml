@@ -10,14 +10,13 @@
     <Color x:Key="TextSecondary">#64748B</Color>
     <Color x:Key="White">#FFFFFF</Color>
     <Color x:Key="BorderColor">#E2E8F0</Color>
-    <Style TargetType="Button">
-        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-        <Setter Property="TextColor" Value="{StaticResource White}" />
+    <Style TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="{StaticResource InputBackground}" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource TextSecondary}" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="CornerRadius" Value="8" />
         <Setter Property="HeightRequest" Value="48" />
-        <Setter Property="Padding" Value="16,0" />
+        <Setter Property="ClearButtonVisibility" Value="WhileEditing" />
     </Style>
 
     <Style TargetType="Label">
@@ -47,5 +46,9 @@
     <Style TargetType="ContentPage">
         <Setter Property="BackgroundColor" Value="{StaticResource Background}" />
     </Style>
+    <!-- Adicione ao seu ResourceDictionary se necessário -->
+    <Color x:Key="InputBackground">#F8FAFC</Color>
 
+    <!-- Estilo customizado para os Entrys se quiser padronizar -->
+  
 </ResourceDictionary>
