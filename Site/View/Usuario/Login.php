@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuarioController = new UsuarioController($pdo);
     $usuario = $usuarioController->login($rm, $senha);
     
-    if ($usuario['tipo'] === 'aluno') {
+    if ($usuario['tipo'] === 'aluno' || $usuario['tipo'] === 'rep') {
         session_start();
         $_SESSION['id_usuario'] = $usuario['id'];
         $_SESSION['nome'] = $usuario['nome'];

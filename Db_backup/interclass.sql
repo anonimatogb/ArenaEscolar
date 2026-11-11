@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 11/11/2026 às 15:30
+-- Tempo de geração: 11/11/2026 às 19:20
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -78,6 +78,17 @@ CREATE TABLE `sala` (
   `qtdtimes` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Despejando dados para a tabela `sala`
+--
+
+INSERT INTO `sala` (`id`, `nome`, `pontos`, `qtdtimes`) VALUES
+(1, 'Diretoria', 0, 0),
+(2, '9° ano', 0, 0),
+(3, '1° EM', 0, 0),
+(4, '2° EM', 0, 0),
+(5, '3° EM', 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -105,6 +116,13 @@ CREATE TABLE `usuario` (
   `tipo` varchar(255) NOT NULL,
   `id_sala` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Despejando dados para a tabela `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `nome`, `rm`, `senha`, `tipo`, `id_sala`) VALUES
+(9, 'Gabriel Machado', 0, '$2y$10$LYpLIp/o9T.EtlCbQv0QXOcXKQMdJ2Wpy0pTf52jHfdcernrF6BQa', 'admin', 1);
 
 --
 -- Índices para tabelas despejadas
@@ -180,7 +198,7 @@ ALTER TABLE `placar`
 -- AUTO_INCREMENT de tabela `sala`
 --
 ALTER TABLE `sala`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `time`
@@ -192,7 +210,7 @@ ALTER TABLE `time`
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restrições para tabelas despejadas
