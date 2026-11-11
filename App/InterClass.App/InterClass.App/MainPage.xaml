@@ -3,10 +3,194 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="InterClass.App.MainPage">
+    x:Class="InterClass.App.MainPage"
+    BackgroundColor="{StaticResource Background}"
+             Shell.NavBarIsVisible="False">
 
-    <VerticalStackLayout Padding="30">
 
+               <ScrollView>
+                <VerticalStackLayout Padding="16" Spacing="16">
 
-    </VerticalStackLayout>
+                    <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center" Margin="0,10,0,0">
+                        <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                            <Label Text="INTERCLASS" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Secondary}" VerticalTextAlignment="Center"/>
+                        </HorizontalStackLayout>
+
+                        <Button Grid.Column="1" 
+                        Text="Fazer Login" 
+                        Command="{Binding LoginCommand}" 
+                        IsVisible="{Binding IsNotLoggedIn}"
+                        HeightRequest="38"
+                        FontSize="13"
+                        CornerRadius="8"
+                        Padding="14,0"/>
+
+                        <VerticalStackLayout Grid.Column="1" IsVisible="{Binding IsLoggedIn}" HorizontalOptions="End" VerticalOptions="Center">
+                            <Label Text="{Binding UserName}" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource TextPrimary}" HorizontalTextAlignment="End"/>
+                            <Label Text="{Binding MinhaSala}" FontSize="11" TextColor="{StaticResource TextSecondary}" HorizontalTextAlignment="End" Padding="0,4,0,0"/>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding WelcomeMessage}" Style="{StaticResource Titulo}" FontSize="22"/>
+                        <Label Text="A sua turma entra em quadra. Você acompanha tudo." Style="{StaticResource SubTitulo}" FontSize="13"/>
+                    </VerticalStackLayout>
+
+                    <Frame BackgroundColor="{StaticResource Secondary}" 
+                   CornerRadius="16" 
+                   HasShadow="False" 
+                   Padding="20">
+                        <VerticalStackLayout Spacing="16">
+                            <HorizontalStackLayout>
+                                <Label Text="PRÓXIMO CONFRONTO" 
+                               TextColor="{StaticResource White}" 
+                               BackgroundColor="{StaticResource Primary}" 
+                               FontSize="10" 
+                               FontAttributes="Bold" 
+                               Padding="8,4"/>
+                            </HorizontalStackLayout>
+
+                            <Label Text="{Binding Modalidade_PJ}" TextColor="#94A3B8" FontSize="12"/>
+
+                            <Grid ColumnDefinitions="*, Auto, *" VerticalOptions="Center">
+                                <Label Text="{Binding Time1_PJ}" TextColor="{StaticResource White}" FontSize="28" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                                <Label Grid.Column="1" Text="×" TextColor="#64748B" FontSize="20" Margin="10,0"/>
+                            <Label Grid.Column="2" Text="{Binding Time2_PJ}" TextColor="{StaticResource White}" FontSize="28" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Text="{Binding Dia_Horario_Local}" TextColor="#94A3B8" FontSize="12" VerticalOptions="Center"/>
+                                <Button Grid.Column="1" 
+                                Text="Ver calendário →" 
+                                BackgroundColor="{StaticResource White}" 
+                                TextColor="{StaticResource Secondary}" 
+                                FontSize="12" 
+                                HeightRequest="36" 
+                                CornerRadius="8"
+                                Padding="12,0"
+                                Clicked="Calendario"/>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame BackgroundColor="{StaticResource CardBackground}" 
+                   CornerRadius="16" 
+                   HasShadow="False" 
+                   BorderColor="#E2E8F0"
+                   Padding="16">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Minha turma" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource TextPrimary}"/>
+
+                            <VerticalStackLayout Spacing="2">
+                        <Label Text="{Binding MinhaSala}" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                    </VerticalStackLayout>
+
+                            <Grid ColumnDefinitions="*, *" Margin="0,4,0,0">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding NumeroAlunos_MS}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                                    <Label Text="alunos" FontSize="11" TextColor="{StaticResource TextSecondary}"/>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label Text="{Binding Qnd_Times_MS}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                                    <Label Text="Times" FontSize="11" TextColor="{StaticResource TextSecondary}"/>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                    <Button Text="Ver minha turma →" TextColor="{StaticResource Primary}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="MinhaSala"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame BackgroundColor="{StaticResource CardBackground}" 
+                   CornerRadius="16" 
+                   HasShadow="False" 
+                   BorderColor="#E2E8F0"
+                   Padding="16">
+                        <VerticalStackLayout Spacing="14">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Text="Agenda" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center"/>
+                        <Button Grid.Column="1" Text="Ver calendário" BackgroundColor="#F1F5F9" TextColor="{StaticResource TextPrimary}" FontSize="12" HeightRequest="32" CornerRadius="8" Clicked="IrCalendario"/>
+                            </Grid>
+
+                            <VerticalStackLayout Spacing="2">
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <Label Text="{Binding Data_Horario_PJ}" TextColor="{StaticResource Primary}" FontSize="11" FontAttributes="Bold"/>
+                                    <Label Grid.Column="1" Text="{Binding Local_PJ}" TextColor="{StaticResource TextSecondary}" FontSize="11"/>
+                                </Grid>
+                        <Label FontAttributes="Bold" FontSize="14" TextColor="{StaticResource TextPrimary}">
+                            <Label.Text>
+                            <MultiBinding StringFormat="{}{0} + {1}">
+                                <Binding Path="Time1_PJ" />
+                                <Binding Path="Time2_PJ" />
+                            </MultiBinding>
+                            </Label.Text>
+                        </Label>
+                        <Label Text="{Binding Modalidade_PJ}" FontSize="11" TextColor="{StaticResource TextSecondary}"/>
+                            </VerticalStackLayout>
+
+                            <BoxView HeightRequest="1" Color="#F1F5F9" Margin="0,2"/>
+
+                            <VerticalStackLayout Spacing="2">
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <Label Text="{Binding Data_Horario_PJ2}" TextColor="{StaticResource Primary}" FontSize="11" FontAttributes="Bold"/>
+                                    <Label Grid.Column="1" Text="{Binding Local_PJ2}" TextColor="{StaticResource TextSecondary}" FontSize="11"/>
+                                </Grid>
+                        <Label FontAttributes="Bold" FontSize="14" TextColor="{StaticResource TextPrimary}">
+                            <Label.Text>
+                                <MultiBinding StringFormat="{}{0} + {1}">
+                                    <Binding Path="Time1_PJ2" />
+                                    <Binding Path="Time2_PJ2" />
+                                </MultiBinding>
+                            </Label.Text>
+
+                        </Label>
+                        <Label Text="{Binding Modalidade_PJ2}" FontSize="11" TextColor="{StaticResource TextSecondary}"/>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame BackgroundColor="{StaticResource CardBackground}" 
+                   CornerRadius="16" 
+                   HasShadow="False" 
+                   BorderColor="#E2E8F0"
+                   Padding="16">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Na disputa pelo topo" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource TextPrimary}"/>
+                            <Label Text="Classificação geral das turmas" FontSize="11" TextColor="{StaticResource TextSecondary}"/>
+
+                            <Grid ColumnDefinitions="30, *, Auto" Padding="8">
+                                <Label Text="01" FontSize="13" TextColor="{StaticResource TextSecondary}" VerticalOptions="Center"/>
+                                <Label Grid.Column="1" Text="{Binding Sala1lugar}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center"/>
+                        <Label Grid.Column="2" Text="{Binding Pts_Sala1lugar}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center"/>
+                            </Grid>
+
+                    <Grid ColumnDefinitions="30, *, Auto" Padding="8">
+                        <Label Text="03" FontSize="13" TextColor="{StaticResource TextSecondary}" VerticalOptions="Center"/>
+                        <Label Grid.Column="1" Text="{Binding Sala2lugar}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center"/>
+                        <Label Grid.Column="2" Text="{Binding Pts_Sala2lugar}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="30, *, Auto" Padding="8">
+                                <Label Text="03" FontSize="13" TextColor="{StaticResource TextSecondary}" VerticalOptions="Center"/>
+                        <Label Grid.Column="1" Text="{Binding Sala3lugar}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center"/>
+                        <Label Grid.Column="2" Text="{Binding Pts_Sala3lugar}" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center"/>
+                            </Grid>
+
+                    <Button Text="Ver classificação completa →" TextColor="{StaticResource Primary}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrClassificacao"/>
+                        </VerticalStackLayout>
+                    </Frame>
+            <Frame BackgroundColor="{StaticResource CardBackground}" 
+                CornerRadius="16" 
+                HasShadow="False" 
+                BorderColor="#E2E8F0"
+                Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Modalidades" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource TextPrimary}"/>
+                    <Label Text="Conheça as modalidade disponíveis no InterClasse" FontSize="11" TextColor="{StaticResource TextSecondary}"/>
+                    <Button Text="Ver classificação completa →" TextColor="{StaticResource Primary}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrClassificacao"/>
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+            </ScrollView>
+
 </ContentPage>

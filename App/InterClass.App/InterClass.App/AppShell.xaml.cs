@@ -5,6 +5,9 @@
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute(nameof(Calendario), typeof(Calendario));
+            Routing.RegisterRoute(nameof(MinhaSala), typeof(MinhaSala));
+            Routing.RegisterRoute(nameof(Classificacao), typeof(Classificacao));
         }
     }
 }
