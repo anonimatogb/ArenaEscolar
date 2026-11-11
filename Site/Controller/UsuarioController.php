@@ -11,6 +11,9 @@ class UsuarioController {
     public function cadastrarAluno($nome, $rm, $senha, $id_sala) {
         return $this->usuarioModel->cadastrarAluno($nome, $rm, $senha, $id_sala);
     }
+    public function login($rm, $senha) {
+        return $this->usuarioModel->login($rm, $senha);
+    }
 }
     
 ?>
