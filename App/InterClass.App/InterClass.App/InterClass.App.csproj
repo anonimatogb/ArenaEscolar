@@ -77,10 +77,28 @@
 	  <Compile Update="Login.xaml.cs">
 	    <DependentUpon>Login.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Calendario.xaml.cs">
+	    <DependentUpon>Calendario.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="MinhaSala.xaml.cs">
+	    <DependentUpon>MinhaSala.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Classificacao.xaml.cs">
+	    <DependentUpon>Classificacao.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="Login.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Calendario.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="MinhaSala.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Classificacao.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

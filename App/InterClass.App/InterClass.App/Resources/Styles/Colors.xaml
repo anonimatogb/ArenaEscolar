@@ -3,4 +3,11 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <Color x:Key="Primary">#F97316</Color>
+    <Color x:Key="Secondary">#0F172A</Color>
+    <Color x:Key="Background">#F8FAFC</Color>
+    <Color x:Key="CardBackground">#FFFFFF</Color>
+    <Color x:Key="TextPrimary">#1E293B</Color>
+    <Color x:Key="TextSecondary">#64748B</Color>
+
 </ResourceDictionary>
