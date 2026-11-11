@@ -1,0 +1,12 @@
+# Visual Studio
+.vs/
+**/.vs/
+
+# Arquivos de compilação
+[Bb]in/
+[Oo]bj/
+
+# Arquivos temporários
+*.user
+*.suo
+*.cache
