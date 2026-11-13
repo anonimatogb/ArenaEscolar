@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InterClass.App.Usuario"
+             BackgroundColor="{StaticResource Background}"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20" VerticalOptions="Center">
+
+            <!-- LOGO / MARCA TOPO -->
+            <HorizontalStackLayout Spacing="8" Margin="0,10,0,0">
+                <Label Text="USUÁRIO" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Secondary}" VerticalTextAlignment="Center"/>
+            </HorizontalStackLayout>
+
+
+            <!-- FORMULÁRIO -->
+            <VerticalStackLayout Spacing="16" Margin="0,10,0,0">
+
+                <!-- Campo RM -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="MUDE SUA SENHA" 
+                       TextColor="{StaticResource Primary}" 
+                       FontSize="11" 
+                       FontAttributes="Bold" /> 
+                </VerticalStackLayout>
+
+                <!-- Campo Senha -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Nova senha" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                    <Entry Placeholder="••••••••••"
+                           Text="{Binding Password}"
+                           x:Name="NovaSenha_Entry"
+                           IsPassword="True"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Confirmar nova senha" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                    <Entry Placeholder="••••••••••"
+                       Text="{Binding Password}"
+                       x:Name="ConfirmarSenha_Entry"
+                       IsPassword="True"/>
+                </VerticalStackLayout>
+
+                <!-- Botão Entrar Principal -->
+                <Button Text="Alterar"
+                        BackgroundColor="{StaticResource Primary}"
+                        Command="{Binding LoginCommand}" 
+                        Margin="0,8,0,0"
+                        Clicked="Botao_Alterar"/>
+
+
+            </VerticalStackLayout>
+
+            <!-- DIVISOR SUTIL -->
+            <BoxView HeightRequest="1" Color="{StaticResource BorderColor}" Margin="0,10"/>
+
+
+            <!-- RODAPÉ / TERMOS -->
+            <Label Text="Ao entrar, você concorda com as regras do evento." 
+                   FontSize="11" 
+                   TextColor="{StaticResource TextSecondary}" 
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10,0,0"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
