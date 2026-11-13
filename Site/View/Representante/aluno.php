@@ -1,0 +1,99 @@
+
+<?php
+session_start();
+
+if (
+    !isset($_SESSION['id_usuario']) ||
+    !isset($_SESSION['tipo']) ||
+    $_SESSION['tipo'] !== 'representante' ||
+    !isset($_SESSION['id_sala'])
+) {
+    echo "<script>window.location.href='../Usuario/Login.php';</script>";
+    exit();
+}
+
+include_once '../../../Db/database.php';
+include_once '../../Controller/UsuarioController.php';
+
+$usuarioController = new UsuarioController($pdo);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $nome = $_POST['nome'];
+    $rm = $_POST['rm'];
+
+    $resultado = $usuarioController->cadastrarAluno(
+        $nome,
+        $rm,
+        $_SESSION['id_sala']
+    );
+
+    if ($resultado) {
+        echo "<script>
+            window.alert('Aluno cadastrado com sucesso!');
+            window.location.href='aluno.php';
+        </script>";
+        exit();
+    } else {
+        echo "<script>
+            window.alert('Não foi possível cadastrar. Verifique se o RM já está cadastrado.');
+        </script>";
+    }
+}
+
+$alunos = $usuarioController->listarAlunosPorSala($_SESSION['id_sala']);
+?>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alunos da minha sala</title>
+</head>
+
+<body>
+
+    <h1>Alunos da minha sala</h1>
+
+    <h2>Cadastrar aluno</h2>
+
+    <form action="aluno.php" method="POST">
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <br><br>
+
+        <label for="rm">RM:</label>
+        <input type="number" id="rm" name="rm" required>
+
+        <br><br>
+
+        <input type="submit" value="Cadastrar aluno">
+
+    </form>
+
+    <h2>Alunos cadastrados</h2>
+
+    <?php if (!empty($alunos)): ?>
+
+        <?php foreach ($alunos as $aluno): ?>
+            <p>
+                Nome: <?= htmlspecialchars($aluno['nome']) ?>
+                - RM: <?= htmlspecialchars($aluno['rm']) ?>
+            </p>
+        <?php endforeach; ?>
+
+    <?php else: ?>
+
+        <p>Nenhum aluno cadastrado nesta sala.</p>
+
+    <?php endif; ?>
+
+    <a href="inicio.php">Voltar</a>
+
+</body>
+
+</html>

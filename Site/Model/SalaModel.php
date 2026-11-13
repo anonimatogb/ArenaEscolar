@@ -1,3 +1,4 @@
+
 <?php
 include_once '../../../Db/database.php';
 
@@ -10,18 +11,6 @@ class SalaModel
         $this->pdo = $pdo;
     }
 
-    public function cadastrarSala($nome)
-    {
-        try {
-           
-            $sql = "INSERT INTO sala (nome,pontos) VALUES (:nome, 0)";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':nome', $nome);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            return false;
-        }
-    }
     public function listarSalas()
     {
         try {

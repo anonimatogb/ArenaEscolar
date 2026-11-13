@@ -1,5 +1,54 @@
+
+<?php
+session_start();
+
+include_once '../../../Db/database.php';
+include_once '../../Controller/UsuarioController.php';
+
+$erro = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $rm = $_POST['rm'];
+    $senha = $_POST['senha'] ?? '';
+
+    $usuarioController = new UsuarioController($pdo);
+
+    if ($senha !== '') {
+        $usuario = $usuarioController->login($rm, $senha);
+
+        if ($usuario) {
+            $_SESSION['id_usuario'] = $usuario['id'];
+            $_SESSION['nome'] = $usuario['nome'];
+            $_SESSION['rm'] = $usuario['rm'];
+            $_SESSION['tipo'] = $usuario['tipo'];
+            $_SESSION['id_sala'] = $usuario['id_sala'];
+
+            echo "<script>window.location.href='../Representante/inicio.php';</script>";
+            exit();
+        } else {
+            $erro = 'RM ou senha incorretos.';
+        }
+    } else {
+        $aluno = $usuarioController->buscarAlunoPorRM($rm);
+
+        if ($aluno) {
+            $_SESSION['id_usuario'] = $aluno['id'];
+            $_SESSION['nome'] = $aluno['nome'];
+            $_SESSION['rm'] = $aluno['rm'];
+            $_SESSION['tipo'] = 'aluno';
+            $_SESSION['id_sala'] = $aluno['id_sala'];
+
+            echo "<script>window.location.href='../Aluno/inicio.php';</script>";
+            exit();
+        } else {
+            $erro = 'Aluno não encontrado.';
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -9,47 +58,20 @@
 
 <body>
 
-    <form action="login.php" method="POST">
+    <form action="Login.php" method="POST">
         <label for="rm">RM:</label>
         <input type="text" id="rm" name="rm" required><br><br>
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" required><br><br>
-        <input type="submit" value="Login">
-        <a href="CadastroAluno.php">Crie uma conta</a>
+
+        <label for="senha">Senha (somente representantes):</label>
+        <input type="password" id="senha" name="senha"><br><br>
+
+        <input type="submit" value="Entrar">
     </form>
+
+    <?php if ($erro !== ''): ?>
+        <p><?= htmlspecialchars($erro) ?></p>
+    <?php endif; ?>
 
 </body>
 
 </html>
-
-<?php
-include_once '../../../Db/database.php';
-include_once '../../Controller/UsuarioController.php';
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $rm = $_POST['rm'];
-    $senha = $_POST['senha'];
-
-    $usuarioController = new UsuarioController($pdo);
-    $usuario = $usuarioController->login($rm, $senha);
-    
-    if ($usuario['tipo'] === 'aluno') {
-        session_start();
-        $_SESSION['id_usuario'] = $usuario['id'];
-        $_SESSION['nome'] = $usuario['nome'];
-        $_SESSION['rm'] = $usuario['rm'];
-        echo "<script>window.alert('Login realizado com sucesso!');</script>";
-        echo "<script>window.location.href='inicio.php';</script>";
-    } elseif ($usuario['tipo'] === 'admin') {
-        session_start();
-        $_SESSION['id_usuario'] = $usuario['id'];
-        $_SESSION['nome'] = $usuario['nome'];
-        $_SESSION['rm'] = $usuario['rm'];
-        echo "<script>window.alert('Login realizado com sucesso!');</script>";
-        echo "<script>window.location.href='inicioadmin.php';</script>";
-    }  
-    else {
-        echo "<script>window.alert('RM ou senha incorretos.');</script>";
-    }
-}
