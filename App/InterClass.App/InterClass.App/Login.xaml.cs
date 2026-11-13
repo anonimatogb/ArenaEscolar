@@ -76,9 +76,9 @@ namespace InterClass.App
                 if (usuarioValido)
                 {
                     var idUser = service.IdUsuario(rm);
+                    idUsuario = idUser;
                     string nome = service.NomeUsuario(idUser);
                     nomeUsuario = nome;
-                    idUsuario = idUser;
                     await Shell.Current.GoToAsync("///MainPage");
                 }
                 else
@@ -92,6 +92,10 @@ namespace InterClass.App
                 errorMessage = "Falha na conexão";
                 ErrorMessageVisible = true;
             }
+        }
+        public static string GetNomeUsuario()
+        {
+            return nomeUsuario;
         }
         private async void IrParaCadastro(object sender, TappedEventArgs e)
         {

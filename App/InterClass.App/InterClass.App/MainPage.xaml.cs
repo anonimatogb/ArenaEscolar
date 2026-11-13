@@ -9,30 +9,58 @@ namespace InterClass.App
         public MainPage()
         {
             InitializeComponent();
+
             LoginCommand = new Command(async () =>
             {
                 if (idUsuario == 0)
+                {
                     await Shell.Current.GoToAsync(nameof(Login));
+                }
                 else
+                {
                     await Shell.Current.GoToAsync(nameof(Usuario));
+                }
             });
             BindingContext = this;
-        }
+            
 
+        }
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            AtualizarEstadoLogin();
+
+            int idUsuario = Login.idUsuario;
+            string nomeUsuario = Login.GetNomeUsuario();
+
+            if (idUsuario == 0)
+            {
+                NomeLogin = "Fazer Login";
+                IsLoggedIn = false;
+            }
+            else
+            {
+                // Exibe apenas o primeiro nome ou o nome completo conforme preferir
+                NomeLogin = string.IsNullOrEmpty(nomeUsuario) ? "Meu Perfil" : nomeUsuario;
+                IsLoggedIn = true;
+            }
         }
 
-        private void AtualizarEstadoLogin()
+        private string _nomeLogin;
+
+        public string NomeLogin
         {
-            IsLoggedIn = idUsuario != 0;
-            NomeLogin = IsLoggedIn ? nomeUsuario : "Fazer Login";
-            UserName = nomeUsuario;
+            get => _nomeLogin;
+            set
+            {
+                if (_nomeLogin != value)
+                {
+                    _nomeLogin = value; // CORREÇÃO: Atribuindo o valor para a variável privada!
+                    OnPropertyChanged();
+                }
+            }
         }
-
         private bool _isLoggedIn;
+
         public bool IsLoggedIn
         {
             get => _isLoggedIn;
@@ -40,31 +68,7 @@ namespace InterClass.App
             {
                 _isLoggedIn = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsNotLoggedIn));
-            }
-        }
 
-        public bool IsNotLoggedIn => !IsLoggedIn;
-
-        private string _nomeLogin = "Fazer Login";
-        public string NomeLogin
-        {
-            get => _nomeLogin;
-            set
-            {
-                _nomeLogin = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string? _userName;
-        public string? UserName
-        {
-            get => _userName;
-            set
-            {
-                _userName = value;
-                OnPropertyChanged();
             }
         }
 

@@ -9,8 +9,19 @@
         <VerticalStackLayout Padding="24" Spacing="20" VerticalOptions="Center">
 
             <!-- LOGO / MARCA TOPO -->
-            <HorizontalStackLayout Spacing="8" Margin="0,10,0,0">
-                <Label Text="USUÁRIO" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Secondary}" VerticalTextAlignment="Center"/>
+            <Button ImageSource="seta.png"
+        HorizontalOptions="Start"            
+        HeightRequest="28"
+        FontSize="13"
+        CornerRadius="8"
+        Padding="2,0"
+        Margin="0,0,0,0"
+                    TextColor="{StaticResource Primary}"
+        Clicked="IrMainPage"/>
+
+            <!-- LOGO / MARCA TOPO -->
+            <HorizontalStackLayout Spacing="8" Margin="0,10,0,0" HorizontalOptions="Center">
+                <Image Source="logo.png" HeightRequest="90"/>
             </HorizontalStackLayout>
 
 
@@ -55,13 +66,11 @@
             <!-- DIVISOR SUTIL -->
             <BoxView HeightRequest="1" Color="{StaticResource BorderColor}" Margin="0,10"/>
 
-
-            <!-- RODAPÉ / TERMOS -->
-            <Label Text="Ao entrar, você concorda com as regras do evento." 
-                   FontSize="11" 
-                   TextColor="{StaticResource TextSecondary}" 
-                   HorizontalTextAlignment="Center"
-                   Margin="0,10,0,0"/>
+            <Button Text="Sair da Conta"
+        BackgroundColor="{StaticResource Error}"
+        Command="{Binding LoginCommand}" 
+        Margin="0,8,0,0"
+        Clicked="Botao_Sair"/>
 
         </VerticalStackLayout>
     </ScrollView>
