@@ -75,3 +75,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 
 </html>
+
+<?php
+include_once '../../../Db/database.php';
+include_once '../../Controller/UsuarioController.php';
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $rm = $_POST['rm'];
+    $senha = $_POST['senha'];
+
+    $usuarioController = new UsuarioController($pdo);
+    $usuario = $usuarioController->login($rm, $senha);
+    
+    if ($usuario['tipo'] === 'aluno') {
+        session_start();
+        $_SESSION['id_usuario'] = $usuario['id'];
+        $_SESSION['nome'] = $usuario['nome'];
+        $_SESSION['rm'] = $usuario['rm'];
+        echo "<script>window.alert('Login realizado com sucesso!');</script>";
+        echo "<script>window.location.href='inicio.php';</script>";
+    } elseif ($usuario['tipo'] === 'admin') {
+        session_start();
+        $_SESSION['id_usuario'] = $usuario['id'];
+        $_SESSION['nome'] = $usuario['nome'];
+        $_SESSION['rm'] = $usuario['rm'];
+        echo "<script>window.alert('Login realizado com sucesso!');</script>";
+        echo "<script>window.location.href='inicioadmin.php';</script>";
+    }  
+    else {
+        echo "<script>window.alert('RM ou senha incorretos.');</script>";
+    }
+}
