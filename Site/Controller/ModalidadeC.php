@@ -30,10 +30,12 @@ class ModalidadeController {
                 $modalidade->genero = $genero;
 
                 try {
-                    if ($modalidade->salvar()) {
+                    if ($modalidade->existeComMesmasCaracteristicas()) {
+                        $mensagem = "Já existe uma modalidade com essas mesmas características.";
+                    } elseif ($modalidade->salvar()) {
                         $mensagem = "Modalidade cadastrada com sucesso!";
                     } else {
-                        $mensagem = "Não foi possível, Verifique se já existe.";
+                        $mensagem = "Não foi possível cadastrar a modalidade.";
                     }
                 } catch (PDOException $e) {
                     error_log('Erro ao cadastrar modalidade: ' . $e->getMessage());
@@ -52,6 +54,6 @@ class ModalidadeController {
             $erroListagem = "Não foi possível carregar as modalidades do banco de dados.";
         }
 
-        require __DIR__ . '/../View/Modalidade/modalidade.php';
+        require __DIR__ . '/../View/Modalidade/formulario.php';
     }
 }

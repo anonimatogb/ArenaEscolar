@@ -6,7 +6,7 @@
             <thead>
                 <tr>
                     <th>Nome</th>
-                    <th>Máximo de participantes</th>
+                    <th>Max-Part</th>
                     <th>Gênero</th>
                 </tr>
             </thead>

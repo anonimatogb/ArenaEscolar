@@ -25,6 +25,19 @@ class Modalidade {
         ]);
     }
 
+    public function existeComMesmasCaracteristicas() {
+        $query = "SELECT 1 FROM " . $this->table_name
+            . " WHERE nome = :nome AND quantidade = :quantidade AND genero = :genero LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([
+            ':nome' => $this->nome,
+            ':quantidade' => $this->quantidade,
+            ':genero' => $this->genero,
+        ]);
+
+        return $stmt->fetchColumn() !== false;
+    }
+
     public function listar() {
         $query = "SELECT id, nome, quantidade, genero FROM " . $this->table_name . " ORDER BY id DESC";
         $stmt = $this->conn->query($query);
