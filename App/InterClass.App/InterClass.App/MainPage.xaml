@@ -17,18 +17,17 @@
                         </HorizontalStackLayout>
 
                         <Button Grid.Column="1" 
-                        Text="Fazer Login" 
+                        Text="{Binding NomeLogin}"
+                        BackgroundColor="{StaticResource Primary}"
                         Command="{Binding LoginCommand}" 
-                        IsVisible="{Binding IsNotLoggedIn}"
                         HeightRequest="38"
                         FontSize="13"
                         CornerRadius="8"
                         Padding="14,0"
                         />
 
-                        <VerticalStackLayout Grid.Column="1" IsVisible="{Binding IsLoggedIn}" HorizontalOptions="End" VerticalOptions="Center">
-                            <Label Text="{Binding UserName}" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource TextPrimary}" HorizontalTextAlignment="End"/>
-                            <Label Text="{Binding MinhaSala}" FontSize="11" TextColor="{StaticResource TextSecondary}" HorizontalTextAlignment="End" Padding="0,4,0,0"/>
+                <VerticalStackLayout Grid.Column="1" IsVisible="{Binding IsLoggedIn}" HorizontalOptions="End" VerticalOptions="Center">
+                    <Label Text="{Binding MinhaSala}" FontSize="11" TextColor="{StaticResource TextSecondary}" HorizontalTextAlignment="End" Padding="0,4,0,0"/>
                         </VerticalStackLayout>
                     </Grid>
 
