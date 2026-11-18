@@ -13,7 +13,7 @@ class AdministradorModel
     public function existeAdministrador(): bool
     {
         $stmt = $this->pdo->query(
-            'SELECT 1 FROM administrador WHERE id_unico = 1 LIMIT 1'
+            "SELECT 1 FROM usuario WHERE tipo IN ('admin', 'ADM') LIMIT 1"
         );
 
         return $stmt->fetchColumn() !== false;
@@ -22,10 +22,11 @@ class AdministradorModel
     public function login(string $nomeUsuario, string $senha)
     {
         $stmt = $this->pdo->prepare(
-            'SELECT id_unico, nome_usuario, senha
-             FROM administrador
-             WHERE nome_usuario = :nome_usuario
-             LIMIT 1'
+            "SELECT id, nome, senha
+             FROM usuario
+             WHERE nome = :nome_usuario
+               AND tipo IN ('admin', 'ADM')
+             LIMIT 1"
         );
         $stmt->execute(['nome_usuario' => $nomeUsuario]);
         $administrador = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -51,8 +52,8 @@ class AdministradorModel
 
         try {
             $stmt = $this->pdo->prepare(
-                'INSERT INTO administrador (id_unico, nome_usuario, senha)
-                 VALUES (1, :nome, :senha)'
+                "INSERT INTO usuario (nome, rm, senha, tipo, id_sala)
+                 VALUES (:nome, NULL, :senha, 'admin', NULL)"
             );
 
             return $stmt->execute([

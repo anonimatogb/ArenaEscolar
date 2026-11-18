@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($administrador) {
         session_regenerate_id(true);
-        $_SESSION['id_administrador'] = $administrador['id_unico'];
-        $_SESSION['nome'] = $administrador['nome_usuario'];
+        $_SESSION['id_administrador'] = $administrador['id'];
+        $_SESSION['nome'] = $administrador['nome'];
         $_SESSION['tipo'] = 'ADM';
         unset($_SESSION['id_usuario'], $_SESSION['id_sala'], $_SESSION['rm']);
         header('Location: inicio.php');
