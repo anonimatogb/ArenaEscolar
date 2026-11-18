@@ -10,7 +10,7 @@ $erro = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rm = $_POST['rm'];
     $senha = $_POST['senha'] ?? '';
-
+   
     $usuarioController = new UsuarioController($pdo);
 
     if ($senha !== '') {
