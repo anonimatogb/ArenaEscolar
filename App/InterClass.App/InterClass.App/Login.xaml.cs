@@ -76,14 +76,14 @@ namespace InterClass.App
                 if (usuarioValido)
                 {
                     var idUser = service.IdUsuario(rm);
+                    idUsuario = idUser;
                     string nome = service.NomeUsuario(idUser);
                     nomeUsuario = nome;
-                    idUsuario = idUser;
                     await Shell.Current.GoToAsync("///MainPage");
                 }
                 else
                 {
-                    errorMessage = "RM ou senha inválidos.";
+                    errorMessage = "RM ou senha incorreto.";
                     ErrorMessageVisible = true;
                 }
             }
@@ -93,9 +93,14 @@ namespace InterClass.App
                 ErrorMessageVisible = true;
             }
         }
-        private async void IrParaCadastro(object sender, TappedEventArgs e)
+        public static string GetNomeUsuario()
         {
-            //await Navigation.PushAsync(new Cadastro());
+            return nomeUsuario;
         }
+        private async void Botao_Cadastro(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(Cadastro));
+        }
+        
     }
 }

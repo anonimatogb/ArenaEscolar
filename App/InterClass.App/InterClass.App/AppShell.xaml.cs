@@ -10,6 +10,7 @@
             Routing.RegisterRoute(nameof(Classificacao), typeof(Classificacao));
             Routing.RegisterRoute(nameof(Login), typeof(Login));
             Routing.RegisterRoute(nameof(Usuario), typeof(Usuario));
+            Routing.RegisterRoute(nameof(Cadastro), typeof(Cadastro));
         }
     }
 }

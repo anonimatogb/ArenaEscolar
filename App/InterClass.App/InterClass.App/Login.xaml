@@ -7,18 +7,19 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="24" Spacing="20" VerticalOptions="Center">
-            <Button Text="←"
-        HeightRequest="38"
+            <Button ImageSource="seta.png"
+        HorizontalOptions="Start"            
+        HeightRequest="28"
         FontSize="13"
         CornerRadius="8"
-        Padding="30,0"
-        Margin="0,20,0,0"
+        Padding="2,0"
+        Margin="0,0,0,0"
                     TextColor="{StaticResource Primary}"
         Clicked="Botao_Voltar"/>
 
             <!-- LOGO / MARCA TOPO -->
-            <HorizontalStackLayout Spacing="8" Margin="0,10,0,0">
-                <Label Text="INTERCLASS" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Secondary}" VerticalTextAlignment="Center"/>
+            <HorizontalStackLayout Spacing="8" Margin="0,10,0,0" HorizontalOptions="Center">
+                <Image Source="logo.png" HeightRequest="90"/>
             </HorizontalStackLayout>
 
             <!-- CABEÇALHO DA TELA DE LOGIN -->
@@ -73,9 +74,12 @@
                         Clicked="Botao_Login"/>
 
                 <!-- Link de Cadastro -->
-                <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" Margin="0,4,0,0">
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="0" Margin="0,0,0,0">
                     <Label Text="Ainda não tem uma conta?" FontSize="13" TextColor="{StaticResource TextSecondary}"/>
-                    <Label Text="Cadastre-se" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                    <Label Text="Cadastre-se" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource Primary}"><Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Botao_Cadastro"/>
+                        </Label.GestureRecognizers> "/>
+                    </Label>
                 </HorizontalStackLayout>
 
             </VerticalStackLayout>
