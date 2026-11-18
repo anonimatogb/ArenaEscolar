@@ -62,7 +62,7 @@ namespace InterClass.App.Database
             cmd.ExecuteNonQuery();
         }
 
-        public void InserirUsuario(string nome, string email, string senha, string cargo)
+        public void InserirUsuario(string nome, string cargo)
         {
             using var connection =
                 new MySqlConnection(_connectionString);
@@ -71,11 +71,44 @@ namespace InterClass.App.Database
                 "INSERT INTO usuario (nome, rm, senha, cargo) VALUES (@nome, @rm, @senha, @cargo)",
                 connection);
             cmd.Parameters.AddWithValue("@nome", nome);
-            cmd.Parameters.AddWithValue("@rm", email);
-            cmd.Parameters.AddWithValue("@senha", senha);
             cmd.Parameters.AddWithValue("@cargo", cargo);
             cmd.ExecuteNonQuery();
         }
+        public void Cadastro(string senha, int rm)
+        {
+            using var connection =
+                new MySqlConnection(_connectionString);
+            connection.Open();
+            using var cmd = new MySqlCommand(
+                "UPDATE usuario SET senha = @senha WHERE rm = @rm",
+                connection);
+            cmd.Parameters.AddWithValue("@rm", rm);
+            cmd.Parameters.AddWithValue("@senha", senha);
+            cmd.ExecuteNonQuery();
+        }
+        public bool Senha(int rm)
+        {
+            using var connection =
+                new MySqlConnection(_connectionString);
+            connection.Open();
+            using var cmd = new MySqlCommand(
+        "SELECT senha FROM usuario WHERE rm = @rm",
+        connection);
+
+            cmd.Parameters.AddWithValue("@rm", rm);
+            var resultado = cmd.ExecuteScalar();
+
+            if (resultado != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
         public string NomeUsuario(int id)
         {
             using var connection =

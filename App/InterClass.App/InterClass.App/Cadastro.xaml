@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InterClass.App.Cadastro"
+             BackgroundColor="{StaticResource Background}"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20" VerticalOptions="Center">
+            <Button ImageSource="seta.png"
+        HorizontalOptions="Start"            
+        HeightRequest="28"
+        FontSize="13"
+        CornerRadius="8"
+        Padding="2,0"
+        Margin="0,0,0,0"
+        TextColor="{StaticResource Primary}"
+        Clicked="Botao_Voltar"/>
+
+            <!-- LOGO / MARCA TOPO -->
+            <HorizontalStackLayout Spacing="8" Margin="0,10,0,0" HorizontalOptions="Center">
+                <Image Source="logo.png" HeightRequest="90"/>
+            </HorizontalStackLayout>
+
+            <!-- CABEÇALHO DA TELA DE LOGIN -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="BEM-VINDO" 
+                       TextColor="{StaticResource Primary}" 
+                       FontSize="11" 
+                       FontAttributes="Bold" />
+
+                <Label Text="Crie sua conta." 
+                       Style="{StaticResource Titulo}" 
+                       FontSize="26"/>
+
+                <Label Text="Acompanhe o interclasse com sua turma." 
+                       Style="{StaticResource SubTitulo}" 
+                       FontSize="14"/>
+            </VerticalStackLayout>
+
+            <!-- FORMULÁRIO -->
+            <VerticalStackLayout Spacing="16" Margin="0,10,0,0">
+
+                <!-- Campo RM -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="RM" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                    <Entry Placeholder="1235"
+                           Text="{Binding RM}"
+                           x:Name="RM_Entry"
+                           Keyboard="Numeric"
+                           TextChanged="RM_TextChanged"/>
+                </VerticalStackLayout>
+
+                <!-- Campo Senha -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Crie uma senha" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                    <Entry Placeholder="••••••••••"
+                           Text="{Binding Password}"
+                           x:Name="Senha_Entry"
+                           IsPassword="True"/>
+                </VerticalStackLayout>
+                <Label Text="{Binding ErrorMessage}" 
+                   FontSize="13" 
+                   TextColor="{StaticResource Error}"
+                   IsVisible="{Binding IsErrorMessageVisible}"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10,0,0"/>
+
+                <!-- Botão Entrar Principal -->
+                <Button Text="Entrar"
+                        BackgroundColor="{StaticResource Primary}"
+                        Command="{Binding LoginCommand}" 
+                        Margin="0,8,0,0"
+                        Clicked="Botao_Cadastro"/>
+
+                <!-- Link de Cadastro -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" Margin="0,4,0,0">
+                    <Label Text="Já tem uma conta?" FontSize="13" TextColor="{StaticResource TextSecondary}"/>
+                    <Button Text="Login" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource Primary}" Clicked="Botao_Login"/>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+            <!-- DIVISOR SUTIL -->
+            <BoxView HeightRequest="1" Color="{StaticResource BorderColor}" Margin="0,10"/>
+
+
+            <!-- RODAPÉ / TERMOS -->
+            <Label Text="Ao entrar, você concorda com as regras do evento." 
+                   FontSize="11" 
+                   TextColor="{StaticResource TextSecondary}" 
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10,0,0"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

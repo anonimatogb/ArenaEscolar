@@ -87,12 +87,18 @@
 	  <Compile Update="Classificacao.xaml.cs">
 	    <DependentUpon>Classificacao.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Cadastro.xaml.cs">
+	    <DependentUpon>Cadastro.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Usuario.xaml.cs">
 	    <DependentUpon>Usuario.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Cadastro.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\Styles.xaml" Inflator="Runtime" />
 	  <MauiXaml Update="Login.xaml">
 	    <Generator>MSBuild:Compile</Generator>

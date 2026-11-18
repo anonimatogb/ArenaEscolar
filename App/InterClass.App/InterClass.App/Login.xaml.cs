@@ -83,7 +83,7 @@ namespace InterClass.App
                 }
                 else
                 {
-                    errorMessage = "RM ou senha inválidos.";
+                    errorMessage = "RM ou senha incorreto.";
                     ErrorMessageVisible = true;
                 }
             }
@@ -97,9 +97,10 @@ namespace InterClass.App
         {
             return nomeUsuario;
         }
-        private async void IrParaCadastro(object sender, TappedEventArgs e)
+        private async void Botao_Cadastro(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new Cadastro());
+            await Shell.Current.GoToAsync(nameof(Cadastro));
         }
+        
     }
 }
