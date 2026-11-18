@@ -5,7 +5,7 @@ session_start();
 if (!isset($_SESSION['id_usuario'])) {
     echo "<script>window.location.href='login.php';</script>";
     exit();
-}
+}   
 
 include_once '../../../Db/database.php';
 include_once '../../Controller/SalaController.php';
