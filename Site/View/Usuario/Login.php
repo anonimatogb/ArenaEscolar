@@ -2,8 +2,8 @@
 <?php
 session_start();
 
-include_once '../../../Db/database.php';
-include_once '../../Controller/UsuarioController.php';
+require_once dirname(__DIR__, 3) . '/DB/database.php';
+require_once __DIR__ . '/../../Controller/UsuarioController.php';
 
 $erro = '';
 
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['tipo'] = $usuario['tipo'];
             $_SESSION['id_sala'] = $usuario['id_sala'];
 
-            echo "<script>window.location.href='../Representante/inicio.php';</script>";
+            header('Location: ../Representante/inicio.php');
             exit();
         } else {
             $erro = 'RM ou senha incorretos.';
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['tipo'] = 'aluno';
             $_SESSION['id_sala'] = $aluno['id_sala'];
 
-            echo "<script>window.location.href='../Aluno/inicio.php';</script>";
+            header('Location: inicio.php');
             exit();
         } else {
             $erro = 'Aluno não encontrado.';
@@ -75,35 +75,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 
 </html>
- 
-<?php
-include_once '../../../Db/database.php';
-include_once '../../Controller/UsuarioController.php';  
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $rm = $_POST['rm'];
-    $senha = $_POST['senha'];
-
-    $usuarioController = new UsuarioController($pdo);  
-    $usuario = $usuarioController->login($rm, $senha);
-    
-    if ($usuario['tipo'] === 'aluno') {
-        session_start();
-        $_SESSION['id_usuario'] = $usuario['id'];
-        $_SESSION['nome'] = $usuario['nome'];
-        $_SESSION['rm'] = $usuario['rm'];
-        echo "<script>window.alert('Login realizado com sucesso!');</script>";
-        echo "<script>window.location.href='inicio.php';</script>";
-    } elseif ($usuario['tipo'] === 'admin') {
-        session_start();
-        $_SESSION['id_usuario'] = $usuario['id'];
-        $_SESSION['nome'] = $usuario['nome'];
-        $_SESSION['rm'] = $usuario['rm'];
-        echo "<script>window.alert('Login realizado com sucesso!');</script>";
-        echo "<script>window.location.href='inicioadmin.php';</script>";
-    }  
-    else {
-        echo "<script>window.alert('RM ou senha incorretos.');</script>";
-    }
-}

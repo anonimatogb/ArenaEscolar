@@ -2,9 +2,12 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo'] !== 'representante') {
-    echo "<script>window.alert('Acesso permitido somente para representantes.');</script>";
-    echo "<script>window.location.href='../Usuario/Login.php';</script>";
+if (
+    !isset($_SESSION['id_usuario']) ||
+    !isset($_SESSION['tipo']) ||
+    $_SESSION['tipo'] !== 'representante'
+) {
+    header('Location: ../Usuario/Login.php');
     exit();
 }
 ?>

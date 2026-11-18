@@ -2,13 +2,13 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['id_usuario'])) {
-    echo "<script>window.location.href='login.php';</script>";
+if (!isset($_SESSION['id_usuario']) && !isset($_SESSION['id_administrador'])) {
+    header('Location: ../Usuario/Login.php');
     exit();
 }   
 
-include_once '../../../Db/database.php';
-include_once '../../Controller/SalaController.php';
+require_once dirname(__DIR__, 3) . '/DB/database.php';
+require_once __DIR__ . '/../../Controller/SalaController.php';
 
 $salaController = new SalaController($pdo);
 $salas = $salaController->listarSalas();
@@ -40,7 +40,7 @@ $salas = $salaController->listarSalas();
 
     <?php endif; ?>
 
-    <a href="../admin/inicioadmin.php">Voltar</a>
+    <a href="../../../index.php">Voltar</a>
 
 </body>
 </html>
