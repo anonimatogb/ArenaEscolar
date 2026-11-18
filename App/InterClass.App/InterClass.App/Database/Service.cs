@@ -49,6 +49,23 @@ namespace InterClass.App.Database
 
             return count > 0;
         }
+        public bool VerificarRM(int rm)
+        {
+            using var connection =
+                new MySqlConnection(_connectionString);
+
+            connection.Open();
+
+            using var cmd = new MySqlCommand(
+                "SELECT COUNT(*) FROM usuario WHERE rm = @rm",
+                connection);
+
+            cmd.Parameters.AddWithValue("@rm", rm);
+
+            long count = (long)cmd.ExecuteScalar();
+
+            return count > 0;
+        }
         public void AtualizarSenha(int id, int novasenha)
         {
             using var connection =
@@ -88,25 +105,20 @@ namespace InterClass.App.Database
         }
         public bool Senha(int rm)
         {
-            using var connection =
-                new MySqlConnection(_connectionString);
+            using var connection = new MySqlConnection(_connectionString);
             connection.Open();
+
             using var cmd = new MySqlCommand(
-        "SELECT senha FROM usuario WHERE rm = @rm",
-        connection);
+                "SELECT senha FROM usuario WHERE rm = @rm",
+                connection);
 
             cmd.Parameters.AddWithValue("@rm", rm);
+
             var resultado = cmd.ExecuteScalar();
 
-            if (resultado != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
+            return resultado != null &&
+                   resultado != DBNull.Value &&
+                   !string.IsNullOrWhiteSpace(resultado.ToString());
         }
 
         public string NomeUsuario(int id)

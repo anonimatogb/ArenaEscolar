@@ -76,9 +76,15 @@
                 <!-- Link de Cadastro -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="0" Margin="0,0,0,0">
                     <Label Text="Ainda não tem uma conta?" FontSize="13" TextColor="{StaticResource TextSecondary}"/>
-                    <Label Text="Cadastre-se" FontSize="13" FontAttributes="Bold" TextColor="{StaticResource Primary}"><Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Botao_Cadastro"/>
-                        </Label.GestureRecognizers> "/>
+                    <Label Text=" Cadastre-se"
+                       FontSize="13"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}">
+
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Botao_Cadastro"/>
+                        </Label.GestureRecognizers>
+
                     </Label>
                 </HorizontalStackLayout>
 

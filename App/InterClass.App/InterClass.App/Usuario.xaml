@@ -42,7 +42,8 @@
                     <Entry Placeholder="••••••••••"
                            Text="{Binding Password}"
                            x:Name="NovaSenha_Entry"
-                           IsPassword="True"/>
+                           IsPassword="True"
+                           TextChanged="Senha_TextChanged"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Spacing="6">
@@ -50,15 +51,25 @@
                     <Entry Placeholder="••••••••••"
                        Text="{Binding Password}"
                        x:Name="ConfirmarSenha_Entry"
-                       IsPassword="True"/>
+                       IsPassword="True"
+                           TextChanged="Senha_TextChanged"/>
                 </VerticalStackLayout>
 
                 <!-- Botão Entrar Principal -->
                 <Button Text="Alterar"
                         BackgroundColor="{StaticResource Primary}"
-                        Command="{Binding LoginCommand}" 
                         Margin="0,8,0,0"
                         Clicked="Botao_Alterar"/>
+                <Label Text="{Binding TrueMessage}" 
+               FontSize="13" 
+               TextColor="{StaticResource True}"
+               IsVisible="{Binding IsTrueMessageVisible}"
+               HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding ErrorMessage}" 
+               FontSize="13" 
+               TextColor="{StaticResource Error}"
+               IsVisible="{Binding IsErrorMessageVisible}"
+               HorizontalTextAlignment="Center"/>
 
 
             </VerticalStackLayout>

@@ -7,7 +7,7 @@ namespace InterClass.App
         {
             InitializeComponent();
             BindingContext = this;
-            ErrorMessageVisible= false;
+            IsErrorMessageVisible= false;
         }
 
         public static string nomeUsuario { get; set; } = "";
@@ -63,7 +63,7 @@ namespace InterClass.App
         {
             if (string.IsNullOrWhiteSpace(RM_Entry.Text) || !int.TryParse(RM_Entry.Text, out int rm))
             {
-                errorMessage = "RM inválido.";
+                ErrorMessage = "RM inválido.";
                 ErrorMessageVisible = true;
                 return;
             }
@@ -83,14 +83,14 @@ namespace InterClass.App
                 }
                 else
                 {
-                    errorMessage = "RM ou senha incorreto.";
-                    ErrorMessageVisible = true;
+                    ErrorMessage = "RM ou senha incorreto.";
+                    IsErrorMessageVisible = true;
                 }
             }
             catch (Exception ex)
             {
-                errorMessage = "Falha na conexão";
-                ErrorMessageVisible = true;
+                ErrorMessage = "Falha na conexão";
+                IsErrorMessageVisible = true;
             }
         }
         public static string GetNomeUsuario()

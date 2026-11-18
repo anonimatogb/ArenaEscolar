@@ -61,10 +61,11 @@ namespace InterClass.App
         }
         private async void Botao_Cadastro(object sender, EventArgs e)
         {
+            
             if (string.IsNullOrWhiteSpace(RM_Entry.Text) || !int.TryParse(RM_Entry.Text, out int rm))
             {
-                errorMessage = "RM inválido.";
-                ErrorMessageVisible = true;
+                ErrorMessage = "RM inválido.";
+                IsErrorMessageVisible = true;
                 return;
             }
 
@@ -72,8 +73,9 @@ namespace InterClass.App
             try
             {
                 var service = new Database.Service();
+                var verificarrm =service.VerificarRM(rm);
                 bool jatemsenha = service.Senha(rm);
-                if (jatemsenha == false)
+                if (jatemsenha == false && verificarrm == true)
                 {
                     service.Cadastro(senha, rm);
                     var idUser = service.IdUsuario(rm);
@@ -81,17 +83,21 @@ namespace InterClass.App
                     string nome = service.NomeUsuario(idUser);
                     nomeUsuario = nome;
                     await Shell.Current.GoToAsync("///MainPage");
+                }if(verificarrm == false)
+                {
+                    ErrorMessage = "Este RM não está registrado, consulte o representante de sua sala.";
+                    IsErrorMessageVisible = true;
                 }
                 else
                 {
-                    errorMessage = "Este RM já está cadastrado.";
-                    ErrorMessageVisible = true;
+                    ErrorMessage = "Este RM já está cadastrado.";
+                    IsErrorMessageVisible = true;
                 }
             }
             catch (Exception ex)
             {
-                errorMessage = "Falha na conexão";
-                ErrorMessageVisible = true;
+                ErrorMessage = "Falha na conexão";
+                IsErrorMessageVisible = true;
             }
         }
         public static string GetNomeUsuario()
