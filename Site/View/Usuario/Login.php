@@ -70,15 +70,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php if ($erro !== ''): ?>
         <p><?= htmlspecialchars($erro) ?></p>
-    <?php endif; ?>
+    <?php endif; ?>  
 
 </body>
 
 </html>
-
+ 
 <?php
 include_once '../../../Db/database.php';
-include_once '../../Controller/UsuarioController.php';
+include_once '../../Controller/UsuarioController.php';  
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

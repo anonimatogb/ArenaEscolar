@@ -9,7 +9,7 @@ if (
 ) {
     header('Location: Login.php');
     exit();
-}
+} 
 
 header('Location: ../Representante/aluno.php');
 exit();

@@ -5,7 +5,7 @@ include_once '../../../Db/database.php';
 class SalaModel
 {
     private $pdo;
-
+   
     public function __construct($pdo)
     {
         $this->pdo = $pdo;

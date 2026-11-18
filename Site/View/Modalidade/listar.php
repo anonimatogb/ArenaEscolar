@@ -8,7 +8,7 @@
                     <th>Nome</th>
                     <th>Max-Part</th>
                     <th>Gênero</th>
-                </tr>
+                </tr>  
             </thead>
             <tbody>
                 <?php foreach ($modalidades as $modalidade): ?>

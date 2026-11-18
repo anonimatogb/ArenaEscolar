@@ -10,7 +10,7 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo'] !== 'representante') {
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR">  
 
 <head>
     <meta charset="UTF-8">

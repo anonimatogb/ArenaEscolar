@@ -15,8 +15,8 @@ if (!isset($_SESSION['id_usuario'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Início</title>
 </head>
-<body>
-
+<body> 
+    
     <h1>Bem-vindo ao Arena Escolar!</h1>
 
     <p>Olá, <?= htmlspecialchars($_SESSION['nome']) ?>!</p>

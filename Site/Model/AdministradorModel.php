@@ -21,7 +21,7 @@ class AdministradorModel
 
     public function cadastrar(string $nomeUsuario, string $senha): bool
     {
-        if ($this->existeAdministrador()) {
+        if ($this->existeAdministrador()) {  
             return false;
         }
 

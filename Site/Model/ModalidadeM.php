@@ -6,7 +6,7 @@ class Modalidade {
     private $table_name = "modalidade";
 
     public $id;
-    public $nome;
+    public $nome;   
     public $quantidade;
     public $genero;
 

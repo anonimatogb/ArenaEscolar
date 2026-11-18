@@ -75,7 +75,7 @@ $alunos = $usuarioController->listarAlunosPorSala($_SESSION['id_sala']);
 
     </form>
 
-    <h2>Alunos cadastrados</h2>
+    <h2>Alunos cadastrados</h2>  
 
     <?php if (!empty($alunos)): ?>
 

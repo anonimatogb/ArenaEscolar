@@ -6,7 +6,7 @@ class ModalidadeController {
     public function cadastrar() {
         $mensagem = "";
         $erroListagem = "";
-        $formAction = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
+        $formAction = $_SERVER['SCRIPT_NAME'] ?? '/index.php';   
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $nome = $_POST['nome'] ?? '';

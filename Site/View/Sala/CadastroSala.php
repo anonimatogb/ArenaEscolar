@@ -12,7 +12,7 @@ include_once '../../Controller/SalaController.php';
 
 $salaController = new SalaController($pdo);
 $salas = $salaController->listarSalas();
-?>
+?>  
 
 <!DOCTYPE html>
 <html lang="pt-BR">

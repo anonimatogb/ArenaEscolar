@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" required><br><br>
 
-        <label for="rm">RM:</label>
+        <label for="rm">RM:</label> 
         <input type="text" id="rm" name="rm" required><br><br>
 
         <label for="senha">Senha:</label>
