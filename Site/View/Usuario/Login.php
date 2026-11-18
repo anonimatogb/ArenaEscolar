@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $erro = 'Aluno não encontrado.';
         }
     }
-}
+}  
 ?>
 
 <!DOCTYPE html>
