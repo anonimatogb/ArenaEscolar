@@ -10,7 +10,7 @@
                     <th>Gênero</th>
                 </tr>  
             </thead>
-            <tbody>
+            <tbody>  
                 <?php foreach ($modalidades as $modalidade): ?>
                     <tr>
                         <td><?= htmlspecialchars($modalidade['nome'], ENT_QUOTES, 'UTF-8') ?></td>

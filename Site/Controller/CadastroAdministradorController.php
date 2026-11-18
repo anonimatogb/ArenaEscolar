@@ -16,7 +16,7 @@ try {
             $nomeUsuario = trim($_POST['nome_usuario'] ?? '');
             $senha = $_POST['senha'] ?? '';
 
-            if ($nomeUsuario === '' || $senha === '') {  
+            if ($nomeUsuario === '' || $senha === '') {    
                 $mensagem = 'Preencha o nome de usuário e a senha.';
             } elseif (strlen($nomeUsuario) > 255) {
                 $mensagem = 'O nome de usuário deve ter no máximo 255 caracteres.';

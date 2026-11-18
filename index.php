@@ -18,3 +18,4 @@ if (!isset($_SESSION['tipo'])) {
     <?php endif; ?>
 </body>
 </html>
+  

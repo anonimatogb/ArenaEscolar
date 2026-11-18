@@ -22,7 +22,7 @@ class AdministradorModel
     public function cadastrar(string $nomeUsuario, string $senha): bool
     {
         if ($this->existeAdministrador()) {  
-            return false;
+            return false;  
         }
 
         $hash = password_hash($senha, PASSWORD_DEFAULT);

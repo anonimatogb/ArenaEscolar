@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rm = $_POST['rm'];
     $senha = $_POST['senha'];
 
-    $usuarioController = new UsuarioController($pdo);
+    $usuarioController = new UsuarioController($pdo);  
     $usuario = $usuarioController->login($rm, $senha);
     
     if ($usuario['tipo'] === 'aluno') {

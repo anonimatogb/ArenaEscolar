@@ -7,7 +7,7 @@ class Modalidade {
 
     public $id;
     public $nome;   
-    public $quantidade;
+    public $quantidade;  
     public $genero;
 
     public function __construct() {

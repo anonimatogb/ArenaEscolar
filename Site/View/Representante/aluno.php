@@ -74,7 +74,7 @@ $alunos = $usuarioController->listarAlunosPorSala($_SESSION['id_sala']);
         <input type="submit" value="Cadastrar aluno">
 
     </form>
-
+  
     <h2>Alunos cadastrados</h2>  
 
     <?php if (!empty($alunos)): ?>

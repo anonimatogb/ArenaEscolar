@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <select name="id_sala" id="id_sala" required>
             <option value="">Selecione uma sala</option>
 
-            <?php
+            <?php  
             $salas = $salaController->listarSalas();
 
             foreach ($salas as $sala) {

@@ -97,7 +97,7 @@ public function cadastrarRepresentante($nome, $rm, $senha, $id_sala)
             $stmt->bindParam(':rm', $rm);
             $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);   
+            return $stmt->fetch(PDO::FETCH_ASSOC);    
         } catch (PDOException $e) {
             return false;
         }

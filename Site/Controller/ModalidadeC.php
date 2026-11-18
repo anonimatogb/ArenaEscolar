@@ -4,7 +4,7 @@ require_once __DIR__ . '/../Model/ModalidadeM.php';
 class ModalidadeController {
 
     public function cadastrar() {
-        $mensagem = "";
+        $mensagem = "";  
         $erroListagem = "";
         $formAction = $_SERVER['SCRIPT_NAME'] ?? '/index.php';   
 

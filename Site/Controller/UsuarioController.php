@@ -6,7 +6,7 @@ class UsuarioController {
     private $usuarioModel;
 
     public function __construct($pdo) {
-        $this->usuarioModel = new UsuarioModel($pdo);
+        $this->usuarioModel = new UsuarioModel($pdo);  
     }   
 
     public function cadastrarAluno($nome, $rm, $id_sala) {

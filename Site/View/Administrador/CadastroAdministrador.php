@@ -10,7 +10,7 @@ if (!isset($mensagem, $formularioDisponivel, $cadastrado, $model)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de administrador</title>
-</head>
+</head>  
 <body>
     <?php if ($mensagem !== ''): ?>
         <p><?= htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8') ?></p>

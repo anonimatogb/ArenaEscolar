@@ -14,7 +14,7 @@ $salaController = new SalaController($pdo);
 $salas = $salaController->listarSalas();
 ?>  
 
-<!DOCTYPE html>
+<!DOCTYPE html>  
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
