@@ -19,6 +19,24 @@ class AdministradorModel
         return $stmt->fetchColumn() !== false;
     }
 
+    public function login(string $nomeUsuario, string $senha)
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT id_unico, nome_usuario, senha
+             FROM administrador
+             WHERE nome_usuario = :nome_usuario
+             LIMIT 1'
+        );
+        $stmt->execute(['nome_usuario' => $nomeUsuario]);
+        $administrador = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($administrador && password_verify($senha, $administrador['senha'])) {
+            return $administrador;
+        }
+
+        return false;
+    }
+
     public function cadastrar(string $nomeUsuario, string $senha): bool
     {
         if ($this->existeAdministrador()) {  

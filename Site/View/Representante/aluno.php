@@ -12,7 +12,7 @@ if (
     exit();
 }
 
-require_once dirname(__DIR__, 3) . '/Db/database.php';
+require_once dirname(__DIR__, 3) . '/DB/database.php';
 require_once __DIR__ . '/../../Controller/UsuarioController.php';
 
 $usuarioController = new UsuarioController($pdo);

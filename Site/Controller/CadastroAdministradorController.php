@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../Model/AdministradorModel.php';
-require_once dirname(__DIR__, 2) . '/Db/database.php';
+require_once dirname(__DIR__, 2) . '/DB/database.php';
 
 $model = new AdministradorModel($pdo);
 $mensagem = '';

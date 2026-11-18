@@ -16,6 +16,8 @@ if (!isset($mensagem, $formularioDisponivel, $cadastrado, $model)) {
         <p><?= htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8') ?></p>
     <?php endif; ?>
 
+    <p><a href="../View/Administrador/Login.php">Entrar como professor</a></p>
+
     <?php if ($formularioDisponivel): ?>
         <form action="" method="POST">
             <label for="nome_usuario">Nome de usuário:</label>

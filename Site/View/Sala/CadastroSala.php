@@ -2,12 +2,12 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['id_usuario']) && !isset($_SESSION['id_administrador'])) {
     header('Location: ../Usuario/Login.php');
     exit();
 }   
 
-require_once dirname(__DIR__, 3) . '/Db/database.php';
+require_once dirname(__DIR__, 3) . '/DB/database.php';
 require_once __DIR__ . '/../../Controller/SalaController.php';
 
 $salaController = new SalaController($pdo);

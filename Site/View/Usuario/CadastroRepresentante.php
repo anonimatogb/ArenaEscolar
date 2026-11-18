@@ -2,7 +2,12 @@
 <?php
 session_start();
 
-require_once dirname(__DIR__, 3) . '/Db/database.php';
+if (!isset($_SESSION['id_administrador']) || ($_SESSION['tipo'] ?? '') !== 'ADM') {
+    header('Location: ../Administrador/Login.php');
+    exit();
+}
+
+require_once dirname(__DIR__, 3) . '/DB/database.php';
 require_once __DIR__ . '/../../Controller/UsuarioController.php';
 require_once __DIR__ . '/../../Controller/SalaController.php';
 
@@ -19,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($resultado) {
         echo "<script>window.alert('Representante cadastrado com sucesso!');</script>";
-        echo "<script>window.location.href='Login.php';</script>";
+        echo "<script>window.location.href='../Administrador/inicio.php';</script>";
     } else {
         echo "<script>window.alert('Não foi possível cadastrar. Verifique se o RM já existe ou se a sala já possui dois representantes.');</script>";
     }
