@@ -8,12 +8,12 @@ if (
     $_SESSION['tipo'] !== 'representante' ||
     !isset($_SESSION['id_sala'])
 ) {
-    echo "<script>window.location.href='../Usuario/Login.php';</script>";
+    header('Location: ../Usuario/Login.php');
     exit();
 }
 
-include_once '../../../Db/database.php';
-include_once '../../Controller/UsuarioController.php';
+require_once dirname(__DIR__, 3) . '/Db/database.php';
+require_once __DIR__ . '/../../Controller/UsuarioController.php';
 
 $usuarioController = new UsuarioController($pdo);
 
@@ -29,10 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 
     if ($resultado) {
-        echo "<script>
-            window.alert('Aluno cadastrado com sucesso!');
-            window.location.href='aluno.php';
-        </script>";
+            header('Location: aluno.php?cadastro=sucesso');
         exit();
     } else {
         echo "<script>
@@ -56,6 +53,10 @@ $alunos = $usuarioController->listarAlunosPorSala($_SESSION['id_sala']);
 <body>
 
     <h1>Alunos da minha sala</h1>
+
+    <?php if (isset($_GET['cadastro']) && $_GET['cadastro'] === 'sucesso'): ?>
+        <p>Aluno cadastrado com sucesso.</p>
+    <?php endif; ?>
 
     <h2>Cadastrar aluno</h2>
 

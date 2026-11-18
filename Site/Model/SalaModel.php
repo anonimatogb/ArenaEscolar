@@ -1,6 +1,6 @@
 
 <?php
-include_once '../../../Db/database.php';
+require_once dirname(__DIR__, 2) . '/Db/database.php';
 
 class SalaModel
 {

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../DB/database.php';
+require_once dirname(__DIR__, 2) . '/Db/database.php';
 
 class Modalidade {
     private $conn;

@@ -1,6 +1,6 @@
 
 <?php
-require_once '../../Model/SalaModel.php';
+require_once __DIR__ . '/../Model/SalaModel.php';
 
 class SalaController {
     private $salaModel;

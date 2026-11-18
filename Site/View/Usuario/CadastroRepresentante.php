@@ -2,9 +2,9 @@
 <?php
 session_start();
 
-include_once '../../../Db/database.php';
-include_once '../../Controller/UsuarioController.php';
-include_once '../../Controller/SalaController.php';
+require_once dirname(__DIR__, 3) . '/Db/database.php';
+require_once __DIR__ . '/../../Controller/UsuarioController.php';
+require_once __DIR__ . '/../../Controller/SalaController.php';
 
 $salaController = new SalaController($pdo);
 
