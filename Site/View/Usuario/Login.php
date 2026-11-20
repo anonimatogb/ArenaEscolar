@@ -67,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <input type="submit" value="Entrar">
         <a href="../Administrador/login.php">Sou professor</a>
+        <a href="../../../index.php">Voltar para a página inicial</a>
     </form>
 
     <?php if ($erro !== ''): ?>

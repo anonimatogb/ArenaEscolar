@@ -11,15 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $senha = $_POST['senha'] ?? '';
     $administrador = (new AdministradorModel($pdo))->login($nomeUsuario, $senha);
 
-    if ($administrador) {
-        session_regenerate_id(true);
-        $_SESSION['id_usuario'] = $administrador['id'];
-        $_SESSION['nome'] = $administrador['nome'];
-        $_SESSION['tipo'] = 'ADM';
-        unset($_SESSION['id_usuario'], $_SESSION['id_sala'], $_SESSION['rm']);
-        header('Location: ../../../index.php');
-        exit();
-    }
+if ($administrador) {
+    session_regenerate_id(true);
+
+    $_SESSION['id_usuario'] = $administrador['id'];
+    $_SESSION['nome'] = $administrador['nome'];
+    $_SESSION['tipo'] = 'ADM';
+
+    unset($_SESSION['id_sala'], $_SESSION['rm']);
+
+    header('Location: ../../../index.php');
+    exit();
+}
 
     $erro = 'Usuário ou senha incorretos.';
 }
@@ -42,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br><br>
         <button type="submit">Entrar</button>
         <a href="../Usuario/Login.php">Sou aluno</a>
+        <a href="../../../index.php">Voltar para a página inicial</a>
     </form>
     <?php if ($erro !== ''): ?>
         <p><?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?></p>
