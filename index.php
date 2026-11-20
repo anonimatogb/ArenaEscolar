@@ -25,7 +25,6 @@ $tipo = $_SESSION['tipo'] ?? null;
             <li><a href="Site/View/Usuario/Login.php">Entrar como representante ou aluno</a></li>
             <?php elseif ($tipo === 'ADM' && isset($_SESSION['id_administrador'])): ?>
                 <li><a href="Site/View/Administrador/inicio.php">Painel do professor</a></li>
-                <li><a href="Site/Controller/CadastroAdministradorController.php">Configuração inicial do professor</a></li>
         <?php elseif ($tipo === 'representante'): ?>
             <li><a href="Site/View/Representante/inicio.php">Painel do representante</a></li>
         <?php elseif ($tipo === 'aluno'): ?>
