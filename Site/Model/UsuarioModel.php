@@ -11,19 +11,20 @@ class UsuarioModel
         $this->pdo = $pdo;
     }
 
-    public function cadastrarAluno($nome, $rm, $id_sala)
+    public function cadastrarAluno($nome, $rm, $id_sala, $genero)
     {
         try {
             $senha = null;
             $tipo = "aluno";
 
-            $sql = "INSERT INTO usuario (nome, rm, senha, tipo, id_sala) VALUES (:nome, :rm, :senha, :tipo, :id_sala)";
+            $sql = "INSERT INTO usuario (nome, rm, senha, tipo, id_sala, genero) VALUES (:nome, :rm, :senha, :tipo, :id_sala, :genero)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':nome', $nome);
             $stmt->bindParam(':rm', $rm);
             $stmt->bindParam(':senha', $senha);
             $stmt->bindParam(':tipo', $tipo);
             $stmt->bindParam(':id_sala', $id_sala);
+            $stmt->bindParam(':genero', $genero);
 
             return $stmt->execute();
         } catch (PDOException $e) {
@@ -32,7 +33,7 @@ class UsuarioModel
     }
 
 
-public function cadastrarRepresentante($nome, $rm, $senha, $id_sala)
+public function cadastrarRepresentante($nome, $rm, $id_sala,$genero)
 {
     try {
         $stmt = $this->pdo->prepare(
@@ -48,18 +49,18 @@ public function cadastrarRepresentante($nome, $rm, $senha, $id_sala)
             return false;
         }
 
-        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+      
         $tipo = "representante";
 
-        $sql = "INSERT INTO usuario (nome, rm, senha, tipo, id_sala)
-                VALUES (:nome, :rm, :senha, :tipo, :id_sala)";
+        $sql = "INSERT INTO usuario (nome, rm, tipo, id_sala, genero)
+                VALUES (:nome, :rm, :tipo, :id_sala, :genero)";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':rm', $rm);
-        $stmt->bindParam(':senha', $senhaHash);
         $stmt->bindParam(':tipo', $tipo);
         $stmt->bindParam(':id_sala', $id_sala);
+        $stmt->bindParam(':genero', $genero);
 
         return $stmt->execute();
 
@@ -180,5 +181,29 @@ public function obterRepresentantePorId($id_representante)
         return false;
     }
     }
+
+public function cadastrarAdministrador($nome_usuario, $senha)
+{
+    try {
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+        $sql = "INSERT INTO usuario (nome, senha, tipo) VALUES (:nome, :senha, 'administrador')";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':nome', $nome_usuario);
+        $stmt->bindParam(':senha', $senhaHash);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        return false;
+    }
+
+    } 
+
+
+
+
+
 
 }

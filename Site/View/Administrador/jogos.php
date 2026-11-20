@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['id_administrador']) || ($_SESSION['tipo'] ?? '') !== 'ADM') {
+if (!isset($_SESSION['id_usuario']) || ($_SESSION['tipo'] ?? '') !== 'ADM') {
     header('Location: Login.php');
     exit();
 }

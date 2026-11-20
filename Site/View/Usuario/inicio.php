@@ -26,8 +26,8 @@ if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'aluno') {
             <p>Olá, <?= htmlspecialchars($_SESSION['nome']) ?>!</p>
             <li><a href="inicio.php">Início</a></li>
             <li><a href="perfil.php">Perfil</a></li>
-            <li><a href="sair.php">Sair</a></li>
             <li><a href="../../../index.php">Voltar para a página inicial</a></li>
+            <li><a href="sair.php">Sair</a></li>
         </ul>
     </nav>
 

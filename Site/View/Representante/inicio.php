@@ -28,8 +28,8 @@ if (
         <li><a href="inicio.php">Início</a></li>
         <li><a href="aluno.php">Alunos</a></li>
         <li><a href="editarrepresentante.php">Editar perfil</a></li>
-        <li><a href="../Usuario/sair.php">Sair</a></li>
         <li><a href="../../../index.php">Voltar para a página inicial</a></li>
+        <li><a href="../Usuario/sair.php">Sair</a></li>
     </ul>
 </nav>
 

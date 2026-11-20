@@ -9,12 +9,12 @@ class UsuarioController {
         $this->usuarioModel = new UsuarioModel($pdo);  
     }   
 
-    public function cadastrarAluno($nome, $rm, $id_sala) {
-        return $this->usuarioModel->cadastrarAluno($nome, $rm, $id_sala);
+    public function cadastrarAluno($nome, $rm, $id_sala, $genero) {
+        return $this->usuarioModel->cadastrarAluno($nome, $rm, $id_sala, $genero);
     }
 
-    public function cadastrarRepresentante($nome, $rm, $senha, $id_sala) {
-    return $this->usuarioModel->cadastrarRepresentante($nome, $rm, $senha, $id_sala);
+    public function cadastrarRepresentante($nome, $rm, $id_sala,$genero) {
+    return $this->usuarioModel->cadastrarRepresentante($nome, $rm, $id_sala,$genero);
 }
 
     public function login($rm, $senha) {
@@ -43,6 +43,10 @@ public function atualizarRepresentante($id_representante, $nome, $senha) {
 }
 public function obterRepresentantePorId($id_representante) {
     return $this->usuarioModel->obterRepresentantePorId($id_representante);
+}
+
+public function cadastrarAdministrador($nome, $senha) {
+    return $this->usuarioModel->cadastrarAdministrador($nome, $senha);
 }
 
 

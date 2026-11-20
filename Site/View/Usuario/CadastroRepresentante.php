@@ -16,11 +16,11 @@ $salaController = new SalaController($pdo);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'];
     $rm = $_POST['rm'];
-    $senha = $_POST['senha'];
     $id_sala = $_POST['id_sala'];
+    $genero = $_POST['genero'];
 
     $usuarioController = new UsuarioController($pdo);
-    $resultado = $usuarioController->cadastrarRepresentante($nome, $rm, $senha, $id_sala);
+    $resultado = $usuarioController->cadastrarRepresentante($nome, $rm, $id_sala, $genero);
 
     if ($resultado) {
         echo "<script>window.alert('Representante cadastrado com sucesso!');</script>";
@@ -52,12 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="rm">RM:</label> 
         <input type="text" id="rm" name="rm" required><br><br>
 
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" required><br><br>
-
         <label for="id_sala">Sala:</label>
         <select name="id_sala" id="id_sala" required>
             <option value="">Selecione uma sala</option>
+
 
             <?php  
             $salas = $salaController->listarSalas();
@@ -66,6 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "<option value='{$sala['id']}'>{$sala['nome']}</option>";
             }
             ?>
+        </select>
+
+        <br><br>
+    
+        <label for="genero">Gênero:</label>
+        <select id="genero" name="genero" required>
+            <option value="masculino">Masculino</option>
+            <option value="feminino">Feminino</option>
         </select>
 
         <br><br>

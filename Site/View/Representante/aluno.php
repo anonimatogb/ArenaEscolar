@@ -21,11 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $nome = $_POST['nome'];
     $rm = $_POST['rm'];
+    $genero = $_POST['genero'];
 
     $resultado = $usuarioController->cadastrarAluno(
         $nome,
         $rm,
-        $_SESSION['id_sala']
+        $_SESSION['id_sala'],
+        $genero
     );
 
     if ($resultado) {
@@ -69,6 +71,14 @@ $alunos = $usuarioController->listarAlunosPorSala($_SESSION['id_sala']);
 
         <label for="rm">RM:</label>
         <input type="number" id="rm" name="rm" required>
+
+        <br><br>
+
+        <label for="genero">Gênero:</label>
+        <select id="genero" name="genero" required>
+            <option value="masculino">Masculino</option>
+            <option value="feminino">Feminino</option>
+        </select>
 
         <br><br>
 
