@@ -84,6 +84,7 @@ $alunos = $usuarioController->listarAlunosPorSala($_SESSION['id_sala']);
             <p>
                 Nome: <?= htmlspecialchars($aluno['nome']) ?>
                 - RM: <?= htmlspecialchars($aluno['rm']) ?>
+                <a href="editaraluno.php?id_aluno=<?= $aluno['id']  ?>">Editar</a>
             </p>
         <?php endforeach; ?>
 

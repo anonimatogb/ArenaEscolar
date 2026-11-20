@@ -121,6 +121,33 @@ public function listarAlunosPorSala($id_sala)
         return [];
     }
 }
+public function obterAlunoPorId($id_aluno)
+{
+    try {
+        $sql = "SELECT id, nome, rm FROM usuario WHERE id = :id AND tipo = 'aluno'";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':id', $id_aluno);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return false;
+    }
+    }
+    public function atualizarAluno($id_aluno, $nome, $rm)
+    {
+        try {
+            $sql = "UPDATE usuario SET nome = :nome, rm = :rm WHERE id = :id AND tipo = 'aluno'";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':rm', $rm);
+            $stmt->bindParam(':id', $id_aluno);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 
 
 }

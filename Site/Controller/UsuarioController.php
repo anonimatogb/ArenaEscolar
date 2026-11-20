@@ -30,6 +30,13 @@ public function listarAlunosPorSala($id_sala) {
     return $this->usuarioModel->listarAlunosPorSala($id_sala);
 }
 
+public function obterAlunoPorId($id_aluno) {
+    return $this->usuarioModel->obterAlunoPorId($id_aluno);
+}
+
+public function atualizarAluno($id_aluno, $nome, $rm) {
+    return $this->usuarioModel->atualizarAluno($id_aluno, $nome, $rm);
+}
 
 }
 ?>

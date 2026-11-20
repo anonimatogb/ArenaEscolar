@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" id="senha" name="senha" required>
         <br><br>
         <button type="submit">Entrar</button>
+        <a href="../Usuario/Login.php">Sou aluno</a>
     </form>
     <?php if ($erro !== ''): ?>
         <p><?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?></p>
