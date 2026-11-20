@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 20/11/2026 às 19:10
+-- Tempo de geração: 20/11/2026 às 20:11
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -33,9 +33,16 @@ CREATE TABLE `jogo` (
   `id_salaA` int(11) NOT NULL,
   `id_salaB` int(11) NOT NULL,
   `dia` datetime NOT NULL,
-  `ganhador` int(11) NOT NULL,
+  `ganhador` int(11) DEFAULT NULL,
   `quadra` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `jogo`
+--
+
+INSERT INTO `jogo` (`id`, `id_modalidade`, `id_salaA`, `id_salaB`, `dia`, `ganhador`, `quadra`) VALUES
+(6, 1, 3, 9, '2026-11-11 15:44:00', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -55,9 +62,10 @@ CREATE TABLE `modalidade` (
 --
 
 INSERT INTO `modalidade` (`id`, `nome`, `quantidade`, `genero`) VALUES
-(1, 'Futsal', 10, 'Masc'),
-(2, 'Volei', 6, 'Fem'),
-(3, 'Queimada', 20, 'Masc');
+(1, 'Futsal', 10, 'masculino'),
+(2, 'Volei', 6, 'feminino'),
+(3, 'Queimada', 20, 'masculino'),
+(4, 'Judô', 2, 'masculino');
 
 -- --------------------------------------------------------
 
@@ -111,6 +119,13 @@ CREATE TABLE `time` (
   `id_sala` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `time`
+--
+
+INSERT INTO `time` (`id`, `id_modalidade`, `id_sala`) VALUES
+(7, 4, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -123,6 +138,14 @@ CREATE TABLE `time_aluno` (
   `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Despejando dados para a tabela `time_aluno`
+--
+
+INSERT INTO `time_aluno` (`id`, `id_time`, `id_usuario`) VALUES
+(2, 7, 18),
+(1, 7, 22);
+
 -- --------------------------------------------------------
 
 --
@@ -132,7 +155,7 @@ CREATE TABLE `time_aluno` (
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
   `nome` varchar(255) NOT NULL,
-  `rm` int(11) NOT NULL,
+  `rm` int(11) DEFAULT NULL,
   `senha` varchar(255) DEFAULT NULL,
   `tipo` varchar(255) NOT NULL,
   `id_sala` int(11) NOT NULL,
@@ -144,8 +167,20 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `nome`, `rm`, `senha`, `tipo`, `id_sala`, `genero`) VALUES
-(9, 'Gabriel Machado', 0, '$2y$10$LYpLIp/o9T.EtlCbQv0QXOcXKQMdJ2Wpy0pTf52jHfdcernrF6BQa', 'admin', 1, NULL),
-(10, 'Gabriel', 2147483647, '$2y$10$4tT1ssjBSmssoIIvyjr2gOhSc5uEc.GGDLdcFWanDd38XCLrLgWiK', 'representante', 5, NULL);
+(9, 'Gabriel Machado', NULL, '$2y$10$LYpLIp/o9T.EtlCbQv0QXOcXKQMdJ2Wpy0pTf52jHfdcernrF6BQa', 'admin', 1, NULL),
+(10, 'Gabriel', 2147483647, '$2y$10$4tT1ssjBSmssoIIvyjr2gOhSc5uEc.GGDLdcFWanDd38XCLrLgWiK', 'representante', 5, NULL),
+(11, 'Miguel', 123415, NULL, 'aluno', 5, 'masculino'),
+(14, 'Luis', 563264, NULL, 'aluno', 5, 'masculino'),
+(15, 'João', 63463467, NULL, 'aluno', 5, 'masculino'),
+(16, 'Jhow', 7346346, NULL, 'aluno', 5, 'masculino'),
+(17, 'Vitor', 12314, NULL, 'aluno', 5, 'masculino'),
+(18, 'Dhiogo', 15512421, NULL, 'aluno', 5, 'masculino'),
+(19, 'Fernando', 152421, NULL, 'aluno', 5, 'masculino'),
+(20, 'Kayky', 51214124, NULL, 'aluno', 5, 'masculino'),
+(21, 'Esdra', 253523, NULL, 'aluno', 5, 'masculino'),
+(22, 'Arthur', 51315, NULL, 'aluno', 5, 'masculino'),
+(23, 'Marcelo', 51351, NULL, 'aluno', 5, 'masculino'),
+(24, 'Guilherme', 25325, NULL, 'aluno', 5, 'masculino');
 
 --
 -- Índices para tabelas despejadas
@@ -212,13 +247,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `jogo`
 --
 ALTER TABLE `jogo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `modalidade`
 --
 ALTER TABLE `modalidade`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `placar`
@@ -236,19 +271,19 @@ ALTER TABLE `sala`
 -- AUTO_INCREMENT de tabela `time`
 --
 ALTER TABLE `time`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `time_aluno`
 --
 ALTER TABLE `time_aluno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Restrições para tabelas despejadas

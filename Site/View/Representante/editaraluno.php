@@ -33,8 +33,9 @@ if (!$aluno) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'];
     $rm = $_POST['rm'];
+    $genero = $_POST['genero'];
 
-    $resultado = $usuarioController->atualizarAluno($id_aluno, $nome, $rm);
+    $resultado = $usuarioController->atualizarAluno($id_aluno, $nome, $rm,$genero);
 
     if ($resultado) {
         header('Location: aluno.php?atualizacao=sucesso');
@@ -72,6 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="number" id="rm" name="rm" value="<?= htmlspecialchars($aluno['rm']) ?>" required>
 
         <br><br>
+
+        <label for="genero">Gênero:</label>
+        <select id="genero" name="genero" required>
+            <option value="masculino" <?= $aluno['genero'] === 'masculino' ? 'selected' : '' ?>>Masculino</option>
+            <option value="feminino" <?= $aluno['genero'] === 'feminino' ? 'selected' : '' ?>>Feminino</option>
+        </select>
 
         <input type="submit" value="Atualizar aluno">
     </form>

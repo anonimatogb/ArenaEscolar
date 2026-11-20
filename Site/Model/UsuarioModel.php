@@ -108,9 +108,10 @@ public function cadastrarRepresentante($nome, $rm, $id_sala,$genero)
 public function listarAlunosPorSala($id_sala)
 {
     try {
-        $sql = "SELECT id, nome, rm FROM usuario
+        $sql = "SELECT id, nome, rm, genero, tipo
+                FROM usuario
                 WHERE id_sala = :id_sala
-                AND tipo = 'aluno'
+                AND tipo IN ('aluno', 'representante')
                 ORDER BY nome";
 
         $stmt = $this->pdo->prepare($sql);
@@ -118,6 +119,7 @@ public function listarAlunosPorSala($id_sala)
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     } catch (PDOException $e) {
         return [];
     }
@@ -125,7 +127,7 @@ public function listarAlunosPorSala($id_sala)
 public function obterAlunoPorId($id_aluno)
 {
     try {
-        $sql = "SELECT id, nome, rm FROM usuario WHERE id = :id AND tipo = 'aluno'";
+        $sql = "SELECT id, nome, rm, genero FROM usuario WHERE id = :id AND tipo = 'aluno'";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':id', $id_aluno);
         $stmt->execute();
@@ -135,13 +137,14 @@ public function obterAlunoPorId($id_aluno)
         return false;
     }
     }
-    public function atualizarAluno($id_aluno, $nome, $rm)
+    public function atualizarAluno($id_aluno, $nome, $rm, $genero)
     {
         try {
-            $sql = "UPDATE usuario SET nome = :nome, rm = :rm WHERE id = :id AND tipo = 'aluno'";
+            $sql = "UPDATE usuario SET nome = :nome, rm = :rm, genero = :genero WHERE id = :id AND tipo = 'aluno'";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':nome', $nome);
             $stmt->bindParam(':rm', $rm);
+            $stmt->bindParam(':genero', $genero);
             $stmt->bindParam(':id', $id_aluno);
 
             return $stmt->execute();
