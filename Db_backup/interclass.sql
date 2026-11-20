@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 20/11/2026 às 20:11
+-- Tempo de geração: 20/11/2026 às 21:09
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -124,7 +124,8 @@ CREATE TABLE `time` (
 --
 
 INSERT INTO `time` (`id`, `id_modalidade`, `id_sala`) VALUES
-(7, 4, 5);
+(10, 1, 5),
+(9, 4, 5);
 
 -- --------------------------------------------------------
 
@@ -143,8 +144,18 @@ CREATE TABLE `time_aluno` (
 --
 
 INSERT INTO `time_aluno` (`id`, `id_time`, `id_usuario`) VALUES
-(2, 7, 18),
-(1, 7, 22);
+(14, 9, 18),
+(13, 9, 22),
+(23, 10, 14),
+(21, 10, 15),
+(20, 10, 16),
+(16, 10, 18),
+(18, 10, 19),
+(22, 10, 20),
+(17, 10, 21),
+(15, 10, 22),
+(24, 10, 23),
+(19, 10, 24);
 
 -- --------------------------------------------------------
 
@@ -180,7 +191,11 @@ INSERT INTO `usuario` (`id`, `nome`, `rm`, `senha`, `tipo`, `id_sala`, `genero`)
 (21, 'Esdra', 253523, NULL, 'aluno', 5, 'masculino'),
 (22, 'Arthur', 51315, NULL, 'aluno', 5, 'masculino'),
 (23, 'Marcelo', 51351, NULL, 'aluno', 5, 'masculino'),
-(24, 'Guilherme', 25325, NULL, 'aluno', 5, 'masculino');
+(24, 'Guilherme', 25325, NULL, 'aluno', 5, 'masculino'),
+(26, 'Ana', 421421, NULL, 'aluno', 5, 'feminino'),
+(27, 'Laura', 13123, NULL, 'aluno', 5, 'feminino'),
+(28, 'Sarah', 321422, NULL, 'aluno', 5, 'feminino'),
+(30, 'Samanta', 421232, NULL, 'aluno', 5, 'feminino');
 
 --
 -- Índices para tabelas despejadas
@@ -271,19 +286,19 @@ ALTER TABLE `sala`
 -- AUTO_INCREMENT de tabela `time`
 --
 ALTER TABLE `time`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `time_aluno`
 --
 ALTER TABLE `time_aluno`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- Restrições para tabelas despejadas
