@@ -49,32 +49,38 @@ class TimeModel
     }
 
     // Lista alunos da sala com gênero compatível
-    public function listarAlunosDisponiveis(int $idSala, int $idModalidade)
-    {
-        $sql = "SELECT u.id, u.nome, u.rm
-                FROM usuario u
-                INNER JOIN modalidade m
-                    ON m.id = :id_modalidade
-                WHERE u.id_sala = :id_sala
-                AND u.genero = m.genero
-                AND NOT EXISTS (
-                    SELECT 1
-                    FROM time_aluno ta
-                    INNER JOIN `time` t
-                        ON t.id = ta.id_time
-                    WHERE ta.id_usuario = u.id
-                    AND t.id_modalidade = m.id
-                )
-                ORDER BY u.nome";
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            ':id_sala' => $idSala,
-            ':id_modalidade' => $idModalidade
-        ]);
+   public function listarAlunosDisponiveis(int $idSala, int $idModalidade)
+{
+    $sql = "SELECT u.id, u.nome, u.rm, u.genero, u.tipo
+            FROM usuario u
+            INNER JOIN modalidade m
+                ON m.id = :id_modalidade
+            WHERE u.id_sala = :id_sala
+            AND u.tipo IN ('aluno', 'representante')
+            AND (
+                m.genero = 'Misto'
+                OR (m.genero = 'Masc' AND u.genero = 'masculino')
+                OR (m.genero = 'Fem' AND u.genero = 'feminino')
+            )
+            AND NOT EXISTS (
+                SELECT 1
+                FROM time_aluno ta
+                INNER JOIN `time` t
+                    ON t.id = ta.id_time
+                WHERE ta.id_usuario = u.id
+                AND t.id_modalidade = m.id
+            )
+            ORDER BY u.nome";
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([
+        ':id_sala' => $idSala,
+        ':id_modalidade' => $idModalidade
+    ]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     // Cadastra o time e seus participantes
     public function cadastrarTime(
@@ -133,27 +139,36 @@ class TimeModel
             // Valida todos os alunos no servidor
             $placeholders = implode(',', array_fill(0, count($alunos), '?'));
 
-            $sql = "SELECT u.id
-                    FROM usuario u
-                    WHERE u.id_sala = ?
-                    AND u.genero = ?
-                    AND u.id IN ($placeholders)
-                    AND NOT EXISTS (
-                        SELECT 1
-                        FROM time_aluno ta
-                        INNER JOIN `time` t
-                            ON t.id = ta.id_time
-                        WHERE ta.id_usuario = u.id
-                        AND t.id_modalidade = ?
-                    )";
-
+          $sql = "SELECT u.id
+        FROM usuario u
+        WHERE u.id_sala = ?
+        AND u.tipo IN ('aluno', 'representante')
+        AND (
+            ? = 'Misto'
+            OR (? = 'Masc' AND u.genero = 'masculino')
+            OR (? = 'Fem' AND u.genero = 'feminino')
+        )
+        AND u.id IN ($placeholders)
+        AND NOT EXISTS (
+            SELECT 1
+            FROM time_aluno ta
+            INNER JOIN `time` t
+                ON t.id = ta.id_time
+            WHERE ta.id_usuario = u.id
+            AND t.id_modalidade = ?
+        )";
             $stmt = $this->pdo->prepare($sql);
 
-            $parametros = array_merge(
-                [$idSala, $modalidade['genero']],
-                $alunos,
-                [$idModalidade]
-            );
+           $parametros = array_merge(
+    [
+        $idSala,
+        $modalidade['genero'],
+        $modalidade['genero'],
+        $modalidade['genero']
+    ],
+    $alunos,
+    [$idModalidade]
+);
 
             $stmt->execute($parametros);
 
@@ -193,7 +208,6 @@ class TimeModel
             $this->pdo->commit();
 
             return true;
-
         } catch (Throwable $e) {
 
             if ($this->pdo->inTransaction()) {
