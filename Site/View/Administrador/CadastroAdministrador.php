@@ -38,18 +38,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
-    <p><a href="cadastroAdministrador.php">Entrar como professor</a></p>
-
-        <form action="" method="POST">
-            <label for="nome">Nome de usuário:</label>
-            <input type="text" id="nome" name="nome" maxlength="255" required>
-            <br><br>
-
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" required>
-            <br><br>
-
-            <button type="submit">Cadastrar administrador</button>
+    
+    <form action="" method="POST">
+        <label for="nome">Nome de usuário:</label>
+        <input type="text" id="nome" name="nome" maxlength="255" required>
+        <br><br>
+        
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required>
+        <br><br>
+        
+        <button type="submit">Cadastrar administrador</button>
+        <a href="inicio.php">Voltar</a>
         </form>
 
 </body>

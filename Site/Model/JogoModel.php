@@ -1,5 +1,5 @@
+
 <?php
-require_once dirname(__DIR__, 2) . '/DB/database.php';
 
 class JogoModel
 {
@@ -10,76 +10,156 @@ class JogoModel
         $this->pdo = $pdo;
     }
 
+    // Lista as salas cadastradas
     public function listarSalas(): array
     {
-        $stmt = $this->pdo->query('SELECT id, nome, divisao FROM sala ORDER BY divisao, nome');
+        $sql = '
+            SELECT id, nome
+            FROM sala
+            ORDER BY nome
+        ';
+
+        $stmt = $this->pdo->query($sql);
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Lista as modalidades
     public function listarModalidades(): array
     {
-        $stmt = $this->pdo->query('SELECT id, nome FROM modalidade ORDER BY nome');
+        $sql = '
+            SELECT id, nome, genero
+            FROM modalidade
+            ORDER BY nome, genero
+        ';
+
+        $stmt = $this->pdo->query($sql);
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function cadastrar($idModalidade, $idSalaA, $idSalaB, $dia, $horario): bool
+    // Verifica se as duas salas existem e são diferentes
+    private function validarSalas($idSalaA, $idSalaB): bool
     {
+        if ((int) $idSalaA === (int) $idSalaB) {
+            return false;
+        }
+
+        $sql = '
+            SELECT COUNT(*)
+            FROM sala
+            WHERE id IN (:sala_a, :sala_b)
+        ';
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            'sala_a' => $idSalaA,
+            'sala_b' => $idSalaB
+        ]);
+
+        return (int) $stmt->fetchColumn() === 2;
+    }
+
+    // Verifica se a modalidade existe
+    private function validarModalidade($idModalidade): bool
+    {
+        $sql = '
+            SELECT id
+            FROM modalidade
+            WHERE id = :id
+        ';
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            'id' => $idModalidade
+        ]);
+
+        return (bool) $stmt->fetchColumn();
+    }
+
+    // Cadastra um confronto
+    public function cadastrar(
+        $idModalidade,
+        $idSalaA,
+        $idSalaB,
+        string $dataHora
+    ): bool {
         try {
-            $stmt = $this->pdo->prepare(
-                'SELECT id, divisao FROM sala WHERE id IN (:sala_a, :sala_b)'
-            );
-            $stmt->execute(['sala_a' => $idSalaA, 'sala_b' => $idSalaB]);
-            $salas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if (
-                count($salas) !== 2 ||
-                $idSalaA === $idSalaB ||
-                (int) $salas[0]['divisao'] !== (int) $salas[1]['divisao']
-            ) {
+            if (!$this->validarSalas($idSalaA, $idSalaB)) {
                 return false;
             }
 
-            $stmt = $this->pdo->prepare('SELECT 1 FROM modalidade WHERE id = :id');
-            $stmt->execute(['id' => $idModalidade]);
-            if (!$stmt->fetchColumn()) {
+            if (!$this->validarModalidade($idModalidade)) {
                 return false;
             }
 
-            $stmt = $this->pdo->prepare(
-                'INSERT INTO jogo
-                    (id_modalidade, id_salaA, id_salaB, dia, horario,
-                     id_timeA, id_timeB, ganhador, quadra)
-                 VALUES
-                    (:modalidade, :sala_a, :sala_b, :dia, :horario,
-                     NULL, NULL, :ganhador, :quadra)'
-            );
+            $sql = '
+                INSERT INTO jogo (
+                    id_modalidade,
+                    id_salaA,
+                    id_salaB,
+                    dia,
+                    ganhador,
+                    quadra
+                ) VALUES (
+                    :modalidade,
+                    :sala_a,
+                    :sala_b,
+                    :dia,
+                    NULL,
+                    :quadra
+                )
+            ';
+
+            $stmt = $this->pdo->prepare($sql);
 
             return $stmt->execute([
                 'modalidade' => $idModalidade,
                 'sala_a' => $idSalaA,
                 'sala_b' => $idSalaB,
-                'dia' => $dia,
-                'horario' => $horario,
-                'ganhador' => '',
-                'quadra' => '',
+                'dia' => $dataHora,
+                'quadra' => ''
             ]);
+
         } catch (PDOException $e) {
             error_log('Erro ao cadastrar confronto: ' . $e->getMessage());
+
             return false;
         }
     }
 
+    // Lista os confrontos cadastrados
     public function listar(): array
     {
-        $stmt = $this->pdo->query(
-            'SELECT j.id, j.dia, j.horario, m.nome AS modalidade,
-                    salaA.nome AS sala_a, salaB.nome AS sala_b
-             FROM jogo j
-             INNER JOIN modalidade m ON m.id = j.id_modalidade
-             INNER JOIN sala salaA ON salaA.id = j.id_salaA
-             INNER JOIN sala salaB ON salaB.id = j.id_salaB
-             ORDER BY j.dia, j.horario, j.id'
-        );
+        $sql = '
+            SELECT
+                j.id,
+                DATE_FORMAT(j.dia, "%d/%m/%Y") AS dia,
+                TIME_FORMAT(j.dia, "%H:%i") AS horario,
+                j.ganhador,
+                j.quadra,
+                m.nome AS modalidade,
+                m.genero AS genero,
+                salaA.nome AS sala_a,
+                salaB.nome AS sala_b
+
+            FROM jogo j
+
+            INNER JOIN modalidade m
+                ON m.id = j.id_modalidade
+
+            INNER JOIN sala salaA
+                ON salaA.id = j.id_salaA
+
+            INNER JOIN sala salaB
+                ON salaB.id = j.id_salaB
+
+            ORDER BY j.dia, j.id
+        ';
+
+        $stmt = $this->pdo->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

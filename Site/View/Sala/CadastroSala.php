@@ -1,26 +1,31 @@
 
 <?php
+
 session_start();
 
-if (!isset($_SESSION['id_usuario']) && !isset($_SESSION['id_administrador'])) {
+if (!isset($_SESSION['id_usuario'])) {
     header('Location: ../Usuario/Login.php');
     exit();
-}   
+}
 
 require_once dirname(__DIR__, 3) . '/DB/database.php';
 require_once __DIR__ . '/../../Controller/SalaController.php';
 
 $salaController = new SalaController($pdo);
 $salas = $salaController->listarSalas();
-?>  
 
-<!DOCTYPE html>  
+?>
+
+<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Salas</title>
 </head>
+
 <body>
 
     <h1>Salas cadastradas</h1>
@@ -28,10 +33,11 @@ $salas = $salaController->listarSalas();
     <?php if (!empty($salas)): ?>
 
         <?php foreach ($salas as $sala): ?>
+
             <p>
-                <?= htmlspecialchars($sala['nome']) ?>
-                - Divisão <?= htmlspecialchars($sala['divisao']) ?>
+                <?= htmlspecialchars($sala['nome'], ENT_QUOTES, 'UTF-8') ?>
             </p>
+
         <?php endforeach; ?>
 
     <?php else: ?>

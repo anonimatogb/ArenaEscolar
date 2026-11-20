@@ -1,4 +1,11 @@
 <?php
+session_start();
+if (!isset($_SESSION['id_usuario']) || ($_SESSION['tipo'] ?? '') !== 'ADM') {
+    header('Location: ../Administrador/Login.php');
+    exit();
+}
+
+
 $formAction = $formAction ?? ($_SERVER['SCRIPT_NAME'] ?? '/index.php');
 $mensagem = $mensagem ?? '';
 $erroListagem = $erroListagem ?? '';
@@ -41,13 +48,14 @@ $modalidades = $modalidades ?? [];
             <label for="genero">Gênero:</label>
             <select id="genero" name="genero" required>
                 <option value="">Selecione...</option>
-                <option value="Masc">Masculino</option>
-                <option value="Fem">Feminino</option>
-                <option value="Misto">Misto</option>
+                <option value="masculino">Masculino</option>
+                <option value="feminino">Feminino</option>
+                <option value="misto">Misto</option>
             </select>
         </div>
 
         <button type="submit">Salvar Modalidade</button>
+        <a href="../Administrador/inicio.php">Voltar</a>
     </form>
 
 <?php
