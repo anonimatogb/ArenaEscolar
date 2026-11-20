@@ -149,5 +149,36 @@ public function obterAlunoPorId($id_aluno)
         }
     }
 
+public function atualizarRepresentante($id_representante, $nome, $senha)
+{
+    try {
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+        $sql = "UPDATE usuario SET nome = :nome, senha = :senha WHERE id = :id AND tipo = 'representante'";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':senha', $senhaHash);
+        $stmt->bindParam(':id', $id_representante);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        return false;
+    }
+
+}
+
+public function obterRepresentantePorId($id_representante)
+{
+    try {
+        $sql = "SELECT id, nome, rm FROM usuario WHERE id = :id AND tipo = 'representante'";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':id', $id_representante);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return false;
+    }
+    }
 
 }

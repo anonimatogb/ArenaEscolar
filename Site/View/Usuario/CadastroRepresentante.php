@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <input type="submit" value="Cadastrar">
 
-        <a href="Login.php">Voltar para o login</a>
+        <a href="../Administrador/inicio.php">Voltar</a>
 
     </form>
 

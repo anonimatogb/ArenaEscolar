@@ -40,7 +40,7 @@ $salas = $salaController->listarSalas();
 
     <?php endif; ?>
 
-    <a href="../../../index.php">Voltar</a>
+    <a href="../Administrador/inicio.php">Voltar</a>
 
 </body>
 </html>

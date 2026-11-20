@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['tipo'] = $usuario['tipo'];
             $_SESSION['id_sala'] = $usuario['id_sala'];
 
-            header('Location: ../Representante/inicio.php');
+            header('Location: ../../../index.php');
             exit();
         } else {
             $erro = 'RM ou senha incorretos.';
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['tipo'] = 'aluno';
             $_SESSION['id_sala'] = $aluno['id_sala'];
 
-            header('Location: inicio.php');
+            header('Location: ../../../index.php');
             exit();
         } else {
             $erro = 'Aluno não encontrado.';

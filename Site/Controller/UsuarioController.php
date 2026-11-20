@@ -38,5 +38,13 @@ public function atualizarAluno($id_aluno, $nome, $rm) {
     return $this->usuarioModel->atualizarAluno($id_aluno, $nome, $rm);
 }
 
+public function atualizarRepresentante($id_representante, $nome, $senha) {
+    return $this->usuarioModel->atualizarRepresentante($id_representante, $nome, $senha);
+}
+public function obterRepresentantePorId($id_representante) {
+    return $this->usuarioModel->obterRepresentantePorId($id_representante);
+}
+
+
 }
 ?>

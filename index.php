@@ -27,20 +27,17 @@ $tipo = $_SESSION['tipo'] ?? null;
             <li><a href="Site/View/Administrador/inicio.php">Painel do professor</a></li>
         <?php elseif ($tipo === 'representante'): ?>
             <li><a href="Site/View/Representante/inicio.php">Painel do representante</a></li>
-            <li><a href="Site/View/Representante/aluno.php">Cadastrar e consultar alunos da sala</a></li>
         <?php elseif ($tipo === 'aluno'): ?>
             <li><a href="Site/View/Usuario/inicio.php">Minha página</a></li>
         <?php endif; ?>
     </ul>
-
-    <h2>Funcionalidades</h2>
     <ul>
-        <?php if ($tipo === 'ADM' && isset($_SESSION['id_administrador'])): ?>
-            <li><a href="Site/View/Usuario/CadastroRepresentante.php">Cadastrar representante</a></li>
-            <li><a href="Site/View/Administrador/jogos.php">Selecionar salas e agendar confrontos</a></li>
-            <li><a href="Site/View/Modalidade/modalidade.php">Cadastrar e consultar modalidades</a></li>
-            <li><a href="Site/View/Sala/CadastroSala.php">Consultar salas</a></li>
-        <?php endif; ?>
+<h2>
+    Jogos
+</h2>
+
+
+
     </ul>
 </body>
 </html>

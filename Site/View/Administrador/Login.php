@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['nome'] = $administrador['nome'];
         $_SESSION['tipo'] = 'ADM';
         unset($_SESSION['id_usuario'], $_SESSION['id_sala'], $_SESSION['rm']);
-        header('Location: inicio.php');
+        header('Location: ../../../index.php');
         exit();
     }
 

@@ -22,8 +22,16 @@ if (
 </head>
 
 <body>
-
-    <h1>Bem-vindo, <?= htmlspecialchars($_SESSION['nome']) ?>!</h1>
+<nav>
+    <ul>
+        <h2>Bem-vindo, <?= htmlspecialchars($_SESSION['nome']) ?>!</h2>
+        <li><a href="inicio.php">Início</a></li>
+        <li><a href="aluno.php">Alunos</a></li>
+        <li><a href="editarrepresentante.php">Editar perfil</a></li>
+        <li><a href="../Usuario/sair.php">Sair</a></li>
+        <li><a href="../../../index.php">Voltar para a página inicial</a></li>
+    </ul>
+</nav>
 
     <h2>Painel do Representante</h2>
 

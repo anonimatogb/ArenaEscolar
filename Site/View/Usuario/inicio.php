@@ -6,6 +6,10 @@ if (!isset($_SESSION['id_usuario'])) {
     header('Location: Login.php');
     exit();
 }
+if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'aluno') {
+    header('Location: Login.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,12 +19,18 @@ if (!isset($_SESSION['id_usuario'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Início</title>
 </head>
-<body> 
-    
+<body>
     <h1>Bem-vindo ao Arena Escolar!</h1>
-
-    <p>Olá, <?= htmlspecialchars($_SESSION['nome']) ?>!</p>
+<nav>
+        <ul>
+            <p>Olá, <?= htmlspecialchars($_SESSION['nome']) ?>!</p>
+            <li><a href="inicio.php">Início</a></li>
+            <li><a href="perfil.php">Perfil</a></li>
+            <li><a href="sair.php">Sair</a></li>
+            <li><a href="../../../index.php">Voltar para a página inicial</a></li>
+        </ul>
+    </nav>
 
 </body>
 </html>
-  
+

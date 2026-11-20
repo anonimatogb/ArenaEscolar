@@ -17,11 +17,13 @@ if (!isset($_SESSION['id_administrador']) || ($_SESSION['tipo'] ?? '') !== 'ADM'
     <h1>Bem-vindo, <?= htmlspecialchars($_SESSION['nome'], ENT_QUOTES, 'UTF-8') ?>!</h1>
     <h2>Painel do professor</h2>
     <ul>
+        <li><a href="../../../index.php">Início</a></li>
         <li><a href="../Usuario/CadastroRepresentante.php">Cadastrar representante</a></li>
         <li><a href="jogos.php">Selecionar salas e agendar confrontos</a></li>
         <li><a href="../Modalidade/modalidade.php">Cadastrar e consultar modalidades</a></li>
         <li><a href="../Sala/CadastroSala.php">Consultar salas</a></li>
-        <li><a href="../../../index.php">Início</a></li>
+        <li><a href="../Usuario/sair.php">Sair</a></li>
+        <li><a href="../../../index.php">Voltar para a página inicial</a></li>
     </ul>
 </body>
 </html>
