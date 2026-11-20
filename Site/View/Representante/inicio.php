@@ -19,6 +19,8 @@ if (
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel do Representante</title>
+    <link rel="stylesheet" href="../../Style/common.css">
+    <link rel="stylesheet" href="../../Style/Representante.css">
 </head>
 
 <body>

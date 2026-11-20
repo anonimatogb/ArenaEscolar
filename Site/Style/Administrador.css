@@ -1,0 +1,14 @@
+body {
+    background: #eef4ff;
+}
+
+h1,
+h2 {
+    color: #1e3a8a;
+}
+
+table,
+form,
+.painel {
+    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.08);
+}

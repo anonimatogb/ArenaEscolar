@@ -33,6 +33,8 @@ if ($administrador) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrar como professor</title>
+    <link rel="stylesheet" href="../../Style/common.css">
+    <link rel="stylesheet" href="../../Style/Administrador.css">
 </head>
 <body>
     <h1>Entrar como professor</h1>

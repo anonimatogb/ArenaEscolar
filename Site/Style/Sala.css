@@ -1,0 +1,13 @@
+h1 {
+    max-width: 720px;
+    margin: 0 auto 16px;
+    color: #374151;
+}
+
+body > p,
+body > a {
+    display: block;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}

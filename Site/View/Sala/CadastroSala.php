@@ -24,6 +24,8 @@ $salas = $salaController->listarSalas();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Salas</title>
+    <link rel="stylesheet" href="../../Style/common.css">
+    <link rel="stylesheet" href="../../Style/Sala.css">
 </head>
 
 <body>

@@ -1,0 +1,16 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f2f9f7;
+}
+
+h1,
+h2 {
+    color: #115e59;
+}
+
+form {
+    width: min(100%, 720px);
+    box-shadow: 0 4px 14px rgba(15, 118, 110, 0.08);
+}

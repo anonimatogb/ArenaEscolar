@@ -10,8 +10,15 @@ class Modalidade {
     public $quantidade;  
     public $genero;
 
-    public function __construct() {
-        $this->conn = $GLOBALS['pdo'];
+    public function __construct(?PDO $conn = null) {
+        if ($conn !== null) {
+            $this->conn = $conn;
+        } elseif (isset($GLOBALS['pdo']) && $GLOBALS['pdo'] instanceof PDO) {
+            $this->conn = $GLOBALS['pdo'];
+        } else {
+            require_once dirname(__DIR__, 2) . '/DB/database.php';
+            $this->conn = $GLOBALS['pdo'];
+        }
     }
 
     public function salvar() {
@@ -25,18 +32,23 @@ class Modalidade {
         ]);
     }
 
-    public function existeComMesmasCaracteristicas() {
-        $query = "SELECT 1 FROM " . $this->table_name
-            . " WHERE nome = :nome AND quantidade = :quantidade AND genero = :genero LIMIT 1";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([
-            ':nome' => $this->nome,
-            ':quantidade' => $this->quantidade,
-            ':genero' => $this->genero,
-        ]);
+    public function existeComMesmasCaracteristicas()
+{
+    $query = "SELECT 1 FROM " . $this->table_name
+        . " WHERE BINARY nome = :nome"
+        . " AND quantidade = :quantidade"
+        . " AND BINARY genero = :genero"
+        . " LIMIT 1";
 
-        return $stmt->fetchColumn() !== false;
-    }
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute([
+        ':nome'       => $this->nome,
+        ':quantidade' => $this->quantidade,
+        ':genero'     => $this->genero,
+    ]);
+
+    return $stmt->fetchColumn() !== false;
+}
 
     public function listar() {
         $query = "SELECT id, nome, quantidade, genero FROM " . $this->table_name . " ORDER BY id DESC";

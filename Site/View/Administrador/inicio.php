@@ -12,6 +12,8 @@ if (!isset($_SESSION['id_usuario']) || ($_SESSION['tipo'] ?? '') !== 'ADM') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel do professor</title>
+    <link rel="stylesheet" href="../../Style/common.css">
+    <link rel="stylesheet" href="../../Style/Administrador.css">
 </head>
 <body>
     <h1>Bem-vindo, <?= htmlspecialchars($_SESSION['nome'], ENT_QUOTES, 'UTF-8') ?>!</h1>

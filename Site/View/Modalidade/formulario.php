@@ -18,6 +18,8 @@ $modalidades = $modalidades ?? [];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Modalidade</title>
+    <link rel="stylesheet" href="../../Style/common.css">
+    <link rel="stylesheet" href="../../Style/Modalidade.css">
 
 </head>  
 <body>
@@ -48,9 +50,9 @@ $modalidades = $modalidades ?? [];
             <label for="genero">Gênero:</label>
             <select id="genero" name="genero" required>
                 <option value="">Selecione...</option>
-                <option value="masculino">Masculino</option>
-                <option value="feminino">Feminino</option>
-                <option value="misto">Misto</option>
+                <option value="Masc">Masculino</option>
+                <option value="Fem">Feminino</option>
+                <option value="Misto">Misto</option>
             </select>
         </div>
 

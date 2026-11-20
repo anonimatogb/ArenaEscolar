@@ -17,6 +17,7 @@ $tipo = $_SESSION['tipo'] ?? null;
         <p>Bem-vindo, <?= htmlspecialchars($_SESSION['nome'], ENT_QUOTES, 'UTF-8') ?>.</p>
     <?php endif; ?>
 
+    
      
     <h2>Acesso</h2>
     <ul>

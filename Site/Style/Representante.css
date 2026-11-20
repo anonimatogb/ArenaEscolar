@@ -1,0 +1,22 @@
+nav {
+    max-width: 720px;
+    margin: 0 auto 20px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    background: #1f2937;
+}
+
+nav h2,
+nav a {
+    color: #ffffff;
+}
+
+nav li {
+    display: inline-block;
+    margin: 6px 10px 6px 0;
+}
+
+h1,
+h2 {
+    color: #334155;
+}

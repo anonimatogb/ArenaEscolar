@@ -1,0 +1,135 @@
+:root {
+    --cor-fundo: #f3f5f9;
+    --cor-branca: #ffffff;
+    --cor-primaria: #2563eb;
+    --cor-primaria-hover: #1d4ed8;
+    --cor-texto: #1f2937;
+    --cor-borda: #d1d5db;
+    --cor-sucesso: #166534;
+    --cor-sucesso-fundo: #dcfce7;
+    --cor-erro: #991b1b;
+    --cor-erro-fundo: #fee2e2;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 32px 16px;
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin-top: 0;
+}
+
+form,
+.form-container,
+.painel,
+.conteudo {
+    max-width: 720px;
+    margin: 0 auto 20px;
+    padding: 24px;
+    background: var(--cor-branca);
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.form-group,
+form > div {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea,
+button {
+    font: inherit;
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 6px;
+    background: var(--cor-branca);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+button,
+input[type="submit"] {
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--cor-primaria);
+    color: var(--cor-branca);
+    cursor: pointer;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background: var(--cor-primaria-hover);
+}
+
+a {
+    color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--cor-branca);
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid var(--cor-borda);
+    text-align: left;
+}
+
+th {
+    background: #e9eef6;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.msg,
+body > p {
+    max-width: 720px;
+    margin: 12px auto;
+    padding: 12px;
+    border-radius: 6px;
+}

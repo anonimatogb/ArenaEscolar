@@ -115,6 +115,8 @@ if (!$sucesso && isset($_GET['id_modalidade'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Time</title>
+    <link rel="stylesheet" href="../../Style/common.css">
+    <link rel="stylesheet" href="../../Style/Time.css">
 </head>
 
 <body>
