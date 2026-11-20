@@ -50,9 +50,9 @@ class TimeModel
 
     // Lista alunos da sala com gênero compatível
 
-   public function listarAlunosDisponiveis(int $idSala, int $idModalidade)
-{
-    $sql = "SELECT u.id, u.nome, u.rm, u.genero, u.tipo
+    public function listarAlunosDisponiveis(int $idSala, int $idModalidade)
+    {
+        $sql = "SELECT u.id, u.nome, u.rm, u.genero, u.tipo
             FROM usuario u
             INNER JOIN modalidade m
                 ON m.id = :id_modalidade
@@ -60,8 +60,8 @@ class TimeModel
             AND u.tipo IN ('aluno', 'representante')
             AND (
                 m.genero = 'Misto'
-                OR (m.genero = 'Masc' AND u.genero = 'masculino')
-                OR (m.genero = 'Fem' AND u.genero = 'feminino')
+                OR (m.genero = 'Masculino' AND u.genero = 'masculino')
+                OR (m.genero = 'Feminino' AND u.genero = 'feminino')
             )
             AND NOT EXISTS (
                 SELECT 1
@@ -73,14 +73,15 @@ class TimeModel
             )
             ORDER BY u.nome";
 
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute([
-        ':id_sala' => $idSala,
-        ':id_modalidade' => $idModalidade
-    ]);
+        $stmt = $this->pdo->prepare($sql);
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $stmt->execute([
+            ':id_sala' => $idSala,
+            ':id_modalidade' => $idModalidade
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     // Cadastra o time e seus participantes
     public function cadastrarTime(
@@ -139,14 +140,20 @@ class TimeModel
             // Valida todos os alunos no servidor
             $placeholders = implode(',', array_fill(0, count($alunos), '?'));
 
-          $sql = "SELECT u.id
+            $sql = "SELECT u.id
         FROM usuario u
         WHERE u.id_sala = ?
         AND u.tipo IN ('aluno', 'representante')
         AND (
-            ? = 'Misto'
-            OR (? = 'Masc' AND u.genero = 'masculino')
-            OR (? = 'Fem' AND u.genero = 'feminino')
+            LOWER(TRIM(?)) = 'misto'
+            OR (
+                LOWER(TRIM(?)) = 'masculino'
+                AND LOWER(TRIM(u.genero)) = 'masculino'
+            )
+            OR (
+                LOWER(TRIM(?)) = 'feminino'
+                AND LOWER(TRIM(u.genero)) = 'feminino'
+            )
         )
         AND u.id IN ($placeholders)
         AND NOT EXISTS (
@@ -157,18 +164,19 @@ class TimeModel
             WHERE ta.id_usuario = u.id
             AND t.id_modalidade = ?
         )";
+
             $stmt = $this->pdo->prepare($sql);
 
-           $parametros = array_merge(
-    [
-        $idSala,
-        $modalidade['genero'],
-        $modalidade['genero'],
-        $modalidade['genero']
-    ],
-    $alunos,
-    [$idModalidade]
-);
+            $parametros = array_merge(
+                [
+                    $idSala,
+                    $modalidade['genero'],
+                    $modalidade['genero'],
+                    $modalidade['genero']
+                ],
+                $alunos,
+                [$idModalidade]
+            );
 
             $stmt->execute($parametros);
 
