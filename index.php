@@ -20,10 +20,10 @@ $tipo = $_SESSION['tipo'] ?? null;
      
     <h2>Acesso</h2>
     <ul>
-        <?php if (empty($_SESSION['id_usuario']) && empty($_SESSION['id_administrador'])): ?>
+        <?php if (empty($_SESSION['id_usuario'])): ?>
             <li><a href="Site/View/Administrador/Login.php">Entrar como professor</a></li>
             <li><a href="Site/View/Usuario/Login.php">Entrar como representante ou aluno</a></li>
-            <?php elseif ($tipo === 'ADM' && isset($_SESSION['id_administrador'])): ?>
+            <?php elseif ($tipo === 'ADM' && isset($_SESSION['id_usuario'])): ?>
                 <li><a href="Site/View/Administrador/inicio.php">Painel do professor</a></li>
         <?php elseif ($tipo === 'representante'): ?>
             <li><a href="Site/View/Representante/inicio.php">Painel do representante</a></li>

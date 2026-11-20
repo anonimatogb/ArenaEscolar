@@ -187,7 +187,7 @@ public function cadastrarAdministrador($nome_usuario, $senha)
     try {
         $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO usuario (nome, senha, tipo) VALUES (:nome, :senha, 'administrador')";
+        $sql = "INSERT INTO usuario (nome, senha, tipo) VALUES (:nome, :senha, 'admin')";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':nome', $nome_usuario);
         $stmt->bindParam(':senha', $senhaHash);
