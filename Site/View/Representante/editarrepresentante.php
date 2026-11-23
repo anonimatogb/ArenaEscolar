@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br><br>
 
         <label for="senha">senha:</label>
-        <input type="text" id="senha" name="senha" required>
+        <input type="password" id="senha" name="senha" required>
 
         <br><br>
 

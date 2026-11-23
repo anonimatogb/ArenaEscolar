@@ -30,11 +30,12 @@ class TimeModel
     // Lista modalidades que a sala ainda não cadastrou
     public function listarModalidadesDisponiveis(int $idSala)
     {
-        $sql = "SELECT m.id, m.nome, m.quantidade, m.genero
+        $sql = "SELECT m.id, m.nome, m.max_jogadores AS quantidade, m.genero
                 FROM modalidade m
                 WHERE NOT EXISTS (
                     SELECT 1
                     FROM `time` t
+                    INNER JOIN time_jogador tj ON tj.id_time = t.id
                     WHERE t.id_modalidade = m.id
                     AND t.id_sala = :id_sala
                 )
@@ -60,12 +61,12 @@ class TimeModel
             AND u.tipo IN ('aluno', 'representante')
             AND (
                 m.genero = 'Misto'
-                OR (m.genero = 'Masculino' AND u.genero = 'masculino')
-                OR (m.genero = 'Feminino' AND u.genero = 'feminino')
+                OR (LOWER(m.genero) IN ('masculino', 'masc') AND LOWER(u.genero) = 'masculino')
+                OR (LOWER(m.genero) IN ('feminino', 'fem') AND LOWER(u.genero) = 'feminino')
             )
             AND NOT EXISTS (
                 SELECT 1
-                FROM time_aluno ta
+                FROM time_jogador ta
                 INNER JOIN `time` t
                     ON t.id = ta.id_time
                 WHERE ta.id_usuario = u.id
@@ -93,7 +94,7 @@ class TimeModel
             $this->pdo->beginTransaction();
 
             // Confere se a modalidade ainda está disponível
-            $sql = "SELECT id, quantidade, genero
+            $sql = "SELECT id, max_jogadores AS quantidade, genero
                     FROM modalidade
                     WHERE id = :id_modalidade
                     FOR UPDATE";
@@ -131,10 +132,17 @@ class TimeModel
                 ':id_modalidade' => $idModalidade
             ]);
 
-            if ($stmt->fetch()) {
-                throw new Exception(
-                    "Sua sala já possui um time nessa modalidade."
+            $idTime = $stmt->fetchColumn();
+            if ($idTime !== false) {
+                $stmt = $this->pdo->prepare(
+                    "SELECT COUNT(*) FROM time_jogador WHERE id_time = :id_time"
                 );
+                $stmt->execute([':id_time' => $idTime]);
+                if ((int) $stmt->fetchColumn() > 0) {
+                    throw new Exception(
+                        "Sua sala já possui um time cadastrado nessa modalidade."
+                    );
+                }
             }
 
             // Valida todos os alunos no servidor
@@ -147,18 +155,18 @@ class TimeModel
         AND (
             LOWER(TRIM(?)) = 'misto'
             OR (
-                LOWER(TRIM(?)) = 'masculino'
+                LOWER(TRIM(?)) IN ('masculino', 'masc')
                 AND LOWER(TRIM(u.genero)) = 'masculino'
             )
             OR (
-                LOWER(TRIM(?)) = 'feminino'
+                LOWER(TRIM(?)) IN ('feminino', 'fem')
                 AND LOWER(TRIM(u.genero)) = 'feminino'
             )
         )
         AND u.id IN ($placeholders)
         AND NOT EXISTS (
             SELECT 1
-            FROM time_aluno ta
+            FROM time_jogador ta
             INNER JOIN `time` t
                 ON t.id = ta.id_time
             WHERE ta.id_usuario = u.id
@@ -189,19 +197,22 @@ class TimeModel
             }
 
             // Insere o time
-            $sql = "INSERT INTO `time` (id_modalidade, id_sala)
-                    VALUES (:id_modalidade, :id_sala)";
+            if ($idTime === false) {
+                $sql = "INSERT INTO `time` (id_modalidade, id_sala)
+                        VALUES (:id_modalidade, :id_sala)";
 
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([
-                ':id_modalidade' => $idModalidade,
-                ':id_sala' => $idSala
-            ]);
-
-            $idTime = (int) $this->pdo->lastInsertId();
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute([
+                    ':id_modalidade' => $idModalidade,
+                    ':id_sala' => $idSala
+                ]);
+                $idTime = (int) $this->pdo->lastInsertId();
+            } else {
+                $idTime = (int) $idTime;
+            }
 
             // Insere os participantes
-            $sql = "INSERT INTO time_aluno (id_time, id_usuario)
+            $sql = "INSERT INTO time_jogador (id_time, id_usuario)
                     VALUES (:id_time, :id_usuario)";
 
             $stmt = $this->pdo->prepare($sql);

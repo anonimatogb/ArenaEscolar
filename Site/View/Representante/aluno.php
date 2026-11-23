@@ -72,7 +72,7 @@ $alunos = $usuarioController->listarAlunosPorSala($_SESSION['id_sala']);
         <br><br>
 
         <label for="rm">RM:</label>
-        <input type="number" id="rm" name="rm" required>
+        <input type="text" id="rm" name="rm" required>
 
         <br><br>
 

@@ -131,7 +131,7 @@ if (!$sucesso && isset($_GET['id_modalidade'])) {
 
     <h2>1. Escolha a modalidade</h2>
 
-    <form action="cadastroTime.php" method="GET">
+    <form action="CadastroTime.php" method="GET">
 
         <label for="id_modalidade">Modalidade:</label>
 
@@ -188,7 +188,7 @@ if (!$sucesso && isset($_GET['id_modalidade'])) {
 
         <?php if (count($alunos) > 0): ?>
 
-            <form action="cadastroTime.php" method="POST">
+            <form action="CadastroTime.php" method="POST">
 
                 <input
                     type="hidden"

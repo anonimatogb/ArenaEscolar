@@ -8,13 +8,27 @@ require_once __DIR__ . '/../../Controller/UsuarioController.php';
 $erro = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $rm = $_POST['rm'];
-    $senha = $_POST['senha'] ?? '';
+    $rm = is_string($_POST['rm'] ?? null) ? trim($_POST['rm']) : '';
+    $senha = is_string($_POST['senha'] ?? null) ? $_POST['senha'] : '';
+    $confirmacaoSenha = is_string($_POST['confirmacao_senha'] ?? null)
+        ? $_POST['confirmacao_senha']
+        : '';
    
     $usuarioController = new UsuarioController($pdo);
 
-    if ($senha !== '') {
-        $usuario = $usuarioController->login($rm, $senha);
+    $aluno = $usuarioController->buscarAlunoPorRM($rm);
+
+    if ($aluno) {
+        $_SESSION['id_usuario'] = $aluno['id'];
+        $_SESSION['nome'] = $aluno['nome'];
+        $_SESSION['rm'] = $aluno['rm'];
+        $_SESSION['tipo'] = 'aluno';
+        $_SESSION['id_sala'] = $aluno['id_sala'];
+
+        header('Location: ../../../index.php');
+        exit();
+    } elseif ($senha !== '') {
+        $usuario = $usuarioController->login($rm, $senha, $confirmacaoSenha);
 
         if ($usuario) {
             $_SESSION['id_usuario'] = $usuario['id'];
@@ -26,23 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: ../../../index.php');
             exit();
         } else {
-            $erro = 'RM ou senha incorretos.';
+            $erro = 'RM ou senha incorretos. No primeiro acesso, o representante deve informar e confirmar uma senha de pelo menos 8 caracteres.';
         }
     } else {
-        $aluno = $usuarioController->buscarAlunoPorRM($rm);
-
-        if ($aluno) {
-            $_SESSION['id_usuario'] = $aluno['id'];
-            $_SESSION['nome'] = $aluno['nome'];
-            $_SESSION['rm'] = $aluno['rm'];
-            $_SESSION['tipo'] = 'aluno';
-            $_SESSION['id_sala'] = $aluno['id_sala'];
-
-            header('Location: ../../../index.php');
-            exit();
-        } else {
-            $erro = 'Aluno não encontrado.';
-        }
+        $erro = 'Aluno não encontrado. Representantes devem informar RM e senha.';
     }
 }  
 ?>
@@ -66,6 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <label for="senha">Senha (somente representantes):</label>
         <input type="password" id="senha" name="senha"><br><br>
+
+        <label for="confirmacao_senha">Confirme a senha no primeiro acesso de representante:</label>
+        <input type="password" id="confirmacao_senha" name="confirmacao_senha"><br><br>
 
         <input type="submit" value="Entrar">
         <a href="../Administrador/login.php">Sou professor</a>

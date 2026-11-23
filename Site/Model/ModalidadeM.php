@@ -22,7 +22,7 @@ class Modalidade {
     }
 
     public function salvar() {
-        $query = "INSERT INTO " . $this->table_name . " (nome, quantidade, genero) VALUES (:nome, :quantidade, :genero)";
+        $query = "INSERT INTO " . $this->table_name . " (nome, max_jogadores, genero) VALUES (:nome, :quantidade, :genero)";
         $stmt = $this->conn->prepare($query);
 
         return $stmt->execute([
@@ -35,15 +35,13 @@ class Modalidade {
     public function existeComMesmasCaracteristicas()
 {
     $query = "SELECT 1 FROM " . $this->table_name
-        . " WHERE BINARY nome = :nome"
-        . " AND quantidade = :quantidade"
-        . " AND BINARY genero = :genero"
+        . " WHERE nome = :nome"
+        . " AND genero = :genero"
         . " LIMIT 1";
 
     $stmt = $this->conn->prepare($query);
     $stmt->execute([
         ':nome'       => $this->nome,
-        ':quantidade' => $this->quantidade,
         ':genero'     => $this->genero,
     ]);
 
@@ -51,7 +49,7 @@ class Modalidade {
 }
 
     public function listar() {
-        $query = "SELECT id, nome, quantidade, genero FROM " . $this->table_name . " ORDER BY id DESC";
+        $query = "SELECT id, nome, max_jogadores AS quantidade, genero FROM " . $this->table_name . " ORDER BY id DESC";
         $stmt = $this->conn->query($query);
 
         return $stmt->fetchAll();

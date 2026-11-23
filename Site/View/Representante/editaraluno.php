@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br><br>
 
         <label for="rm">RM:</label>
-        <input type="number" id="rm" name="rm" value="<?= htmlspecialchars($aluno['rm']) ?>" required>
+        <input type="text" id="rm" name="rm" value="<?= htmlspecialchars($aluno['rm']) ?>" required>
 
         <br><br>
 

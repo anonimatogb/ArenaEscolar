@@ -50,8 +50,8 @@ $modalidades = $modalidades ?? [];
             <label for="genero">Gênero:</label>
             <select id="genero" name="genero" required>
                 <option value="">Selecione...</option>
-                <option value="Masc">Masculino</option>
-                <option value="Fem">Feminino</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
                 <option value="Misto">Misto</option>
             </select>
         </div>

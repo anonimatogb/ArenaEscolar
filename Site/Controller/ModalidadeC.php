@@ -23,7 +23,7 @@ class ModalidadeController {
             && $quantidade !== false
             && $quantidade > 0
             && is_string($genero)
-            && in_array($genero, ['Masc', 'Fem', 'Misto'], true)
+            && in_array($genero, ['Masculino', 'Feminino', 'Misto'], true)
         ) {
             $modalidade = new Modalidade();
             $modalidade->nome = trim($nome);
@@ -32,7 +32,7 @@ class ModalidadeController {
 
             try {
                 if ($modalidade->existeComMesmasCaracteristicas()) {
-                    $mensagem = "Já existe uma modalidade com essas mesmas características.";
+                    $mensagem = "Já existe uma modalidade com esse nome e gênero.";
                 } elseif ($modalidade->salvar()) {
                     $mensagem = "Modalidade cadastrada com sucesso!";
                 } else {

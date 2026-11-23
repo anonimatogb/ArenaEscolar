@@ -13,12 +13,12 @@ class UsuarioController {
         return $this->usuarioModel->cadastrarAluno($nome, $rm, $id_sala, $genero);
     }
 
-    public function cadastrarRepresentante($nome, $rm, $id_sala,$genero) {
-    return $this->usuarioModel->cadastrarRepresentante($nome, $rm, $id_sala,$genero);
-}
+    public function cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha) {
+        return $this->usuarioModel->cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha);
+    }
 
-    public function login($rm, $senha) {
-        return $this->usuarioModel->login($rm, $senha);
+    public function login($rm, $senha, $confirmacaoSenha = '') {
+        return $this->usuarioModel->login($rm, $senha, $confirmacaoSenha);
     }
 
     public function buscarAlunoPorRM($rm) {

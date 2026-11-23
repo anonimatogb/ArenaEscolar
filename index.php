@@ -1,7 +1,35 @@
 <?php
 session_start();
 
-$tipo = $_SESSION['tipo'] ?? null;
+require_once __DIR__ . '/DB/database.php';
+require_once __DIR__ . '/Site/Controller/JogoController.php';
+
+$jogoController = new JogoController($pdo);
+$hoje = date('Y-m-d');
+$data = $_GET['data'] ?? $hoje;
+$erroData = '';
+
+if (!is_string($data)) {
+    $data = '';
+}
+
+$dataValida = DateTime::createFromFormat('!Y-m-d', $data);
+if (!$dataValida || $dataValida->format('Y-m-d') !== $data) {
+    $data = $hoje;
+    $erroData = 'Data inválida; exibindo os jogos de hoje.';
+}
+
+$jogosDoDia = $jogoController->listar($data);
+$idUsuario = isset($_SESSION['id_usuario']) ? (int) $_SESSION['id_usuario'] : null;
+$meusJogos = $idUsuario ? $jogoController->listarMeusJogos($idUsuario) : [];
+$idsJogos = array_merge(
+    array_column($jogosDoDia, 'id'),
+    array_column($meusJogos, 'id')
+);
+$escalacoes = $idUsuario ? $jogoController->listarEscalacoes($idsJogos) : [];
+$ranking = $jogoController->ranking();
+$posicao = 0;
+$pontosAnteriores = null;
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -17,28 +45,115 @@ $tipo = $_SESSION['tipo'] ?? null;
         <p>Bem-vindo, <?= htmlspecialchars($_SESSION['nome'], ENT_QUOTES, 'UTF-8') ?>.</p>
     <?php endif; ?>
 
-    
-     
     <h2>Acesso</h2>
     <ul>
         <?php if (empty($_SESSION['id_usuario'])): ?>
             <li><a href="Site/View/Administrador/Login.php">Entrar como professor</a></li>
             <li><a href="Site/View/Usuario/Login.php">Entrar como representante ou aluno</a></li>
-            <?php elseif ($tipo === 'ADM' && isset($_SESSION['id_usuario'])): ?>
-                <li><a href="Site/View/Administrador/inicio.php">Painel do professor</a></li>
-        <?php elseif ($tipo === 'representante'): ?>
+        <?php elseif (($_SESSION['tipo'] ?? '') === 'ADM'): ?>
+            <li><a href="Site/View/Administrador/inicio.php">Painel do professor</a></li>
+        <?php elseif (($_SESSION['tipo'] ?? '') === 'representante'): ?>
             <li><a href="Site/View/Representante/inicio.php">Painel do representante</a></li>
-        <?php elseif ($tipo === 'aluno'): ?>
+        <?php elseif (($_SESSION['tipo'] ?? '') === 'aluno'): ?>
             <li><a href="Site/View/Usuario/inicio.php">Minha página</a></li>
         <?php endif; ?>
     </ul>
-    <ul>
-<h2>
-    Jogos
-</h2>
 
+    <h2>Jogos do dia</h2>
+    <form method="GET" action="index.php">
+        <label for="data">Filtrar por data:</label>
+        <input type="date" id="data" name="data" value="<?= htmlspecialchars($data, ENT_QUOTES, 'UTF-8') ?>" required>
+        <button type="submit">Buscar</button>
+    </form>
 
+    <?php if ($erroData !== ''): ?>
+        <p><?= htmlspecialchars($erroData, ENT_QUOTES, 'UTF-8') ?></p>
+    <?php endif; ?>
 
-    </ul>
+    <?php if ($jogosDoDia === []): ?>
+        <p>Nenhum jogo cadastrado para esta data.</p>
+    <?php else: ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>Horário / Quadra</th>
+                    <th>Modalidade</th>
+                    <th>Confronto / Placar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($jogosDoDia as $jogo): ?>
+                    <tr>
+                        <td><?= htmlspecialchars(substr((string) $jogo['horario'], 0, 5), ENT_QUOTES, 'UTF-8') ?>
+                            / <?= htmlspecialchars($jogo['quadra'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($jogo['modalidade'] . ' - ' . $jogo['genero'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td>
+                            <?= htmlspecialchars($jogo['sala_a'], ENT_QUOTES, 'UTF-8') ?>
+                            <?= $jogo['status'] === 'finalizado' ? (int) $jogo['gols_pts_a'] : '-' ?>
+                            x
+                            <?= $jogo['status'] === 'finalizado' ? (int) $jogo['gols_pts_b'] : '-' ?>
+                            <?= htmlspecialchars($jogo['sala_b'], ENT_QUOTES, 'UTF-8') ?>
+                            (<?= $jogo['status'] === 'finalizado' ? 'Finalizado' : 'Agendado' ?>)
+                            <?php if ($idUsuario): ?>
+                                <?php
+                                $escalacaoA = $escalacoes[(int) $jogo['id']][(int) $jogo['id_timeA']] ?? [];
+                                $escalacaoB = $escalacoes[(int) $jogo['id']][(int) $jogo['id_timeB']] ?? [];
+                                ?>
+                                <details>
+                                    <summary>Ver escalações</summary>
+                                    <p><strong><?= htmlspecialchars($jogo['sala_a'], ENT_QUOTES, 'UTF-8') ?>:</strong>
+                                        <?= $escalacaoA === [] ? 'Sem jogadores escalados.' : htmlspecialchars(implode(', ', $escalacaoA), ENT_QUOTES, 'UTF-8') ?></p>
+                                    <p><strong><?= htmlspecialchars($jogo['sala_b'], ENT_QUOTES, 'UTF-8') ?>:</strong>
+                                        <?= $escalacaoB === [] ? 'Sem jogadores escalados.' : htmlspecialchars(implode(', ', $escalacaoB), ENT_QUOTES, 'UTF-8') ?></p>
+                                </details>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+
+    <?php if ($idUsuario): ?>
+        <h2>Meus jogos</h2>
+        <?php if ($meusJogos === []): ?>
+            <p>Você ainda não está escalado em nenhuma partida.</p>
+        <?php else: ?>
+            <ul>
+                <?php foreach ($meusJogos as $jogo): ?>
+                    <li>
+                        <?= htmlspecialchars(date('d/m/Y', strtotime($jogo['dia'])), ENT_QUOTES, 'UTF-8') ?>
+                        <?= htmlspecialchars(substr((string) $jogo['horario'], 0, 5), ENT_QUOTES, 'UTF-8') ?> —
+                        <?= htmlspecialchars($jogo['modalidade'] . ' (' . $jogo['genero'] . '): ' . $jogo['sala_a'] . ' x ' . $jogo['sala_b'], ENT_QUOTES, 'UTF-8') ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <h2>Ranking das salas</h2>
+    <?php if ($ranking === []): ?>
+        <p>Nenhuma sala cadastrada.</p>
+    <?php else: ?>
+        <table>
+            <thead><tr><th>Posição</th><th>Sala</th><th>Pontos</th></tr></thead>
+            <tbody>
+                <?php foreach ($ranking as $indice => $sala): ?>
+                    <?php
+                    $pontos = (int) $sala['total_pontos'];
+                    if ($pontosAnteriores === null || $pontos !== $pontosAnteriores) {
+                        $posicao = $indice + 1;
+                    }
+                    $pontosAnteriores = $pontos;
+                    ?>
+                    <tr>
+                        <td><?= $posicao ?>º</td>
+                        <td><?= htmlspecialchars($sala['nome'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= $pontos ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
 </body>
 </html>

@@ -33,8 +33,12 @@ class UsuarioModel
     }
 
 
-public function cadastrarRepresentante($nome, $rm, $id_sala,$genero)
+public function cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha)
 {
+    if (!is_string($senha) || strlen($senha) < 8) {
+        return false;
+    }
+
     try {
         $stmt = $this->pdo->prepare(
             "SELECT COUNT(*) FROM usuario
@@ -51,13 +55,15 @@ public function cadastrarRepresentante($nome, $rm, $id_sala,$genero)
 
       
         $tipo = "representante";
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO usuario (nome, rm, tipo, id_sala, genero)
-                VALUES (:nome, :rm, :tipo, :id_sala, :genero)";
+        $sql = "INSERT INTO usuario (nome, rm, senha, tipo, id_sala, genero)
+                VALUES (:nome, :rm, :senha, :tipo, :id_sala, :genero)";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':rm', $rm);
+        $stmt->bindParam(':senha', $senhaHash);
         $stmt->bindParam(':tipo', $tipo);
         $stmt->bindParam(':id_sala', $id_sala);
         $stmt->bindParam(':genero', $genero);
@@ -70,7 +76,7 @@ public function cadastrarRepresentante($nome, $rm, $id_sala,$genero)
 }
 
 
-    public function login($rm, $senha)
+    public function login($rm, $senha, $confirmacaoSenha = '')
     {
         try {
             $sql = "SELECT * FROM usuario WHERE rm = :rm AND tipo = 'representante'";
@@ -80,11 +86,31 @@ public function cadastrarRepresentante($nome, $rm, $id_sala,$genero)
 
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($usuario && password_verify($senha, $usuario['senha'])) {
-                return $usuario;
-            } else {
+            if (!$usuario) {
                 return false;
             }
+
+            if (!empty($usuario['senha'])) {
+                return password_verify($senha, $usuario['senha']) ? $usuario : false;
+            }
+
+            if (strlen($senha) < 8 || !hash_equals($senha, $confirmacaoSenha)) {
+                return false;
+            }
+
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+            $atualizar = $this->pdo->prepare(
+                "UPDATE usuario SET senha = :senha
+                 WHERE id = :id AND tipo = 'representante'
+                   AND (senha IS NULL OR senha = '')"
+            );
+            $atualizar->execute(['senha' => $senhaHash, 'id' => $usuario['id']]);
+            if ($atualizar->rowCount() !== 1) {
+                return false;
+            }
+
+            $usuario['senha'] = $senhaHash;
+            return $usuario;
         } catch (PDOException $e) {
             return false;
         }
@@ -155,6 +181,10 @@ public function obterAlunoPorId($id_aluno)
 
 public function atualizarRepresentante($id_representante, $nome, $senha)
 {
+    if (!is_string($senha) || strlen($senha) < 8) {
+        return false;
+    }
+
     try {
         $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
@@ -190,13 +220,16 @@ public function cadastrarAdministrador($nome_usuario, $senha)
     try {
         $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO usuario (nome, senha, tipo) VALUES (:nome, :senha, 'admin')";
+        $sql = "INSERT INTO usuario (nome, rm, senha, tipo, id_sala)
+                SELECT :nome, NULL, :senha, 'admin', id
+                FROM sala
+                WHERE nome = 'Diretoria'
+                LIMIT 1";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':nome', $nome_usuario);
         $stmt->bindParam(':senha', $senhaHash);
         $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->rowCount() === 1;
 
     } catch (PDOException $e) {
         return false;

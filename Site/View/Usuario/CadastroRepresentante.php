@@ -18,9 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rm = $_POST['rm'];
     $id_sala = $_POST['id_sala'];
     $genero = $_POST['genero'];
+    $senha = $_POST['senha'] ?? '';
 
     $usuarioController = new UsuarioController($pdo);
-    $resultado = $usuarioController->cadastrarRepresentante($nome, $rm, $id_sala, $genero);
+    $resultado = $usuarioController->cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha);
 
     if ($resultado) {
         echo "<script>window.alert('Representante cadastrado com sucesso!');</script>";
@@ -53,6 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <label for="rm">RM:</label> 
         <input type="text" id="rm" name="rm" required><br><br>
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" minlength="8" required><br><br>
 
         <label for="id_sala">Sala:</label>
         <select name="id_sala" id="id_sala" required>

@@ -19,7 +19,11 @@ $jogoController = new JogoController($pdo);
 $mensagem = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $mensagem = $jogoController->cadastrar($_POST);
+    if (($_POST['acao'] ?? '') === 'placar') {
+        $mensagem = $jogoController->registrarPlacar($_POST);
+    } else {
+        $mensagem = $jogoController->cadastrar($_POST);
+    }
 }
 
 $salas = $jogoController->listarSalas();
@@ -158,6 +162,11 @@ $jogos = $jogoController->listar();
 
             <br><br>
 
+            <label for="quadra">Quadra:</label>
+            <input type="text" id="quadra" name="quadra" maxlength="100" required>
+
+            <br><br>
+
 
             <button type="submit">
                 Cadastrar confronto
@@ -182,11 +191,11 @@ $jogos = $jogoController->listar();
 
                 <li>
 
-                    <?= htmlspecialchars($jogo['dia'], ENT_QUOTES, 'UTF-8') ?>
+                    <?= htmlspecialchars(date('d/m/Y', strtotime($jogo['dia'])), ENT_QUOTES, 'UTF-8') ?>
 
                     às
 
-                    <?= htmlspecialchars($jogo['horario'], ENT_QUOTES, 'UTF-8') ?>
+                    <?= htmlspecialchars($jogo['horario'] ? substr($jogo['horario'], 0, 5) : '--:--', ENT_QUOTES, 'UTF-8') ?>
 
                     —
 
@@ -205,6 +214,26 @@ $jogos = $jogoController->listar();
                     <?= htmlspecialchars($jogo['genero'], ENT_QUOTES, 'UTF-8') ?>
 
                     )
+                    — <?= htmlspecialchars($jogo['quadra'], ENT_QUOTES, 'UTF-8') ?>
+                    — <?= $jogo['status'] === 'finalizado' ? 'Finalizado' : 'Agendado' ?>
+                    <?php if ($jogo['status'] === 'finalizado'): ?>
+                        — Placar <?= (int) $jogo['gols_pts_a'] ?> x <?= (int) $jogo['gols_pts_b'] ?>
+                    <?php endif; ?>
+                    <form action="jogos.php" method="POST">
+                        <input type="hidden" name="acao" value="placar">
+                        <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
+                        <label>
+                            Placar <?= htmlspecialchars($jogo['sala_a'], ENT_QUOTES, 'UTF-8') ?>:
+                            <input type="number" name="gols_pts_a" min="0" required
+                                value="<?= $jogo['status'] === 'finalizado' ? (int) $jogo['gols_pts_a'] : '' ?>">
+                        </label>
+                        <label>
+                            Placar <?= htmlspecialchars($jogo['sala_b'], ENT_QUOTES, 'UTF-8') ?>:
+                            <input type="number" name="gols_pts_b" min="0" required
+                                value="<?= $jogo['status'] === 'finalizado' ? (int) $jogo['gols_pts_b'] : '' ?>">
+                        </label>
+                        <button type="submit">Registrar placar</button>
+                    </form>
 
                 </li>
 
