@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" id="rm" name="rm" required><br><br>
 
         <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" minlength="8" required><br><br>
+        <input type="password" id="senha" name="senha" minlength="4" required><br><br>
 
         <label for="id_sala">Sala:</label>
         <select name="id_sala" id="id_sala" required>

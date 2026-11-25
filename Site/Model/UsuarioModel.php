@@ -35,7 +35,7 @@ class UsuarioModel
 
 public function cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha)
 {
-    if (!is_string($senha) || strlen($senha) < 8) {
+    if (!is_string($senha) || strlen($senha) < 4) {
         return false;
     }
 
@@ -76,7 +76,7 @@ public function cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha)
 }
 
 
-    public function login($rm, $senha, $confirmacaoSenha = '')
+    public function login($rm, $senha)
     {
         try {
             $sql = "SELECT * FROM usuario WHERE rm = :rm AND tipo = 'representante'";
@@ -94,7 +94,7 @@ public function cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha)
                 return password_verify($senha, $usuario['senha']) ? $usuario : false;
             }
 
-            if (strlen($senha) < 8 || !hash_equals($senha, $confirmacaoSenha)) {
+            if (strlen($senha) < 4) {
                 return false;
             }
 
@@ -125,6 +125,22 @@ public function cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha)
             $stmt->execute();
 
             return $stmt->fetch(PDO::FETCH_ASSOC);    
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function buscarRepresentantePorRM($rm)
+    {
+        try {
+            $sql = "SELECT id, nome, rm, id_sala
+                    FROM usuario
+                    WHERE rm = :rm AND tipo = 'representante'";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':rm', $rm);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             return false;
         }
@@ -181,7 +197,7 @@ public function obterAlunoPorId($id_aluno)
 
 public function atualizarRepresentante($id_representante, $nome, $senha)
 {
-    if (!is_string($senha) || strlen($senha) < 8) {
+    if (!is_string($senha) || strlen($senha) < 4) {
         return false;
     }
 

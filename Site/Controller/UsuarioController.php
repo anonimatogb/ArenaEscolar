@@ -25,6 +25,10 @@ class UsuarioController {
         return $this->usuarioModel->buscarAlunoPorRM($rm);
     }
 
+    public function buscarRepresentantePorRM($rm) {
+        return $this->usuarioModel->buscarRepresentantePorRM($rm);
+    }
+
 
 public function listarAlunosPorSala($id_sala) {
     return $this->usuarioModel->listarAlunosPorSala($id_sala);
