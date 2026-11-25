@@ -174,7 +174,7 @@ $escape = static function ($valor): string {
 <body class="dashboard-page">
     <header class="dashboard-header">
         <div>
-            <p class="dashboard-eyebrow">Arena Escolar</p>
+            <p class="dashboard-eyebrow">INTERCLASS</p>
             <h1>Painel do professor</h1>
             <p>Bem-vindo, <?= $escape($_SESSION['nome'] ?? '') ?>.</p>
         </div>
