@@ -8,9 +8,10 @@
             Routing.RegisterRoute(nameof(Calendario), typeof(Calendario));
             Routing.RegisterRoute(nameof(MinhaSala), typeof(MinhaSala));
             Routing.RegisterRoute(nameof(Classificacao), typeof(Classificacao));
+            Routing.RegisterRoute(nameof(EditarAluno), typeof(EditarAluno));
+            Routing.RegisterRoute(nameof(Modalidade), typeof(Modalidade));
             Routing.RegisterRoute(nameof(Login), typeof(Login));
-            Routing.RegisterRoute(nameof(Usuario), typeof(Usuario));
-            Routing.RegisterRoute(nameof(Cadastro), typeof(Cadastro));
+            Routing.RegisterRoute(nameof(Calendario), typeof(Calendario));
         }
     }
 }

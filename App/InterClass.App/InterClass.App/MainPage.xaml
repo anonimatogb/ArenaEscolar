@@ -11,8 +11,10 @@
                <ScrollView>
                 <VerticalStackLayout Padding="16" Spacing="16">
 
-                    <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center" Margin="0,10,0,0">
-                        <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+            <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center" Margin="0,10,0,0" 
+      RowDefinitions="Auto, Auto, Auto">
+
+                <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
                             <Label Text="INTERCLASS" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Secondary}" VerticalTextAlignment="Center"/>
                         </HorizontalStackLayout>
 
@@ -25,10 +27,20 @@
                         CornerRadius="8"
                         Padding="14,0"
                         />
+                
 
-                <VerticalStackLayout Grid.Column="1" IsVisible="{Binding IsLoggedIn}" HorizontalOptions="End" VerticalOptions="Center">
-                    <Label Text="{Binding MinhaSala}" FontSize="11" TextColor="{StaticResource TextSecondary}" HorizontalTextAlignment="End" Padding="0,4,0,0"/>
-                        </VerticalStackLayout>
+                <Button Grid.Column="1"
+        Grid.Row="1"
+        Text="Sair"
+        BackgroundColor="{StaticResource Error}"
+        TextColor="White"
+        Command="{Binding SairCommand}"
+        IsVisible="{Binding IsSairVisible}"
+        HeightRequest="35"
+        FontSize="12"
+        CornerRadius="8"/>
+
+             
                     </Grid>
 
                     <VerticalStackLayout Spacing="4">
@@ -36,10 +48,11 @@
                         <Label Text="A sua turma entra em quadra. Você acompanha tudo." Style="{StaticResource SubTitulo}" FontSize="13"/>
                     </VerticalStackLayout>
 
-                    <Frame BackgroundColor="{StaticResource Secondary}" 
-                   CornerRadius="16" 
-                   HasShadow="False" 
-                   Padding="20">
+            <Frame 
+       BackgroundColor="{StaticResource Secondary}"
+       CornerRadius="16"
+       HasShadow="False"
+       Padding="20">
                         <VerticalStackLayout Spacing="16">
                             <HorizontalStackLayout>
                                 <Label Text="PRÓXIMO CONFRONTO" 
@@ -79,7 +92,7 @@
                    BorderColor="#E2E8F0"
                    Padding="16">
                         <VerticalStackLayout Spacing="12">
-                            <Label Text="Minha turma" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource TextPrimary}"/>
+                    <Label Text="Minha turma" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource TextPrimary}" IsVisible="{Binding IsLoggedIn}"/>
 
                             <VerticalStackLayout Spacing="2">
                         <Label Text="{Binding MinhaSala}" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
@@ -87,16 +100,16 @@
 
                             <Grid ColumnDefinitions="*, *" Margin="0,4,0,0">
                                 <VerticalStackLayout>
-                                    <Label Text="{Binding NumeroAlunos_MS}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
-                                    <Label Text="alunos" FontSize="11" TextColor="{StaticResource TextSecondary}"/>
+                            <Label Text="{Binding NumeroAlunos_MS}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" IsVisible="{Binding IsLoggedIn}"/>
+                            <Label Text="alunos" FontSize="11" TextColor="{StaticResource TextSecondary}" IsVisible="{Binding IsLoggedIn}"/>
                                 </VerticalStackLayout>
                                 <VerticalStackLayout Grid.Column="1">
-                                    <Label Text="{Binding Qnd_Times_MS}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
-                                    <Label Text="Times" FontSize="11" TextColor="{StaticResource TextSecondary}"/>
+                            <Label Text="{Binding Qnd_Times_MS}" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" IsVisible="{Binding IsLoggedIn}"/>
+                            <Label Text="Times" FontSize="11" TextColor="{StaticResource TextSecondary}" IsVisible="{Binding IsLoggedIn}"/>
                                 </VerticalStackLayout>
                             </Grid>
 
-                    <Button Text="Ver minha turma →" TextColor="{StaticResource Primary}" BackgroundColor="{StaticResource White}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrMinhaSala"/>
+                    <Button Text="Ver minha turma →" TextColor="{StaticResource Primary}" BackgroundColor="{StaticResource White}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrMinhaSala" IsVisible="{Binding IsLoggedIn}"/>
                         </VerticalStackLayout>
                     </Frame>
 
