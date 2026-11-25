@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="../../Style/common.css">
-    <link rel="stylesheet" href="../../Style/Usuario.css">
+
 </head>
 
 <body>
@@ -111,9 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="submit" value="Continuar">
         <?php endif; ?>
 
-        <a href="../Administrador/login.php">Sou professor</a>
-        <a href="../../../index.php">Voltar para a página inicial</a>
+       
     </form>
+    
+    <a href="../Administrador/login.php">SOU PROFESSOR</a>
+        <a href="../../../index.php">VOLTAR A PÁGINA INICIAL</a>
 
     <?php if ($erro !== ''): ?>
         <p><?= htmlspecialchars($erro) ?></p>

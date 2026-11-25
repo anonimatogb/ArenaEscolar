@@ -37,18 +37,23 @@ if ($administrador) {
     <link rel="stylesheet" href="../../Style/Administrador.css">
 </head>
 <body>
-    <h1>Entrar como professor</h1>
+    <h1>ENTRAR COMO PROFESSOR</h1>
     <form action="Login.php" method="POST">
         <label for="nome_usuario">Usuário:</label>
         <input type="text" id="nome_usuario" name="nome_usuario" required>
         <br><br>
+
         <label for="senha">Senha:</label>
         <input type="password" id="senha" name="senha" required>
         <br><br>
+
         <button type="submit">Entrar</button>
-        <a href="../Usuario/Login.php">Sou aluno</a>
-        <a href="../../../index.php">Voltar para a página inicial</a>
+        
     </form>
+    
+    <a href="../Usuario/Login.php">SOU ALUNO</a>
+        <a href="../../../index.php">VOLTAR PARA PÁGINA INICIAL</a>
+
     <?php if ($erro !== ''): ?>
         <p><?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?></p>
     <?php endif; ?>

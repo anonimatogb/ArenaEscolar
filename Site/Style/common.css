@@ -1,12 +1,12 @@
 :root {
     --cor-fundo: #f3f5f9;
     --cor-branca: #ffffff;
-    --cor-primaria: #2563eb;
-    --cor-primaria-hover: #1d4ed8;
+    --cor-primaria: #f28c13;
+    --cor-primaria-hover: #dd9a47;
     --cor-texto: #1f2937;
     --cor-borda: #d1d5db;
     --cor-sucesso: #166534;
-    --cor-sucesso-fundo: #dcfce7;
+    --cor-sucesso-fundo: white;
     --cor-erro: #991b1b;
     --cor-erro-fundo: #fee2e2;
 }
@@ -24,7 +24,9 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-h1,
+h1{
+    text-align: center;
+}
 h2,
 h3,
 p {
@@ -39,7 +41,7 @@ form,
     margin: 0 auto 20px;
     padding: 24px;
     background: var(--cor-branca);
-    border: 1px solid #e5e7eb;
+    border: 1px solid #1e2d42;
     border-radius: 10px;
 }
 
@@ -54,7 +56,7 @@ label {
     font-weight: bold;
 }
 
-input,
+input
 select,
 textarea,
 button {
@@ -68,7 +70,7 @@ textarea {
     padding: 10px 12px;
     border: 1px solid var(--cor-borda);
     border-radius: 6px;
-    background: var(--cor-branca);
+   
 }
 
 input:focus,
@@ -87,6 +89,7 @@ input[type="submit"] {
     background: var(--cor-primaria);
     color: var(--cor-branca);
     cursor: pointer;
+    
 }
 
 button:hover,
@@ -97,10 +100,17 @@ input[type="submit"]:hover {
 a {
     color: var(--cor-primaria);
     text-decoration: none;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap:22px;
+    
 }
 
 a:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    color: #1e2d42;
 }
 
 table {

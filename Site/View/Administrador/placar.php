@@ -97,8 +97,8 @@ $placarB = $jogo === null ? 0 : (int) ($jogo['gols_pts_b'] ?? 0);
 <body class="live-score-page">
     <header class="live-score-header">
         <a href="inicio.php#jogos">Voltar aos jogos</a>
-        <p>Arena Escolar</p>
-        <h1>Controle de placar</h1>
+        <p>INTERCLASS</p>
+        <h1>CONTROLE DE PLACAR</h1>
     </header>
 
     <main class="live-score-main">

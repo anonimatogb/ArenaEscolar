@@ -18,11 +18,11 @@ if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'aluno') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Início</title>
-    <link rel="stylesheet" href="../../Style/common.css">
+    
     <link rel="stylesheet" href="../../Style/Usuario.css">
 </head>
 <body>
-    <h1>Bem-vindo ao Arena Escolar!</h1>
+    <h1>Bem-vindo a <span class="destaque">INTERCLASS!</span></h1>
 <nav>
         <ul>
             <p>Olá, <?= htmlspecialchars($_SESSION['nome']) ?>!</p>

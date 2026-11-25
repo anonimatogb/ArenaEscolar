@@ -36,30 +36,61 @@ $pontosAnteriores = null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/style.css">
     <title>Arena Escolar</title>
 </head>
 <body>
-    <h1>Arena Escolar</h1>
 
-    <?php if (isset($_SESSION['nome'])): ?>
-        <p>Bem-vindo, <?= htmlspecialchars($_SESSION['nome'], ENT_QUOTES, 'UTF-8') ?>.</p>
-    <?php endif; ?>
+<main class="pagina">
 
-    <h2>Acesso</h2>
-    <ul>
-        <?php if (empty($_SESSION['id_usuario'])): ?>
-            <li><a href="Site/View/Administrador/Login.php">Entrar como professor</a></li>
-            <li><a href="Site/View/Usuario/Login.php">Entrar como representante ou aluno</a></li>
-        <?php elseif (($_SESSION['tipo'] ?? '') === 'ADM'): ?>
-            <li><a href="Site/View/Administrador/inicio.php">Painel do professor</a></li>
-        <?php elseif (($_SESSION['tipo'] ?? '') === 'representante'): ?>
-            <li><a href="Site/View/Representante/inicio.php">Painel do representante</a></li>
-        <?php elseif (($_SESSION['tipo'] ?? '') === 'aluno'): ?>
-            <li><a href="Site/View/Usuario/inicio.php">Minha página</a></li>
-        <?php endif; ?>
-    </ul>
+     <!-- LATERAL AZUL -->
+        <aside class="painel-acesso">
 
-    <h2>Jogos do dia</h2>
+            <img src="CSS/img/Logo.png" alt="imagem" class="img">
+
+            <?php if (isset($_SESSION['nome'])): ?>
+                <p class="boas-vindas">
+                    Bem-vindo, <?= htmlspecialchars($_SESSION['nome'], ENT_QUOTES, 'UTF-8') ?>.
+                </p>
+            <?php endif; ?>
+
+            <div class="acesso">
+                <h2>ACESSO</h2>
+
+                <ul>
+                    <?php if (empty($_SESSION['id_usuario'])): ?>
+                        <li><a href="Site/View/Administrador/Login.php">Entrar como professor</a></li>
+                        <li><a href="Site/View/Usuario/Login.php">Entrar como representante ou aluno</a></li>
+
+                    <?php elseif (($_SESSION['tipo'] ?? '') === 'ADM'): ?>
+                        <li><a href="Site/View/Administrador/inicio.php">Painel do professor</a></li>
+
+                    <?php elseif (($_SESSION['tipo'] ?? '') === 'representante'): ?>
+                        <li><a href="Site/View/Representante/inicio.php">Painel do representante</a></li>
+
+                    <?php elseif (($_SESSION['tipo'] ?? '') === 'aluno'): ?>
+                        <li><a href="Site/View/Usuario/inicio.php">Minha página</a></li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+
+            <div class="mensagem">
+                <h3>ESPÍRITO DE EQUIPE</h3>
+                <p>Sua turma, seus jogos, suas conquistas.</p>
+                <p>Na quadra, a gente compete. Fora dela, se conecta.</p>
+            </div>
+
+            <footer>
+                Feito para quem vive o esporte na escola.
+            </footer>
+
+        </aside>
+
+
+           <!-- ÁREA BRANCA -->
+        <section class="conteudo">
+
+    <h2>JOGOS DO DIA</h2>
     <form method="GET" action="index.php">
         <label for="data">Filtrar por data:</label>
         <input type="date" id="data" name="data" value="<?= htmlspecialchars($data, ENT_QUOTES, 'UTF-8') ?>" required>
@@ -131,7 +162,7 @@ $pontosAnteriores = null;
         <?php endif; ?>
     <?php endif; ?>
 
-    <h2>Ranking das salas</h2>
+    <h2>RANKING DAS SALAS</h2>
     <?php if ($ranking === []): ?>
         <p>Nenhuma sala cadastrada.</p>
     <?php else: ?>
@@ -155,5 +186,10 @@ $pontosAnteriores = null;
             </tbody>
         </table>
     <?php endif; ?>
+
+</section>
+
+</main>
+
 </body>
 </html>
