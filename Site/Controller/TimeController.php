@@ -32,6 +32,136 @@ class TimeController
         return $this->timeModel->listarModalidadesDisponiveis($idSala);
     }
 
+    public function listarModalidadesParaCadastroAluno(int $idUsuario): array
+    {
+        $representante = $this->timeModel->buscarSalaRepresentante($idUsuario);
+
+        if (!$representante) {
+            throw new Exception("Representante não encontrado.");
+        }
+
+        return $this->timeModel->listarModalidadesParaCadastroAluno(
+            (int) $representante['id_sala']
+        );
+    }
+
+    public function listarTimesDaSala(int $idUsuario): array
+    {
+        $representante = $this->timeModel->buscarSalaRepresentante($idUsuario);
+
+        if (!$representante) {
+            throw new Exception("Representante não encontrado.");
+        }
+
+        return $this->timeModel->listarTimesPorSala(
+            (int) $representante['id_sala']
+        );
+    }
+
+    public function listarModalidadesParaEditarAluno(
+        int $idUsuario,
+        int $idAluno
+    ): array {
+        $representante = $this->timeModel->buscarSalaRepresentante($idUsuario);
+
+        if (!$representante) {
+            throw new Exception("Representante não encontrado.");
+        }
+
+        return $this->timeModel->listarModalidadesParaEditarAluno(
+            (int) $representante['id_sala'],
+            $idAluno
+        );
+    }
+
+    public function cadastrarAlunoNaModalidade(
+        int $idUsuario,
+        string $nome,
+        string $rm,
+        string $genero,
+        int $idModalidade
+    ): int {
+        if ($idUsuario <= 0) {
+            throw new DomainException("Usuário inválido.");
+        }
+
+        if ($nome === '' || $rm === '') {
+            throw new DomainException("Informe o nome e o RM do aluno.");
+        }
+
+        if (!in_array($genero, ['masculino', 'feminino'], true)) {
+            throw new DomainException("Selecione um gênero válido.");
+        }
+
+        if ($idModalidade <= 0) {
+            throw new DomainException("Selecione uma modalidade válida.");
+        }
+
+        $representante = $this->timeModel->buscarSalaRepresentante($idUsuario);
+
+        if (!$representante) {
+            throw new DomainException("Representante não encontrado.");
+        }
+
+        return $this->timeModel->cadastrarAlunoNaModalidade(
+            (int) $representante['id_sala'],
+            $idModalidade,
+            $nome,
+            $rm,
+            $genero
+        );
+    }
+
+    public function atualizarAlunoEModalidades(
+        int $idUsuario,
+        int $idAluno,
+        string $nome,
+        string $rm,
+        string $genero,
+        array $modalidades
+    ): void {
+        if ($idUsuario <= 0 || $idAluno <= 0) {
+            throw new DomainException("Usuário ou aluno inválido.");
+        }
+
+        if (trim($nome) === '' || trim($rm) === '') {
+            throw new DomainException("Informe o nome e o RM do aluno.");
+        }
+
+        if (!in_array($genero, ['masculino', 'feminino'], true)) {
+            throw new DomainException("Selecione um gênero válido.");
+        }
+
+        $idsModalidades = [];
+        foreach ($modalidades as $idModalidade) {
+            if (!is_string($idModalidade) && !is_int($idModalidade)) {
+                throw new DomainException("Selecione modalidades válidas.");
+            }
+
+            $idValidado = filter_var($idModalidade, FILTER_VALIDATE_INT);
+            if ($idValidado === false || $idValidado <= 0) {
+                throw new DomainException("Selecione modalidades válidas.");
+            }
+
+            $idsModalidades[] = $idValidado;
+        }
+
+        $representante = $this->timeModel->buscarSalaRepresentante($idUsuario);
+
+        if (!$representante) {
+            throw new DomainException("Representante não encontrado.");
+        }
+
+        $this->timeModel->atualizarAlunoEModalidades(
+            (int) $representante['id_sala'],
+            $idAluno,
+            $nome,
+            $rm,
+            $genero,
+            $idsModalidades
+        );
+    }
+
     // Lista alunos disponíveis para a modalidade
     public function listarAlunosDisponiveis(
         int $idUsuario,
