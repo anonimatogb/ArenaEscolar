@@ -93,7 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 autofocus
             ><br><br>
 
-            <p>Se este for seu primeiro acesso, escolha uma senha com pelo menos 4 caracteres.</p>
             <input type="submit" value="Entrar">
             <a href="Login.php">Voltar</a>
         <?php else: ?>
