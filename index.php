@@ -59,17 +59,18 @@ $pontosAnteriores = null;
 
                 <ul>
                     <?php if (empty($_SESSION['id_usuario'])): ?>
+                        <li><a style="font-size: 20px;" href="Site/View/Usuario/Login.php">Entrar</a></li>
                         <li><a href="Site/View/Administrador/Login.php">Entrar como professor</a></li>
-                        <li><a href="Site/View/Usuario/Login.php">Entrar como representante ou aluno</a></li>
+                        
 
                     <?php elseif (($_SESSION['tipo'] ?? '') === 'ADM'): ?>
-                        <li><a href="Site/View/Administrador/inicio.php">Painel do professor</a></li>
+                        <li><a style="font-size: 20px;" href="Site/View/Administrador/inicio.php">Painel do professor</a></li>
 
                     <?php elseif (($_SESSION['tipo'] ?? '') === 'representante'): ?>
-                        <li><a href="Site/View/Representante/inicio.php">Painel do representante</a></li>
+                        <li><a style="font-size: 20px;" href="Site/View/Representante/inicio.php">Painel do representante</a></li>
 
                     <?php elseif (($_SESSION['tipo'] ?? '') === 'aluno'): ?>
-                        <li><a href="Site/View/Usuario/inicio.php">Minha página</a></li>
+                        <li><a style="font-size: 20px;" href="Site/View/Usuario/inicio.php">Minha página</a></li>
                     <?php endif; ?>
                 </ul>
             </div>
@@ -115,22 +116,32 @@ $pontosAnteriores = null;
             <tbody>
                 <?php foreach ($jogosDoDia as $jogo): ?>
                     <tr>
-                        <td><?= htmlspecialchars(substr((string) $jogo['horario'], 0, 5), ENT_QUOTES, 'UTF-8') ?>
+                        <td style="font-size: medium;"><?= htmlspecialchars(substr((string) $jogo['horario'], 0, 5), ENT_QUOTES, 'UTF-8') ?>
                             / <?= htmlspecialchars($jogo['quadra'], ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars($jogo['modalidade'] . ' - ' . $jogo['genero'], ENT_QUOTES, 'UTF-8') ?></td>
-                        <td>
-                            <?= htmlspecialchars($jogo['sala_a'], ENT_QUOTES, 'UTF-8') ?>
-                            <?= $jogo['status'] === 'finalizado' ? (int) $jogo['gols_pts_a'] : '-' ?>
-                            x
-                            <?= $jogo['status'] === 'finalizado' ? (int) $jogo['gols_pts_b'] : '-' ?>
-                            <?= htmlspecialchars($jogo['sala_b'], ENT_QUOTES, 'UTF-8') ?>
-                            (<?= $jogo['status'] === 'finalizado' ? 'Finalizado' : 'Agendado' ?>)
+                        <td style="font-size: medium;"><?= htmlspecialchars($jogo['modalidade'] . ' - ' . $jogo['genero'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td class="confronto-cell" style="font-size: medium;">
+                            <?php
+                            $placarDisponivel = $jogo['gols_pts_a'] !== null && $jogo['gols_pts_b'] !== null;
+                            $statusJogo = $jogo['status'] === 'finalizado'
+                                ? 'Finalizado'
+                                : ($placarDisponivel ? 'Ao vivo' : 'Agendado');
+                            ?>
+                            <div class="placar-confronto">
+                                <span class="time-confronto"><?= htmlspecialchars($jogo['sala_a'], ENT_QUOTES, 'UTF-8') ?></span>
+                                <span class="pontos-confronto"><?= $placarDisponivel ? (int) $jogo['gols_pts_a'] : '—' ?></span>
+                                <span class="separador-placar" aria-label="contra">×</span>
+                                <span class="pontos-confronto"><?= $placarDisponivel ? (int) $jogo['gols_pts_b'] : '—' ?></span>
+                                <span class="time-confronto"><?= htmlspecialchars($jogo['sala_b'], ENT_QUOTES, 'UTF-8') ?></span>
+                            </div>
+                            <span class="status-jogo <?= $jogo['status'] === 'finalizado' ? 'status-finalizado' : ($placarDisponivel ? 'status-ao-vivo' : 'status-agendado') ?>">
+                                <?= $statusJogo ?>
+                            </span>
                             <?php if ($idUsuario): ?>
                                 <?php
                                 $escalacaoA = $escalacoes[(int) $jogo['id']][(int) $jogo['id_timeA']] ?? [];
                                 $escalacaoB = $escalacoes[(int) $jogo['id']][(int) $jogo['id_timeB']] ?? [];
                                 ?>
-                                <details>
+                                <details class="escalacoes-jogo">
                                     <summary>Ver escalações</summary>
                                     <p><strong><?= htmlspecialchars($jogo['sala_a'], ENT_QUOTES, 'UTF-8') ?>:</strong>
                                         <?= $escalacaoA === [] ? 'Sem jogadores escalados.' : htmlspecialchars(implode(', ', $escalacaoA), ENT_QUOTES, 'UTF-8') ?></p>

@@ -63,24 +63,27 @@ body {
     gap: 12px;
 }
 
-.acesso li {
+.acesso a {
+    display: block;
     background-color: #1e2d42;
     padding: 17px;
     border-radius: 18px;
     border: 1px solid #f28e1374;
     transition: 0.3s;
-}
-
-.acesso li:hover {
-    background-color: #293b54;
-    border-color: #1e2d42;
-}
-
-.acesso a {
     color: white;
     text-decoration: none;
     font-size: 14px;
     font-weight: bold;
+}
+
+.acesso a:hover {
+    background-color: #293b54;
+    border-color: #1e2d42;
+}
+
+.acesso a:focus-visible {
+    outline: 2px solid #f28c13;
+    outline-offset: 3px;
 }
 
 /* MENSAGEM LATERAL */
@@ -216,6 +219,59 @@ body {
     border-bottom: none;
 }
 
+/* PLACAR DOS JOGOS */
+.confronto-cell {
+    min-width: 280px;
+}
+
+.placar-confronto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: bold;
+}
+
+.time-confronto {
+    max-width: 130px;
+    overflow-wrap: anywhere;
+}
+
+.pontos-confronto {
+    min-width: 28px;
+    color: #172337;
+    font-size: 22px;
+}
+
+.separador-placar {
+    color: #f28c13;
+    font-size: 20px;
+}
+
+.status-jogo {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.status-finalizado {
+    background-color: #e8f5ec;
+    color: #24733b;
+}
+
+.status-ao-vivo {
+    background-color: #fff0e4;
+    color: #b94b00;
+}
+
+.status-agendado {
+    background-color: #eef1f5;
+    color: #536176;
+}
+
 /* ESCALAÇÕES */
 .conteudo details {
     background-color: #f5f6f8;
@@ -229,6 +285,12 @@ body {
     color: #d97508;
     font-weight: bold;
     cursor: pointer;
+}
+
+.conteudo .escalacoes-jogo {
+    max-width: 440px;
+    margin: 12px auto 0;
+    text-align: center;
 }
 
 .conteudo details p {
