@@ -1,0 +1,372 @@
+
+/* CONFIGURAÇÕES GERAIS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #172337;
+}
+
+/* DIVISÃO DA PÁGINA */
+.pagina {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* LATERAL AZUL */
+.painel-acesso {
+    width: 35%;
+    min-height: 100vh;
+    background-color: #111e30;
+    color: white;
+    padding: 45px 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.img {
+   width: 180px;
+    height: auto;
+    display: block;
+    margin: 0 auto 40px;
+}
+
+/* BOAS-VINDAS */
+.boas-vindas {
+    color: #c3ccda;
+    font-size: 15px;
+    margin-bottom: 40px;
+}
+
+/* ACESSO */
+.acesso h2 {
+    font-size: 19px;
+    color: #f28c13;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f28c13;
+     padding-bottom: 8px;
+     display: table;
+}
+
+.acesso ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+}
+
+.acesso a {
+    display: block;
+    background-color: #1e2d42;
+    padding: 17px;
+    border-radius: 18px;
+    border: 1px solid #f28e1374;
+    transition: 0.3s;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.acesso a:hover {
+    background-color: #293b54;
+    border-color: #1e2d42;
+}
+
+.acesso a:focus-visible {
+    outline: 2px solid #f28c13;
+    outline-offset: 3px;
+}
+
+/* MENSAGEM LATERAL */
+.mensagem {
+    background-color: #1e2d42;
+    padding: 25px;
+    border: 1px solid #f28e135b;
+    border-radius: 12px;
+    margin-top: 65px;
+}
+
+.mensagem h3 {
+    color: #f28c13;
+    font-size: 12px;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.mensagem p {
+    color: #d0d7e1;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+/* RODAPÉ LATERAL */
+.painel-acesso footer {
+    margin-top: auto;
+    padding-top: 50px;
+     color: #f28c13;
+    font-size: 12px;
+}
+
+/* ÁREA BRANCA */
+.conteudo {
+    width: 65%;
+    padding: 45px 55px;
+    background-color: #ffffff;
+}
+
+/* TÍTULOS */
+.conteudo h2 {
+    color: #172337;
+    font-size: 23px;
+    margin-bottom: 20px;
+    margin-top: 35px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f28c13;
+}
+
+.conteudo h2:first-child {
+    margin-top: 0;
+}
+
+/* FORMULÁRIO DE DATA */
+.conteudo form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    background-color: #f7f8fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.conteudo label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.conteudo input {
+    padding: 11px;
+    border: 1px solid #dce1e8;
+    border-radius: 7px;
+    outline: none;
+}
+
+.conteudo input:focus {
+    border-color: #f28c13;
+}
+
+/* BOTÕES */
+.conteudo button {
+    background-color: #f28c13;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.conteudo button:hover {
+    background-color: #d97508;
+    color: white;
+}
+
+/* TABELAS */
+.conteudo table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 35px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.conteudo thead {
+    background-color: #172337;
+    color: white;
+}
+
+.conteudo th {
+    padding: 16px 10px;
+    font-size: 13px;
+}
+
+.conteudo td {
+    padding: 16px 10px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid #e9edf2;
+    line-height: 1.6;
+}
+
+.conteudo tbody tr:hover {
+    background-color: #fff8ef;
+}
+
+.conteudo tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* PLACAR DOS JOGOS */
+.confronto-cell {
+    min-width: 280px;
+}
+
+.placar-confronto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: bold;
+}
+
+.time-confronto {
+    max-width: 130px;
+    overflow-wrap: anywhere;
+}
+
+.pontos-confronto {
+    min-width: 28px;
+    color: #172337;
+    font-size: 22px;
+}
+
+.separador-placar {
+    color: #f28c13;
+    font-size: 20px;
+}
+
+.status-jogo {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.status-finalizado {
+    background-color: #e8f5ec;
+    color: #24733b;
+}
+
+.status-ao-vivo {
+    background-color: #fff0e4;
+    color: #b94b00;
+}
+
+.status-agendado {
+    background-color: #eef1f5;
+    color: #536176;
+}
+
+/* ESCALAÇÕES */
+.conteudo details {
+    background-color: #f5f6f8;
+    border-radius: 7px;
+    padding: 10px;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.conteudo summary {
+    color: #d97508;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.conteudo .escalacoes-jogo {
+    max-width: 440px;
+    margin: 12px auto 0;
+    text-align: center;
+}
+
+.conteudo details p {
+    font-size: 12px;
+    margin-top: 10px;
+    color: #536176;
+}
+
+/* MEUS JOGOS */
+.conteudo ul {
+    list-style: none;
+}
+
+.conteudo ul li {
+    background-color: #f7f8fa;
+    border-left: 4px solid #f28c13;
+    border-radius: 7px;
+    padding: 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 900px) {
+
+    .painel-acesso {
+        width: 35%;
+        padding: 30px 20px;
+    }
+
+    .conteudo {
+        width: 65%;
+        padding: 30px 20px;
+    }
+
+    .painel-acesso h1 {
+        font-size: 25px;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .pagina {
+        flex-direction: column;
+    }
+
+    .painel-acesso,
+    .conteudo {
+        width: 100%;
+        min-height: auto;
+    }
+
+    .painel-acesso {
+        padding: 30px 25px;
+    }
+
+    .painel-acesso footer {
+        margin-top: 40px;
+    }
+
+    .conteudo {
+        padding: 30px 20px;
+        overflow-x: auto;
+    }
+
+    .conteudo table {
+        min-width: 500px;
+    }
+
+    .conteudo form {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .conteudo input,
+    .conteudo button {
+        width: 100%;
+    }
+}
