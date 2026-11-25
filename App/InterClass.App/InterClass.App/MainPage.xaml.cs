@@ -29,19 +29,15 @@ namespace InterClass.App
         {
             base.OnAppearing();
 
-            int idUsuario = Login.idUsuario;
-            string nomeUsuario = Login.GetNomeUsuario();
-
-            if (idUsuario == 0)
+            if (Login.idUsuario != 0)
             {
-                NomeLogin = "Fazer Login";
-                IsLoggedIn = false;
+                NomeLogin = Login.nomeUsuario;
+                IsLoggedIn = true;
             }
             else
             {
-                // Exibe apenas o primeiro nome ou o nome completo conforme preferir
-                NomeLogin = string.IsNullOrEmpty(nomeUsuario) ? "Meu Perfil" : nomeUsuario;
-                IsLoggedIn = true;
+                NomeLogin = "Fazer Login";
+                IsLoggedIn = false;
             }
         }
 
@@ -72,7 +68,7 @@ namespace InterClass.App
             }
         }
 
-        public string Time1_PJ { get; set; } = "Corinthians";
+        public string Time1_PJ { get; set; }
 
         public ICommand LoginCommand { get; }
 

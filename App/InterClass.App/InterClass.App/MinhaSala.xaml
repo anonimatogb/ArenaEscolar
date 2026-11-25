@@ -1,13 +1,178 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InterClass.App.MinhaSala"
+             BackgroundColor="{StaticResource Background}"
+             Shell.NavBarIsVisible="False">
 
-<ContentPage
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="InterClass.App.MinhaSala">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
+            <Button ImageSource="seta.png"
+            HorizontalOptions="Start"            
+            HeightRequest="28"
+            FontSize="13"
+            CornerRadius="8"
+            Padding="2,0"
+            Margin="0,0,0,0"
+                        TextColor="{StaticResource Primary}"
+            Clicked="Botao_Voltar"/>
+
+            <!-- TOPO COM LOGO NO CANTO SUPERIOR ESQUERDO -->
+            <Grid VerticalOptions="Center" >
+                <Image Source="logo.png"
+
+                       WidthRequest="74"
+                       Aspect="AspectFit"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Grid>
+
+            <!-- TÍTULO DA PÁGINA -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Minha turma"
+                       Style="{StaticResource Titulo}"
+                       FontSize="24" />
+                <Label Text="Veja mais sobre sua turma no interclass."
+                       Style="{StaticResource SubTitulo}"
+                       FontSize="13" />
+            </VerticalStackLayout>
+
+            <!-- CARD PRINCIPAL ESCURO: RESUMO DA TURMA -->
+            <Frame BackgroundColor="{StaticResource Secondary}"
+                   CornerRadius="16"
+                   HasShadow="False"
+                   Padding="20">
+                <VerticalStackLayout Spacing="16">
+
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="{Binding NomeSala}"
+                               TextColor="{StaticResource White}"
+                               FontSize="24"
+                               FontAttributes="Bold" />
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*, *, *" Margin="0,4,0,0">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="{Binding TotalAlunos}"
+                                   TextColor="{StaticResource Primary}"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+                            <Label Text="alunos"
+                                   TextColor="#94A3B8"
+                                   FontSize="11" />
+                        </VerticalStackLayout>
+
+
+                        <VerticalStackLayout Grid.Column="2" Spacing="2">
+                            <Label Text="{Binding PosicaoGeral}"
+                                   TextColor="{StaticResource Primary}"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+                            <Label Text="lugar"
+                                   TextColor="#94A3B8"
+                                   FontSize="11" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="{StaticResource CardBackground}"
+                   CornerRadius="16"
+                   HasShadow="False"
+                   BorderColor="{StaticResource BorderColor}"
+                   Padding="16">
+                <VerticalStackLayout Spacing="12">
+
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="Alunos"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}" />
+                        <Label Text="28 alunos vinculados à sala"
+                               Style="{StaticResource SubTitulo}"
+                               FontSize="12" />
+                    </VerticalStackLayout>
+
+                    <!-- Lista de alunos -->
+                    <CollectionView x:Name="CollectionAlunos"
+                                    ItemsSource="{Binding Alunos}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <VerticalStackLayout Spacing="8" Padding="0,8">
+                                    <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
+                                        <VerticalStackLayout Spacing="2">
+                                            <Label Text="{Binding Nome}"
+                                                   FontSize="14"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{StaticResource TextPrimary}" />
+                                            <Label Text="{Binding Modalidades}"
+                                                   FontSize="11"
+                                                   TextColor="{StaticResource TextSecondary}" />
+                                        </VerticalStackLayout>
+
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Papel}"
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource Primary}"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="#F1F5F9" />
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Rodapé da lista -->
+                    <Grid ColumnDefinitions="*, Auto" Margin="0,4,0,0">
+                        <Label Text="Mostrando 6 de 28 alunos"
+                               FontSize="11"
+                               TextColor="{StaticResource TextSecondary}"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="1"
+                               Text="1  2  3  4  5  →"
+                               FontSize="12"
+                               TextColor="{StaticResource TextSecondary}"
+                               VerticalOptions="Center" />
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="{StaticResource CardBackground}"
+                   CornerRadius="16"
+                   HasShadow="False"
+                   BorderColor="{StaticResource BorderColor}"
+                   Padding="16">
+                <VerticalStackLayout Spacing="14">
+
+                    <Label Text="Modalidades"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}" />
+
+
+                    <Label Text="As inscrições coletivas são organizadas pelo perfil da sala."
+                           FontSize="12"
+                           TextColor="{StaticResource TextSecondary}" />
+
+                    <Button Text="Ver jogos da turma →"
+                            Command="{Binding VerJogosCommand}" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- AVISO INFERIOR -->
+            <Frame BackgroundColor="{StaticResource CardBackground}"
+                   CornerRadius="12"
+                   HasShadow="False"
+                   BorderColor="{StaticResource BorderColor}"
+                   Padding="14">
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

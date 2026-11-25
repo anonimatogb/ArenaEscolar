@@ -76,19 +76,26 @@ public partial class Usuario : ContentPage
         IsTrueMessageVisible = false;
         var iduser = idUsuario;
         var service = new Database.Service();
-        if (NovaSenha_Entry.Text == ConfirmarSenha_Entry.Text)
+        
+        
+        if(NovaSenha_Entry.Text != ConfirmarSenha_Entry.Text)
+        {
+            ErrorMessage = "Senhas incoerentes.";
+            IsErrorMessageVisible = true;
+        }
+        else if (string.IsNullOrWhiteSpace(NovaSenha_Entry.Text) || string.IsNullOrWhiteSpace(ConfirmarSenha_Entry.Text))
+        {
+            ErrorMessage = "Por favor, preencha todos os campos.";
+            IsErrorMessageVisible = true;
+        }
+        else
         {
             var novasenha = int.Parse(NovaSenha_Entry.Text);
             service.AtualizarSenha(iduser, novasenha);
             TrueMessage = "Senha alterada.";
             IsTrueMessageVisible = true;
         }
-        else
-        {
-            ErrorMessage = "Senhas incoerentes.";
-            IsErrorMessageVisible = true;
-        }
-        
+
     }
     private async void IrMainPage(object sender, EventArgs e)
     {

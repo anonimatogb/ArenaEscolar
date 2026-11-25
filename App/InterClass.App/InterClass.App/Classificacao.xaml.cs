@@ -6,4 +6,9 @@ public partial class Classificacao : ContentPage
 	{
         InitializeComponent();
 	}
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        var service = new Database.Service();
+    }
 }

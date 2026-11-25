@@ -78,17 +78,22 @@ namespace InterClass.App
                 if (jatemsenha == false && verificarrm == true)
                 {
                     service.Cadastro(senha, rm);
+
                     var idUser = service.IdUsuario(rm);
-                    idUsuario = idUser;
+
+                    Login.idUsuario = idUser;
+
                     string nome = service.NomeUsuario(idUser);
-                    nomeUsuario = nome;
+
+                    Login.nomeUsuario = nome;
+
                     await Shell.Current.GoToAsync("///MainPage");
-                }if(verificarrm == false)
+                } else if(verificarrm == false)
                 {
                     ErrorMessage = "Este RM não está registrado, consulte o representante de sua sala.";
                     IsErrorMessageVisible = true;
                 }
-                else
+                else if (jatemsenha == true && verificarrm == true)
                 {
                     ErrorMessage = "Este RM já está cadastrado.";
                     IsErrorMessageVisible = true;
@@ -100,10 +105,7 @@ namespace InterClass.App
                 IsErrorMessageVisible = true;
             }
         }
-        public static string GetNomeUsuario()
-        {
-            return nomeUsuario;
-        }
+
         private async void Botao_Login(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync(nameof(Login));

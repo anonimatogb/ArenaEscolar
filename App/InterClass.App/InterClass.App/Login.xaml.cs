@@ -64,7 +64,7 @@ namespace InterClass.App
             if (string.IsNullOrWhiteSpace(RM_Entry.Text) || !int.TryParse(RM_Entry.Text, out int rm))
             {
                 ErrorMessage = "RM inválido.";
-                ErrorMessageVisible = true;
+                IsErrorMessageVisible = true;
                 return;
             }
 
@@ -76,9 +76,9 @@ namespace InterClass.App
                 if (usuarioValido)
                 {
                     var idUser = service.IdUsuario(rm);
-                    idUsuario = idUser;
+                    Login.idUsuario = idUser;
                     string nome = service.NomeUsuario(idUser);
-                    nomeUsuario = nome;
+                    Login.nomeUsuario = nome;
                     await Shell.Current.GoToAsync("///MainPage");
                 }
                 else

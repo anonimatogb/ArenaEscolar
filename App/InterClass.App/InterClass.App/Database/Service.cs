@@ -187,48 +187,49 @@ namespace InterClass.App.Database
 
             return 0;
         }
-        public string Professor(int idCurso)
-        {
-            using var connection =
-                new MySqlConnection(_connectionString);
 
+        public class DadosSala
+        {
+            public int IdSala { get; set; }
+            public string NomeSala { get; set; }
+            public int QuantidadeAlunos { get; set; }
+        }
+
+        public DadosSala BuscarDadosSala(int idUsuario)
+        {
+            using var connection = new MySqlConnection(_connectionString);
             connection.Open();
 
-            using var cmd = new MySqlCommand(
-                "SELECT professor FROM cursos WHERE id = @id",
-                connection);
+            string sql = @"
+        SELECT 
+            s.id,
+            s.nome,
+            COUNT(u.id) AS quantidade_alunos
+        FROM usuario u
+        INNER JOIN sala s ON u.id_sala = s.id
+        WHERE s.id = (
+            SELECT id_sala
+            FROM usuario
+            WHERE id = @idUsuario
+        )
+        GROUP BY s.id, s.nome";
 
-            cmd.Parameters.AddWithValue(
-                "@id",
-                idCurso);
+            using var cmd = new MySqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
 
-            var resultado =
-                cmd.ExecuteScalar();
+            using var reader = cmd.ExecuteReader();
 
-            if (resultado != null)
+            if (reader.Read())
             {
-                int idProfessor =
-                    Convert.ToInt32(resultado);
-
-                using var cmd2 =
-                    new MySqlCommand(
-                        "SELECT nome FROM usuarios WHERE id = @idProfessor",
-                        connection);
-
-                cmd2.Parameters.AddWithValue(
-                    "@idProfessor",
-                    idProfessor);
-
-                var nomeProfessor =
-                    cmd2.ExecuteScalar();
-
-                if (nomeProfessor != null)
+                return new DadosSala
                 {
-                    return nomeProfessor.ToString();
-                }
+                    IdSala = Convert.ToInt32(reader["id"]),
+                    NomeSala = reader["nome"].ToString(),
+                    QuantidadeAlunos = Convert.ToInt32(reader["quantidade_alunos"])
+                };
             }
 
-            return "";
+            return null;
         }
     }
 }
