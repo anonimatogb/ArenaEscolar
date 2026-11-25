@@ -149,4 +149,26 @@ class JogoController
             return 'Não foi possível registrar o placar.';
         }
     }
+
+    public function buscarPorId(int $idJogo): ?array
+    {
+        if ($idJogo < 1) {
+            return null;
+        }
+
+        return $this->jogoModel->buscarPorId($idJogo);
+    }
+
+    public function alterarPlacarAoVivo(array $dados): array
+    {
+        $idJogo = filter_var($dados['id_jogo'] ?? null, FILTER_VALIDATE_INT);
+        $lado = is_string($dados['lado'] ?? null) ? $dados['lado'] : '';
+        $operacao = is_string($dados['operacao'] ?? null) ? $dados['operacao'] : '';
+
+        if ($idJogo === false || $idJogo < 1) {
+            throw new DomainException('Informe um jogo válido.');
+        }
+
+        return $this->jogoModel->alterarPlacarAoVivo($idJogo, $lado, $operacao);
+    }
 }

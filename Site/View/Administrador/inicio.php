@@ -345,27 +345,11 @@ $escape = static function ($valor): string {
                                 — <?= $escape($jogo['status']) ?>
                             </p>
                             <?php if ($jogo['status'] === 'finalizado'): ?>
-                                <p>Placar atual: <?= (int) $jogo['gols_pts_a'] ?> x <?= (int) $jogo['gols_pts_b'] ?></p>
+                                <p>Placar final: <?= (int) $jogo['gols_pts_a'] ?> x <?= (int) $jogo['gols_pts_b'] ?></p>
                             <?php endif; ?>
-                            <form class="dashboard-score-form" action="inicio.php#jogos" method="POST">
-                                <input type="hidden" name="acao" value="registrar_placar">
+                            <form class="dashboard-open-score" action="placar.php" method="GET">
                                 <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
-                                <label>
-                                    <?= $escape($jogo['sala_a']) ?>
-                                    <input type="number" name="gols_pts_a" min="0"
-                                        value="<?= $jogo['gols_pts_a'] === null ? '' : (int) $jogo['gols_pts_a'] ?>"
-                                        required>
-                                </label>
-                                <span aria-hidden="true">x</span>
-                                <label>
-                                    <?= $escape($jogo['sala_b']) ?>
-                                    <input type="number" name="gols_pts_b" min="0"
-                                        value="<?= $jogo['gols_pts_b'] === null ? '' : (int) $jogo['gols_pts_b'] ?>"
-                                        required>
-                                </label>
-                                <button type="submit">
-                                    <?= $jogo['status'] === 'finalizado' ? 'Atualizar placar' : 'Salvar placar' ?>
-                                </button>
+                                <button type="submit">Alterar placar</button>
                             </form>
                         </article>
                     <?php endforeach; ?>

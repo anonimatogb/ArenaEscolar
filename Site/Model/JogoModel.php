@@ -181,6 +181,127 @@ class JogoModel
         }
     }
 
+    public function buscarPorId(int $idJogo): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            $this->consultaJogos() . ' WHERE j.id = :id'
+        );
+        $stmt->execute(['id' => $idJogo]);
+        $jogo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $jogo ?: null;
+    }
+
+    public function alterarPlacarAoVivo(int $idJogo, string $lado, string $operacao): array
+    {
+        if (!in_array($lado, ['a', 'b'], true)) {
+            throw new DomainException('Selecione um time válido.');
+        }
+        if (!in_array($operacao, ['incrementar', 'decrementar'], true)) {
+            throw new DomainException('Selecione uma operação válida.');
+        }
+
+        $coluna = $lado === 'a' ? 'gols_pts_a' : 'gols_pts_b';
+        $this->pdo->beginTransaction();
+
+        try {
+            $jogoStmt = $this->pdo->prepare(
+                'SELECT j.id_timeA, j.id_timeB, j.status,
+                        m.pts_vitoria, m.pts_empate, m.pts_derrota
+                 FROM jogo j
+                 INNER JOIN modalidade m ON m.id = j.id_modalidade
+                 WHERE j.id = :id
+                 FOR UPDATE'
+            );
+            $jogoStmt->execute(['id' => $idJogo]);
+            $jogo = $jogoStmt->fetch(PDO::FETCH_ASSOC);
+            if (!$jogo) {
+                throw new DomainException('Jogo não encontrado.');
+            }
+
+            $placarStmt = $this->pdo->prepare(
+                'INSERT INTO placar
+                    (id_jogo, gols_pts_a, gols_pts_b, pontos_sala_a, pontos_sala_b)
+                 VALUES
+                    (:id_jogo, 0, 0, 0, 0)
+                 ON DUPLICATE KEY UPDATE id_jogo = VALUES(id_jogo)'
+            );
+            $placarStmt->execute(['id_jogo' => $idJogo]);
+
+            if ($operacao === 'incrementar') {
+                $atualizar = $this->pdo->prepare(
+                    "UPDATE placar
+                     SET {$coluna} = {$coluna} + 1
+                     WHERE id_jogo = :id_jogo"
+                );
+            } else {
+                $atualizar = $this->pdo->prepare(
+                    "UPDATE placar
+                     SET {$coluna} = {$coluna} - 1
+                     WHERE id_jogo = :id_jogo AND {$coluna} > 0"
+                );
+            }
+            $atualizar->execute(['id_jogo' => $idJogo]);
+
+            if ($operacao === 'decrementar' && $atualizar->rowCount() === 0) {
+                throw new DomainException('O placar não pode ficar negativo.');
+            }
+
+            $placarAtual = $this->pdo->prepare(
+                'SELECT gols_pts_a, gols_pts_b FROM placar WHERE id_jogo = :id_jogo'
+            );
+            $placarAtual->execute(['id_jogo' => $idJogo]);
+            $resultado = $placarAtual->fetch(PDO::FETCH_ASSOC);
+
+            if ($jogo['status'] === 'finalizado') {
+                $pontosA = (int) $jogo['pts_empate'];
+                $pontosB = (int) $jogo['pts_empate'];
+                $vencedor = null;
+
+                if ((int) $resultado['gols_pts_a'] > (int) $resultado['gols_pts_b']) {
+                    $pontosA = (int) $jogo['pts_vitoria'];
+                    $pontosB = (int) $jogo['pts_derrota'];
+                    $vencedor = (int) $jogo['id_timeA'];
+                } elseif ((int) $resultado['gols_pts_b'] > (int) $resultado['gols_pts_a']) {
+                    $pontosA = (int) $jogo['pts_derrota'];
+                    $pontosB = (int) $jogo['pts_vitoria'];
+                    $vencedor = (int) $jogo['id_timeB'];
+                }
+
+                $atualizarPontos = $this->pdo->prepare(
+                    'UPDATE placar
+                     SET pontos_sala_a = :pontos_a, pontos_sala_b = :pontos_b
+                     WHERE id_jogo = :id_jogo'
+                );
+                $atualizarPontos->execute([
+                    'pontos_a' => $pontosA,
+                    'pontos_b' => $pontosB,
+                    'id_jogo' => $idJogo,
+                ]);
+
+                $atualizarVencedor = $this->pdo->prepare(
+                    'UPDATE jogo SET id_time_vencedor = :vencedor WHERE id = :id_jogo'
+                );
+                $atualizarVencedor->execute([
+                    'vencedor' => $vencedor,
+                    'id_jogo' => $idJogo,
+                ]);
+            }
+
+            $this->pdo->commit();
+
+            return [
+                'gols_pts_a' => (int) $resultado['gols_pts_a'],
+                'gols_pts_b' => (int) $resultado['gols_pts_b'],
+            ];
+        } catch (Throwable $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $e;
+        }
+    }
+
     public function listar(?string $dia = null): array
     {
         $sql = $this->consultaJogos();
