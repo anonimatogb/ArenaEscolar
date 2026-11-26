@@ -353,10 +353,9 @@ namespace InterClass.App
         {
             await Shell.Current.GoToAsync(nameof(Classificacao));
         }
-
-        private async void FazerLogin()
+        private async void IrModalidade(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync(nameof(Login));
+            await Shell.Current.GoToAsync(nameof(Modalidades));
         }
     }
 }

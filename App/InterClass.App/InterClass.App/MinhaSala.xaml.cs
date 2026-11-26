@@ -166,6 +166,6 @@ public partial class MinhaSala : ContentPage
     }
     private async void IrModalidade(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(Modalidade));
+        await Shell.Current.GoToAsync(nameof(Modalidades));
     }
 }

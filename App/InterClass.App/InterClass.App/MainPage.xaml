@@ -199,7 +199,7 @@
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Modalidades" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource TextPrimary}"/>
                     <Label Text="Conheça as modalidade disponíveis no InterClasse" FontSize="11" TextColor="{StaticResource TextSecondary}"/>
-                    <Button Text="Ver classificação completa →" TextColor="{StaticResource Primary}" BackgroundColor="{StaticResource White}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrClassificacao"/>
+                    <Button Text="Ver Modalidades →" TextColor="{StaticResource Primary}" BackgroundColor="{StaticResource White}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="IrModalidade"/>
                 </VerticalStackLayout>
             </Frame>
 

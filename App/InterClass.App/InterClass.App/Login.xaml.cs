@@ -167,9 +167,7 @@ namespace InterClass.App
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-
-                ErrorMessage = ex.Message;
+                ErrorMessage = "Falha na conexão";
                 IsErrorMessageVisible = true;
             }
         }

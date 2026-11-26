@@ -3,11 +3,176 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="InterClass.App.Classificacao">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    x:Class="InterClass.App.Classificacao"
+    BackgroundColor="{StaticResource Background}"
+    Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- CABEÇALHO -->
+        <VerticalStackLayout Grid.Row="0"
+                             Padding="16,12,16,10"
+                             Spacing="16">
+
+            
+            <Grid ColumnDefinitions="44,*,44"
+      HeightRequest="48">
+
+                <!-- Logo -->
+                <Image Source="logo.png"
+           Grid.Column="2"
+           WidthRequest="68"
+           HeightRequest="68"
+           Aspect="AspectFit"
+           HorizontalOptions="End"
+           VerticalOptions="Center"/>
+
+                <Label Grid.Column="1"
+       Text="CLASSIFICAÇÃO"
+       FontSize="18"
+       FontAttributes="Bold"
+       TextColor="{StaticResource Secondary}"
+       VerticalOptions="Center"
+       HorizontalTextAlignment="Center"/>
+
+                <!-- Voltar -->
+                <Button Grid.Column="0"
+            ImageSource="seta.png"
+            HorizontalOptions="Start"
+            HeightRequest="32"
+            WidthRequest="38"
+            BackgroundColor="Transparent"
+            Padding="2"
+            Clicked="Botao_Voltar"/>
+
+            </Grid>
+
+            <!-- TÍTULO -->
+            <VerticalStackLayout Spacing="4">
+
+                <Label Text="Ranking das salas"
+                       FontSize="23"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}"/>
+
+                <Label Text="Acompanhe a pontuação geral do InterClass."
+                       FontSize="12"
+                       TextColor="{StaticResource TextSecondary}"/>
+
+            </VerticalStackLayout>
+
+            
+
+        </VerticalStackLayout>
+
+        <!-- RANKING -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Salas}"
+                        Margin="16,0"
+                        VerticalScrollBarVisibility="Always">
+
+            <CollectionView.EmptyView>
+
+                <VerticalStackLayout Padding="25"
+                                     Spacing="8"
+                                     VerticalOptions="Center"
+                                     HorizontalOptions="Center">
+
+                    <Label Text="Nenhuma sala encontrada"
+                           FontSize="17"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}"
+                           HorizontalTextAlignment="Center"/>
+
+                    <Label Text="As salas aparecerão aqui quando estiverem cadastradas."
+                           FontSize="12"
+                           TextColor="{StaticResource TextSecondary}"
+                           HorizontalTextAlignment="Center"/>
+
+                </VerticalStackLayout>
+
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate>
+
+                    <Border BackgroundColor="{Binding CorFundo}"
+                            Stroke="{Binding CorBorda}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 14"
+                            Padding="15"
+                            Margin="0,0,0,11">
+
+                        <Grid ColumnDefinitions="48,*,Auto"
+                              ColumnSpacing="12">
+
+                            <!-- POSIÇÃO -->
+                            <Border Grid.Column="0"
+                                    BackgroundColor="#F1F5F9"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 10"
+                                    WidthRequest="42"
+                                    HeightRequest="42"
+                                    VerticalOptions="Center">
+
+                                <Label Text="{Binding PosicaoFormatada}"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="{Binding CorPosicao}"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center"/>
+
+                            </Border>
+
+                            <!-- NOME DA SALA -->
+                            <VerticalStackLayout Grid.Column="1"
+                                                 Spacing="4"
+                                                 VerticalOptions="Center">
+
+                                <Label Text="{Binding NomeSala}"
+                                       FontSize="15"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource TextPrimary}"
+                                       LineBreakMode="TailTruncation"/>
+
+                                <Label Text="{Binding Identificacao}"
+                                       FontSize="9"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}"/>
+
+                            </VerticalStackLayout>
+
+                            <!-- PONTOS -->
+                            <VerticalStackLayout Grid.Column="2"
+                                                 Spacing="3"
+                                                 VerticalOptions="Center"
+                                                 HorizontalOptions="End">
+
+                                <Label Text="{Binding Pontos}"
+                                       FontSize="19"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Secondary}"
+                                       HorizontalTextAlignment="End"/>
+
+                                <Label Text="PONTOS"
+                                       FontSize="9"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource TextSecondary}"
+                                       HorizontalTextAlignment="End"/>
+
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                    </Border>
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+
 </ContentPage>

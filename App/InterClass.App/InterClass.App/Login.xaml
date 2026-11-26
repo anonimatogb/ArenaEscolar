@@ -105,15 +105,6 @@
                      Color="{StaticResource BorderColor}"
                      Margin="0,10"/>
 
-            <Button Text="Acesso do administrador →"
-                    BackgroundColor="{StaticResource InputBackground}"
-                    TextColor="{StaticResource Secondary}"
-                    FontSize="13"
-                    FontAttributes="Bold"
-                    CornerRadius="10"
-                    HeightRequest="48"
-                    BorderColor="{StaticResource BorderColor}"
-                    BorderWidth="1"/>
 
             <Label Text="Ao entrar, você concorda com as regras do evento."
                    FontSize="11"

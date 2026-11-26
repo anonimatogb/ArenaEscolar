@@ -9,45 +9,57 @@
 
     <Grid RowDefinitions="Auto,*">
 
-        <!-- CABEÇALHO E INFORMAÇÕES -->
+        <!-- CABEÇALHO -->
         <VerticalStackLayout Grid.Row="0"
-                             Padding="16,12,16,8"
-                             Spacing="12">
+                       Padding="16,12,16,10"
+                       Spacing="16">
 
-            <!-- Cabeçalho personalizado -->
+
             <Grid ColumnDefinitions="44,*,44"
-                  HeightRequest="48"
-                  VerticalOptions="Center">
+HeightRequest="48">
 
                 <!-- Logo -->
                 <Image Source="logo.png"
-                       Grid.Column="2"
-                       WidthRequest="68"
-                       HeightRequest="68"
-                       Aspect="AspectFit"
-                       HorizontalOptions="End"
-                       VerticalOptions="Center"/>
+     Grid.Column="2"
+     WidthRequest="68"
+     HeightRequest="68"
+     Aspect="AspectFit"
+     HorizontalOptions="End"
+     VerticalOptions="Center"/>
 
-                <!-- Título -->
                 <Label Grid.Column="1"
-                       Text="CALENDÁRIO"
-                       FontSize="18"
-                       FontAttributes="Bold"
-                       TextColor="{StaticResource Secondary}"
-                       VerticalOptions="Center"
-                       />
+ Text="CALENDÁRIO"
+ FontSize="18"
+ FontAttributes="Bold"
+ TextColor="{StaticResource Secondary}"
+ VerticalOptions="Center"
+ HorizontalTextAlignment="Center"/>
 
                 <!-- Voltar -->
                 <Button Grid.Column="0"
-                        ImageSource="seta.png"
-                        HorizontalOptions="Start"
-                        HeightRequest="32"
-                        WidthRequest="38"
-                        BackgroundColor="Transparent"
-                        Padding="2"
-                        Clicked="Botao_Voltar"/>
+      ImageSource="seta.png"
+      HorizontalOptions="Start"
+      HeightRequest="32"
+      WidthRequest="38"
+      BackgroundColor="Transparent"
+      Padding="2"
+      Clicked="Botao_Voltar"/>
 
             </Grid>
+
+            <!-- TÍTULO -->
+            <VerticalStackLayout Spacing="4">
+
+                <Label Text="Ranking das salas"
+                 FontSize="23"
+                 FontAttributes="Bold"
+                 TextColor="{StaticResource TextPrimary}"/>
+
+                <Label Text="Acompanhe a pontuação geral do InterClass."
+                 FontSize="12"
+                 TextColor="{StaticResource TextSecondary}"/>
+
+            </VerticalStackLayout>
 
             <!-- Filtro compacto -->
             <VerticalStackLayout HorizontalOptions="End"
@@ -208,36 +220,6 @@
 
             </Grid>
 
-            <!-- Legenda -->
-            <HorizontalStackLayout Spacing="16">
-
-                <HorizontalStackLayout Spacing="5">
-
-                    <BoxView Color="#F97316"
-                             WidthRequest="10"
-                             HeightRequest="10"
-                             CornerRadius="5"/>
-
-                    <Label Text="Sua sala"
-                           FontSize="11"
-                           TextColor="{StaticResource TextSecondary}"/>
-
-                </HorizontalStackLayout>
-
-                <HorizontalStackLayout Spacing="5">
-
-                    <BoxView Color="#CBD5E1"
-                             WidthRequest="10"
-                             HeightRequest="10"
-                             CornerRadius="5"/>
-
-                    <Label Text="Outros jogos"
-                           FontSize="11"
-                           TextColor="{StaticResource TextSecondary}"/>
-
-                </HorizontalStackLayout>
-
-            </HorizontalStackLayout>
 
         </VerticalStackLayout>
 
