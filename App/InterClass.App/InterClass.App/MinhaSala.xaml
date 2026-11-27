@@ -155,7 +155,14 @@
 
                         </HorizontalStackLayout>
                     </Grid>
-                    <Button Text="Editar Alunos →" IsVisible="{Binding IsEditarAlunos}" TextColor="{StaticResource Primary}" BackgroundColor="{StaticResource White}" FontAttributes="Bold" FontSize="13" Margin="0,4,0,0" Clicked="EditarAlunos"/>
+                    <Button Text="Editar Alunos →"
+        IsVisible="{Binding IsEditarAlunos}"
+        TextColor="{StaticResource Primary}"
+        BackgroundColor="{StaticResource White}"
+        FontAttributes="Bold"
+        FontSize="13"
+        Margin="0,4,0,0"
+        Clicked="EditarAlunos"/>
 
                 </VerticalStackLayout>
             </Frame>
