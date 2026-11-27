@@ -1,14 +1,13 @@
 <?php
 
-$host = 'mainline.proxy.rlwy.net';
-$dbname = 'railway';
-$username = 'root'; // Altere se o seu usuário do banco for diferente
-$port = 21045; // Porta padrão do MySQL
-$password = 'BmETEcRNGNQJJKztvnjwQmNqfhQgbxaG';     // Adicione a senha se houver configurado no seu servidor
+$host = 'sql306.byethost32.com';
+$dbname = 'b32_43552819_interclass';
+$username = 'b32_43552819'; // Altere se o seu usuário do banco for diferente
+$password = 'Sesi@5839';     // Adicione a senha se houver configurado no seu servidor
 
 try {
     // Criação da conexão PDO com charset utf8mb4 para evitar problemas de acentuação
-    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
     
     // Configura o modo de erro do PDO para exceções
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
