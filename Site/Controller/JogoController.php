@@ -193,4 +193,9 @@ class JogoController
 
         return $this->jogoModel->alterarPlacarAoVivo($idJogo, $lado, $operacao);
     }
+
+  public function finalizar(int $idJogo): array
+{
+    return $this->jogoModel->finalizar($idJogo);
+}
 }

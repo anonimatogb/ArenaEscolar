@@ -221,6 +221,7 @@ $escape = static function ($valor): string {
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -228,6 +229,7 @@ $escape = static function ($valor): string {
     <link rel="stylesheet" href="../../Style/common.css">
     <link rel="stylesheet" href="../../Style/Dashboard.css?v=20261127">
 </head>
+
 <body class="dashboard-page">
     <header class="dashboard-header">
         <div>
@@ -248,7 +250,7 @@ $escape = static function ($valor): string {
             </p>
         <?php endif; ?>
 
-       
+
         <div class="dashboard-grid">
             <section class="dashboard-card" id="representantes">
                 <h2>Cadastrar representante</h2>
@@ -315,7 +317,7 @@ $escape = static function ($valor): string {
                                 <?= $escape($modalidade['nome']) ?>
                                 (<?= $escape($modalidade['genero']) ?>) —
                                 <?= (int) $modalidade['max_jogadores'] ?> participantes
-                                <a  href="deletarModalidade.php?id_modalidade=<?= (int) $modalidade['id'] ?>" onclick="return confirm('Deseja realmente deletar esta modalidade?')">Deletar</a>
+                                <a href="deletarModalidade.php?id_modalidade=<?= (int) $modalidade['id'] ?>" onclick="return confirm('Deseja realmente deletar esta modalidade?')">Deletar</a>
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -388,7 +390,7 @@ $escape = static function ($valor): string {
                         </div>
                         <button type="submit">Agendar confronto</button>
                     </form>
-                    <?php endif; ?>
+                <?php endif; ?>
 
                 <h2>Jogos e lançamento de placares</h2>
                 <?php if ($jogos === []): ?>
@@ -407,29 +409,31 @@ $escape = static function ($valor): string {
                                 <p>Placar final: <?= (int) $jogo['gols_pts_a'] ?> x <?= (int) $jogo['gols_pts_b'] ?></p>
                             <?php endif; ?>
                             <div class="dashboard-game-actions">
-                                <form class="dashboard-open-score" action="placar.php" method="GET">
-                                    <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
-                                    <button type="submit">Alterar placar</button>
-                                </form>
-                                <form
+                                <?php if ($jogo['status'] !== 'finalizado'):  ?>
+                                    <form class="dashboard-open-score" action="placar.php" method="GET">
+                                        <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
+                                        <button type="submit">Alterar placar</button>
+                                    </form>
+                                    <form
                                     class="dashboard-delete-game"
                                     action="inicio.php#jogos"
                                     method="POST"
-                                    onsubmit="return confirm('Deseja realmente excluir este confronto e seu placar?')"
-                                >
+                                    onsubmit="return confirm('Deseja realmente excluir este confronto e seu placar?')">
                                     <input type="hidden" name="acao" value="excluir_jogo">
                                     <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
                                     <input type="hidden" name="csrf_token" value="<?= $escape($_SESSION['csrf_excluir_jogo']) ?>">
                                     <button class="dashboard-danger-button" type="submit">Excluir confronto</button>
                                 </form>
+                                <?php endif; ?>
+                                
                             </div>
                         </article>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </section>
-           </div>
-           
-         <section style="margin-top: 24px;" class="dashboard-card dashboard-danger-zone" id="reiniciar-ano">
+        </div>
+
+        <section style="margin-top: 24px;" class="dashboard-card dashboard-danger-zone" id="reiniciar-ano">
             <h2><strong style="color:red">Reiniciar ano letivo</strong></h2>
             <p>
                 Esta ação apaga todos os jogos, times, representantes e alunos.
@@ -447,17 +451,17 @@ $escape = static function ($valor): string {
                     name="confirmacao"
                     type="text"
                     autocomplete="off"
-                    required
-                >
+                    required>
                 <button style="background: #b91c1c; border-color: #b91c1c;" type="submit">
                     Reiniciar ano e apagar dados
                 </button>
             </form>
         </section>
 
-        </main>
-        
-     
-    
+    </main>
+
+
+
 </body>
+
 </html>

@@ -44,14 +44,51 @@ if ($requisicaoAjax) {
     }
 
     try {
+
+        // Verifica se a ação é finalizar o jogo
+        if (($corpo['acao'] ?? '') === 'finalizar') {
+
+            $idJogoFinalizar = filter_var(
+                $corpo['id_jogo'] ?? null,
+                FILTER_VALIDATE_INT
+            );
+
+            if ($idJogoFinalizar === false || $idJogoFinalizar < 1) {
+                throw new DomainException('Identificador de jogo inválido.');
+            }
+
+            $resultado = $jogoController->finalizar($idJogoFinalizar);
+
+            $responderJson([
+                'success' => true,
+                'message' => 'Jogo finalizado com sucesso!',
+                'resultado' => $resultado
+            ]);
+        }
+
+        // Caso contrário, atualiza o placar normalmente
         $placar = $jogoController->alterarPlacarAoVivo($corpo);
-        $responderJson(['success' => true, 'placar' => $placar]);
+
+        $responderJson([
+            'success' => true,
+            'placar' => $placar
+        ]);
     } catch (DomainException $e) {
+
         $status = $e->getMessage() === 'Jogo não encontrado.' ? 404 : 422;
-        $responderJson(['success' => false, 'message' => $e->getMessage()], $status);
+
+        $responderJson([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], $status);
     } catch (PDOException $e) {
-        error_log('Erro ao alterar placar ao vivo: ' . $e->getMessage());
-        $responderJson(['success' => false, 'message' => 'Não foi possível atualizar o placar.'], 500);
+
+        error_log('Erro ao processar jogo: ' . $e->getMessage());
+
+        $responderJson([
+            'success' => false,
+            'message' => 'Não foi possível processar o jogo.'
+        ], 500);
     }
 }
 
@@ -86,6 +123,7 @@ $placarB = $jogo === null ? 0 : (int) ($jogo['gols_pts_b'] ?? 0);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -94,6 +132,7 @@ $placarB = $jogo === null ? 0 : (int) ($jogo['gols_pts_b'] ?? 0);
     <link rel="stylesheet" href="../../Style/common.css">
     <link rel="stylesheet" href="../../Style/LiveScore.css">
 </head>
+
 <body class="live-score-page">
     <header class="live-score-header">
         <a href="inicio.php#jogos">Voltar aos jogos</a>
@@ -114,8 +153,7 @@ $placarB = $jogo === null ? 0 : (int) ($jogo['gols_pts_b'] ?? 0);
                 <div
                     class="live-score-teams"
                     id="scoreboard"
-                    data-id-jogo="<?= (int) $jogo['id'] ?>"
-                >
+                    data-id-jogo="<?= (int) $jogo['id'] ?>">
                     <article class="live-score-team">
                         <h2><?= $escape($jogo['sala_a']) ?></h2>
                         <output class="live-score-value" id="score-a" aria-live="polite">
@@ -127,14 +165,12 @@ $placarB = $jogo === null ? 0 : (int) ($jogo['gols_pts_b'] ?? 0);
                                 data-lado="a"
                                 data-operacao="decrementar"
                                 aria-label="Diminuir placar de <?= $escape($jogo['sala_a']) ?>"
-                                <?= $placarA === 0 ? 'disabled' : '' ?>
-                            >-</button>
+                                <?= $placarA === 0 ? 'disabled' : '' ?>>-</button>
                             <button
                                 type="button"
                                 data-lado="a"
                                 data-operacao="incrementar"
-                                aria-label="Aumentar placar de <?= $escape($jogo['sala_a']) ?>"
-                            >+</button>
+                                aria-label="Aumentar placar de <?= $escape($jogo['sala_a']) ?>">+</button>
                         </div>
                     </article>
                     <span class="live-score-separator" aria-hidden="true">×</span>
@@ -149,18 +185,17 @@ $placarB = $jogo === null ? 0 : (int) ($jogo['gols_pts_b'] ?? 0);
                                 data-lado="b"
                                 data-operacao="decrementar"
                                 aria-label="Diminuir placar de <?= $escape($jogo['sala_b']) ?>"
-                                <?= $placarB === 0 ? 'disabled' : '' ?>
-                            >-</button>
+                                <?= $placarB === 0 ? 'disabled' : '' ?>>-</button>
                             <button
                                 type="button"
                                 data-lado="b"
                                 data-operacao="incrementar"
-                                aria-label="Aumentar placar de <?= $escape($jogo['sala_b']) ?>"
-                            >+</button>
+                                aria-label="Aumentar placar de <?= $escape($jogo['sala_b']) ?>">+</button>
                         </div>
                     </article>
                 </div>
                 <p class="live-score-message" id="score-message" role="status" aria-live="polite"></p>
+                <a href="finalizar.php?id_jogo=<?= $jogo['id'] ?>" class="button" role="button">Finalizar Jogo</a>
             </section>
         <?php endif; ?>
     </main>
@@ -171,6 +206,7 @@ $placarB = $jogo === null ? 0 : (int) ($jogo['gols_pts_b'] ?? 0);
             const controls = Array.from(scoreboard.querySelectorAll('button[data-lado]'));
             const message = document.getElementById('score-message');
             let requestPending = false;
+            
 
             function updateScore(lado, value) {
                 document.getElementById(`score-${lado}`).textContent = String(value);
@@ -236,7 +272,72 @@ $placarB = $jogo === null ? 0 : (int) ($jogo['gols_pts_b'] ?? 0);
                     }
                 });
             });
+            const finalizarButton = document.querySelector('button[data-operacao="finalizar"]');
+
+            finalizarButton.addEventListener('click', async () => {
+
+                if (requestPending) {
+                    return;
+                }
+
+                const confirmar = confirm(
+                    'Tem certeza que deseja finalizar este jogo? Os pontos serão adicionados à classificação das salas.'
+                );
+
+                if (!confirmar) {
+                    return;
+                }
+
+                requestPending = true;
+                setControlsDisabled(true);
+                finalizarButton.disabled = true;
+
+                message.textContent = 'Finalizando jogo...';
+                message.classList.remove('error');
+
+                try {
+
+                    const response = await fetch('placar.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            acao: 'finalizar',
+                            id_jogo: Number(scoreboard.dataset.idJogo)
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok || !result.success) {
+                        throw new Error(result.message || 'Não foi possível finalizar o jogo.');
+                    }
+
+                    message.textContent = result.message;
+
+                    finalizarButton.textContent = 'Jogo Finalizado';
+
+                    // Impede novas alterações no placar
+                    controls.forEach((button) => {
+                        button.disabled = true;
+                    });
+
+                } catch (error) {
+
+                    message.textContent = error.message || 'Falha ao finalizar o jogo.';
+                    message.classList.add('error');
+
+                    finalizarButton.disabled = false;
+                    setControlsDisabled(false);
+
+                } finally {
+                    requestPending = false;
+                }
+            });
         </script>
     <?php endif; ?>
 </body>
+
 </html>
