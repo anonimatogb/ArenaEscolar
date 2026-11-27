@@ -65,48 +65,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $modalidadesSelecionadas = array_values(array_unique($modalidadesSelecionadas));
             }
 
-            if (
-                $nome === '' ||
-                $rm === '' ||
-                !in_array($genero, ['masculino', 'feminino'], true) ||
-                $modalidadesSelecionadas === []
-            ) {
-                $mensagem = 'Preencha os dados do aluno e marque ao menos uma modalidade válida.';
-                $tipoMensagem = 'error';
-            } else {
-                try {
-                    // Se o seu TimeController tiver um método para várias modalidades, use-o aqui.
-                    // Caso contrário, se cadastrarAlunoNaModalidade aceitar 1 modalidade por vez:
-                    if (method_exists($timeController, 'cadastrarAlunoEmModalidades')) {
-                        $timeController->cadastrarAlunoEmModalidades(
-                            $idUsuario,
-                            $nome,
-                            $rm,
-                            $genero,
-                            $modalidadesSelecionadas
-                        );
-                    } else {
-                        foreach ($modalidadesSelecionadas as $idMod) {
-                            $timeController->cadastrarAlunoNaModalidade(
-                                $idUsuario,
-                                $nome,
-                                $rm,
-                                $genero,
-                                $idMod
-                            );
-                        }
-                    }
-                    $mensagem = 'Aluno cadastrado e adicionado às modalidades selecionadas.';
-                } catch (DomainException $e) {
-                    $mensagem = $e->getMessage();
+                if (
+                    $nome === '' ||
+                    $rm === '' ||
+                    !in_array($genero, ['masculino', 'feminino'], true) ||
+                    $modalidadesSelecionadas === []
+                ) {
+                    $mensagem = 'Preencha os dados do aluno e marque ao menos uma modalidade válida.';
                     $tipoMensagem = 'error';
-                } catch (PDOException $e) {
-                    error_log('Erro ao cadastrar aluno na modalidade: ' . $e->getMessage());
-                    $mensagem = 'Não foi possível cadastrar. Verifique se o RM já está cadastrado.';
-                    $tipoMensagem = 'error';
+                } else {
+                   
+try {
+
+    $timeController->cadastrarAlunoEmModalidades(
+        $idUsuario,
+        $nome,
+        $rm,
+        $genero,
+        $modalidadesSelecionadas
+    );
+
+    $mensagem = 'Aluno cadastrado e adicionado às modalidades selecionadas.';
+
+} catch (DomainException $e) {
+
+    $mensagem = $e->getMessage();
+    $tipoMensagem = 'error';
+
+} catch (PDOException $e) {
+
+    error_log(
+        'Erro ao cadastrar aluno nas modalidades: '
+        . $e->getMessage()
+    );
+
+    $mensagem = 'Não foi possível cadastrar. Verifique se o RM já está cadastrado.';
+    $tipoMensagem = 'error';
+}
+
                 }
-            }
-            break;
+                break;
 
         case 'atualizar_aluno':
             $ancora = 'editar-aluno';
@@ -164,22 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             break;
 
-        case 'atualizar_representante':
-            $ancora = 'perfil';
-            $senha = is_string($_POST['senha'] ?? null) ? $_POST['senha'] : '';
-
-            if ($nome === '' || strlen($senha) < 4) {
-                $mensagem = 'Informe seu nome e uma senha com pelo menos 4 caracteres.';
-                $tipoMensagem = 'error';
-            } elseif ($usuarioController->atualizarRepresentante($idUsuario, $nome, $senha)) {
-                $_SESSION['nome'] = $nome;
-                $mensagem = 'Perfil atualizado com sucesso.';
-            } else {
-                $mensagem = 'Não foi possível atualizar o perfil.';
-                $tipoMensagem = 'error';
-            }
-            break;
-
+        
         default:
             $mensagem = 'Ação inválida.';
             $tipoMensagem = 'error';
@@ -275,7 +258,7 @@ $escape = static function ($valor): string {
 <body class="dashboard-page">
     <header class="dashboard-header">
         <div>
-            <p class="dashboard-eyebrow">Arena Escolar</p>
+            <p class="dashboard-eyebrow">INTERCLASS </p>
             <h1>Painel do representante</h1>
             <p>Bem-vindo, <?= $escape($_SESSION['nome'] ?? '') ?>. Gerencie sua sala.</p>
         </div>
@@ -339,43 +322,7 @@ $escape = static function ($valor): string {
                     <p>Não há modalidades com vagas disponíveis para sua sala.</p>
                 <?php endif; ?>
 
-                <h2>Alunos e representantes da sala</h2>
-                <?php if ($alunosSala === []): ?>
-                    <p>Nenhum aluno cadastrado nesta sala.</p>
-                <?php else: ?>
-                    <div class="dashboard-table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>RM</th>
-                                    <th>Gênero</th>
-                                    <th>Tipo</th>
-                                    <th>Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($alunosSala as $aluno): ?>
-                                    <tr>
-                                        <td><?= $escape($aluno['nome']) ?></td>
-                                        <td><?= $escape($aluno['rm']) ?></td>
-                                        <td><?= $escape($aluno['genero']) ?></td>
-                                        <td><?= $escape($aluno['tipo']) ?></td>
-                                        <td>
-                                            <?php if ($aluno['tipo'] === 'aluno'): ?>
-                                                <a href="inicio.php?editar_aluno=<?= (int) $aluno['id'] ?>#editar-aluno">
-                                                    Editar
-                                                </a>
-                                            <?php else: ?>
-                                                —
-                                            <?php endif; ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                <?php endif; ?>
+                
             </section>
 
             <section class="dashboard-card" id="editar-aluno">
@@ -437,7 +384,45 @@ $escape = static function ($valor): string {
                     <p>Selecione “Editar” ao lado de um aluno para abrir o formulário aqui.</p>
                 <?php endif; ?>
             </section>
-
+<section class="dashboard-card dashboard-card-wide">
+    <h2>Alunos e representantes da sala</h2>
+                <?php if ($alunosSala === []): ?>
+                    <p>Nenhum aluno cadastrado nesta sala.</p>
+                <?php else: ?>
+                    <div class="dashboard-table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>RM</th>
+                                    <th>Gênero</th>
+                                    <th>Tipo</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($alunosSala as $aluno): ?>
+                                    <tr>
+                                        <td><?= $escape($aluno['nome']) ?></td>
+                                        <td><?= $escape($aluno['rm']) ?></td>
+                                        <td><?= $escape($aluno['genero']) ?></td>
+                                        <td><?= $escape($aluno['tipo']) ?></td>
+                                        <td>
+                                            <?php if ($aluno['tipo'] === 'aluno'): ?>
+                                                <a href="inicio.php?editar_aluno=<?= (int) $aluno['id'] ?>#editar-aluno">
+                                                    Editar
+                                                </a>
+                                            <?php else: ?>
+                                                —
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+                </section>
             <section class="dashboard-card dashboard-card-wide" id="times-montados">
                 <h2>Times da minha sala</h2>
                 <p>As equipes e seus participantes são exibidos somente para a sala vinculada a este representante.</p>
@@ -472,6 +457,7 @@ $escape = static function ($valor): string {
                     </div>
                 <?php endif; ?>
             </section>
+            
         </div>
     </main>
 </body>

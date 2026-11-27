@@ -28,10 +28,10 @@
 		<MauiXamlInflator>SourceGen</MauiXamlInflator>
 
 		<!-- Display name -->
-		<ApplicationTitle>InterClass.App</ApplicationTitle>
+		<ApplicationTitle>InterClass</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.interclass.app</ApplicationId>
+		<ApplicationId>com.interclass.app</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -49,7 +49,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\logo.png" Color="#FFFFFF" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
@@ -65,6 +65,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 		<PackageReference Include="MySqlConnector" Version="2.6.2" />
@@ -75,6 +76,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Include="Resources\AppIcon\logo.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Modalidades.xaml.cs">
+	    <DependentUpon>Modalidades.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Login.xaml.cs">
 	    <DependentUpon>Login.xaml</DependentUpon>
 	  </Compile>
@@ -87,16 +95,16 @@
 	  <Compile Update="Classificacao.xaml.cs">
 	    <DependentUpon>Classificacao.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Cadastro.xaml.cs">
-	    <DependentUpon>Cadastro.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Usuario.xaml.cs">
-	    <DependentUpon>Usuario.xaml</DependentUpon>
+	  <Compile Update="EditarAluno.xaml.cs">
+	    <DependentUpon>EditarAluno.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Cadastro.xaml">
+	  <MauiXaml Update="Modalidades.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="EditarAluno.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\Styles.xaml" Inflator="Runtime" />
@@ -110,9 +118,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Classificacao.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Usuario.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

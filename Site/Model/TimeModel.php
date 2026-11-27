@@ -233,6 +233,185 @@ class TimeModel
         }
     }
 
+
+public function cadastrarAlunoEmModalidades(
+    int $idSala,
+    string $nome,
+    string $rm,
+    string $genero,
+    array $idModalidades
+): int {
+
+    // Remove IDs repetidos e organiza a lista
+    $idModalidades = array_values(array_unique(
+        array_map('intval', $idModalidades)
+    ));
+
+    if (empty($idModalidades)) {
+        throw new DomainException(
+            'Selecione pelo menos uma modalidade.'
+        );
+    }
+
+    foreach ($idModalidades as $idModalidade) {
+        if ($idModalidade <= 0) {
+            throw new DomainException(
+                'Uma das modalidades selecionadas é inválida.'
+            );
+        }
+    }
+
+    sort($idModalidades, SORT_NUMERIC);
+
+    $this->pdo->beginTransaction();
+
+    try {
+
+        // 1. Cadastra o aluno apenas uma vez
+        $stmt = $this->pdo->prepare(
+            "INSERT INTO usuario
+                (nome, rm, senha, tipo, id_sala, genero)
+             VALUES
+                (:nome, :rm, NULL, 'aluno', :id_sala, :genero)"
+        );
+
+        $stmt->execute([
+            ':nome' => trim($nome),
+            ':rm' => trim($rm),
+            ':id_sala' => $idSala,
+            ':genero' => trim($genero)
+        ]);
+
+        $idAluno = (int) $this->pdo->lastInsertId();
+
+
+        // 2. Prepara os comandos SQL
+        $stmtModalidade = $this->pdo->prepare(
+            "SELECT id, max_jogadores AS quantidade, genero
+             FROM modalidade
+             WHERE id = :id_modalidade
+             FOR UPDATE"
+        );
+
+        $stmtTime = $this->pdo->prepare(
+            "SELECT id
+             FROM `time`
+             WHERE id_sala = :id_sala
+               AND id_modalidade = :id_modalidade
+             FOR UPDATE"
+        );
+
+        $stmtCriarTime = $this->pdo->prepare(
+            "INSERT INTO `time` (id_sala, id_modalidade)
+             VALUES (:id_sala, :id_modalidade)"
+        );
+
+        $stmtContar = $this->pdo->prepare(
+            "SELECT COUNT(*)
+             FROM time_jogador
+             WHERE id_time = :id_time"
+        );
+
+        $stmtAdicionar = $this->pdo->prepare(
+            "INSERT INTO time_jogador (id_time, id_usuario)
+             VALUES (:id_time, :id_usuario)"
+        );
+
+
+        // 3. Percorre todas as modalidades selecionadas
+        foreach ($idModalidades as $idModalidade) {
+
+            // Busca e bloqueia a modalidade
+            $stmtModalidade->execute([
+                ':id_modalidade' => $idModalidade
+            ]);
+
+            $modalidade = $stmtModalidade->fetch(PDO::FETCH_ASSOC);
+
+            if (!$modalidade) {
+                throw new DomainException(
+                    'Uma das modalidades selecionadas não existe.'
+                );
+            }
+
+            // Verifica compatibilidade de gênero
+            if (!$this->generoCompativel(
+                $modalidade['genero'],
+                $genero
+            )) {
+                throw new DomainException(
+                    'O gênero do aluno não é compatível com a modalidade '
+                    . $modalidade['id'] . '.'
+                );
+            }
+
+
+            // 4. Busca o time da sala nessa modalidade
+            $stmtTime->execute([
+                ':id_sala' => $idSala,
+                ':id_modalidade' => $idModalidade
+            ]);
+
+            $idTime = $stmtTime->fetchColumn();
+
+
+            // 5. Se não existir, cria o time
+            if ($idTime === false) {
+
+                $stmtCriarTime->execute([
+                    ':id_sala' => $idSala,
+                    ':id_modalidade' => $idModalidade
+                ]);
+
+                $idTime = (int) $this->pdo->lastInsertId();
+
+            } else {
+
+                $idTime = (int) $idTime;
+            }
+
+
+            // 6. Verifica o limite de participantes
+            $stmtContar->execute([
+                ':id_time' => $idTime
+            ]);
+
+            $participantes = (int) $stmtContar->fetchColumn();
+
+            if ($participantes >= (int) $modalidade['quantidade']) {
+                throw new DomainException(
+                    'O time da modalidade '
+                    . $modalidade['id']
+                    . ' já atingiu o limite de participantes.'
+                );
+            }
+
+
+            // 7. Adiciona o aluno ao time
+            $stmtAdicionar->execute([
+                ':id_time' => $idTime,
+                ':id_usuario' => $idAluno
+            ]);
+        }
+
+
+        // 8. Confirma todos os cadastros
+        $this->pdo->commit();
+
+        return $idAluno;
+
+    } catch (Throwable $e) {
+
+        // Se alguma etapa falhar, desfaz tudo
+        if ($this->pdo->inTransaction()) {
+            $this->pdo->rollBack();
+        }
+
+        throw $e;
+    }
+}
+
+
     public function atualizarAlunoEModalidades(
         int $idSala,
         int $idAluno,

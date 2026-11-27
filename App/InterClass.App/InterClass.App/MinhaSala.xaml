@@ -89,7 +89,7 @@
                                FontSize="16"
                                FontAttributes="Bold"
                                TextColor="{StaticResource TextPrimary}" />
-                        <Label Text="28 alunos vinculados à sala"
+                        <Label Text="{Binding Vinculados}"
                                Style="{StaticResource SubTitulo}"
                                FontSize="12" />
                     </VerticalStackLayout>
@@ -112,12 +112,6 @@
                                                    TextColor="{StaticResource TextSecondary}" />
                                         </VerticalStackLayout>
 
-                                        <Label Grid.Column="1"
-                                               Text="{Binding Papel}"
-                                               FontSize="12"
-                                               FontAttributes="Bold"
-                                               TextColor="{StaticResource Primary}"
-                                               VerticalOptions="Center" />
                                     </Grid>
                                     <BoxView HeightRequest="1" Color="#F1F5F9" />
                                 </VerticalStackLayout>
@@ -127,16 +121,48 @@
 
                     <!-- Rodapé da lista -->
                     <Grid ColumnDefinitions="*, Auto" Margin="0,4,0,0">
-                        <Label Text="Mostrando 6 de 28 alunos"
-                               FontSize="11"
-                               TextColor="{StaticResource TextSecondary}"
-                               VerticalOptions="Center" />
-                        <Label Grid.Column="1"
-                               Text="1  2  3  4  5  →"
-                               FontSize="12"
-                               TextColor="{StaticResource TextSecondary}"
-                               VerticalOptions="Center" />
+
+                        <Label Text="{Binding TextoPaginacao}"
+           FontSize="11"
+           TextColor="{StaticResource TextSecondary}"
+           VerticalOptions="Center" />
+
+                        <HorizontalStackLayout Grid.Column="1"
+                           Spacing="12"
+                           VerticalOptions="Center">
+
+                            <Label Text="←"
+               FontSize="16"
+               TextColor="{StaticResource Primary}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="Anterior_Clicked" />
+                                </Label.GestureRecognizers>
+                            </Label>
+
+                            <Label Text="{Binding Paginas}"
+               FontSize="12"
+               TextColor="{StaticResource TextSecondary}"
+               VerticalOptions="Center" />
+
+                            <Label Text="→"
+               FontSize="16"
+               TextColor="{StaticResource Primary}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="Proxima_Clicked" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            
+
+                        </HorizontalStackLayout>
                     </Grid>
+                    <Button Text="Editar Alunos →"
+        IsVisible="{Binding IsEditarAlunos}"
+        TextColor="{StaticResource Primary}"
+        BackgroundColor="{StaticResource White}"
+        FontAttributes="Bold"
+        FontSize="13"
+        Margin="0,4,0,0"
+        Clicked="EditarAlunos"/>
 
                 </VerticalStackLayout>
             </Frame>
@@ -152,7 +178,15 @@
                            FontSize="16"
                            FontAttributes="Bold"
                            TextColor="{StaticResource TextPrimary}" />
-
+                    <Button Grid.Column="1" 
+                    Text="Veja as modalidades"
+                    BackgroundColor="{StaticResource Primary}"
+                    Clicked="IrModalidade"
+                    HeightRequest="38"
+                    FontSize="13"
+                    CornerRadius="8"
+                    Padding="14,0"
+                    />
 
                     <Label Text="As inscrições coletivas são organizadas pelo perfil da sala."
                            FontSize="12"

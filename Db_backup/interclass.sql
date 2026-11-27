@@ -157,15 +157,15 @@ CREATE TABLE `time_jogador` (
 -- Estrutura para tabela `usuario`
 --
 
-CREATE TABLE `usuario` (
-  `id` int(11) NOT NULL,
-  `nome` varchar(150) NOT NULL,
-  `rm` varchar(30) DEFAULT NULL,
-  `senha` varchar(255) DEFAULT NULL,
-  `tipo` enum('admin','representante','aluno') NOT NULL DEFAULT 'aluno',
-  `id_sala` int(11) NOT NULL,
-  `genero` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CREATE TABLE `usuario` (
+    `id` int(11) NOT NULL,
+    `nome` varchar(150) NOT NULL,
+    `rm` varchar(30) DEFAULT NULL,
+    `senha` varchar(255) DEFAULT NULL,
+    `tipo` enum('admin','representante','aluno') NOT NULL DEFAULT 'aluno',
+    `id_sala` int(11) NOT NULL,
+    `genero` varchar(20) DEFAULT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Despejando dados para a tabela `usuario`
@@ -174,59 +174,39 @@ CREATE TABLE `usuario` (
 INSERT INTO `usuario` (`id`, `nome`, `rm`, `senha`, `tipo`, `id_sala`, `genero`) VALUES
 (6, 'Vitor Cardoso', NULL, '$2y$10$iKYvwr5yBlyO0guR70eUoOU/5pw5WQsmvWkwEJfNK0FZcwcmtLPWK', 'admin', 1, NULL),
 (7, 'Gabriel Machado', NULL, '$2y$10$LYpLIp/o9T.EtlCbQv0QXOcXKQMdJ2Wpy0pTf52jHfdcernrF6BQa', 'admin', 1, NULL),
-(11, 'Miguel', '3415', NULL, 'aluno', 5, 'masculino'),
-(14, 'Luis', '3264', NULL, 'aluno', 5, 'masculino'),
-(15, 'João', '3467', NULL, 'aluno', 5, 'masculino'),
-(16, 'Jhow', '6346', NULL, 'aluno', 5, 'masculino'),
-(17, 'Vitor', '2314', NULL, 'aluno', 5, 'masculino'),
-(18, 'Dhiogo', '2421', NULL, 'aluno', 5, 'masculino'),
-(19, 'Fernando', '2422', NULL, 'aluno', 5, 'masculino'),
-(20, 'Kayky', '4124', NULL, 'aluno', 5, 'masculino'),
-(21, 'Esdra', '3523', NULL, 'aluno', 5, 'masculino'),
-(22, 'Arthur', '1315', NULL, 'aluno', 5, 'masculino'),
-(23, 'Marcela', '1351', NULL, 'aluno', 5, 'feminino'),
-(24, 'Guilherma', '5325', NULL, 'aluno', 5, 'feminino'),
-(26, 'Ana', '1421', NULL, 'aluno', 5, 'feminino'),
-(27, 'Laura', '3123', NULL, 'aluno', 5, 'feminino'),
-(28, 'Amanda', '0616', '$2y$10$nwMcJVHjkdDP4helGVZesOoB3752AzkaZalsLc408fPgkPO/Gu5wa', 'representante', 5, 'feminino'),
-(30, 'Samanta', '1232', NULL, 'aluno', 5, 'feminino'),
-(34, 'Lucas', '1234', NULL, 'aluno', 4, 'masculino'),
-(35, 'Matheus', '1235', NULL, 'aluno', 4, 'masculino'),
-(36, 'Rafael', '1236', NULL, 'aluno', 4, 'masculino'),
-(37, 'Pedro', '1237', NULL, 'aluno', 4, 'masculino'),
-(38, 'Gustavo', '1238', NULL, 'aluno', 4, 'masculino'),
-(39, 'Enzo', '1239', NULL, 'aluno', 4, 'masculino'),
-(40, 'Bruno', '1240', NULL, 'aluno', 4, 'masculino'),
-(41, 'Thiago', '1241', NULL, 'aluno', 4, 'masculino'),
-(42, 'Felipe', '1242', NULL, 'aluno', 4, 'masculino'),
-(43, 'Cauã', '1243', NULL, 'aluno', 4, 'masculino'),
-(44, 'Mariana', '1244', NULL, 'aluno', 4, 'feminino'),
-(45, 'Beatriz', '1245', NULL, 'aluno', 4, 'feminino'),
-(46, 'Camila', '0999', '$2y$10$bKVr1R8QNGg6wMHlSIdL1OgI/qcYRwOW.Wxydb7VwB5icqch1NJKe', 'representante', 4, 'feminino'),
-(47, 'Júlia', '1247', NULL, 'aluno', 4, 'feminino'),
-(48, 'Larissa', '1248', NULL, 'aluno', 4, 'feminino'),
+(11, 'Miguel', '123415', NULL, 'aluno', 5, 'masculino'),
+(14, 'Luis', '563264', NULL, 'aluno', 5, 'masculino'),
+(15, 'João', '63463467', NULL, 'aluno', 5, 'masculino'),
+(16, 'Jhow', '7346346', NULL, 'aluno', 5, 'masculino'),
+(17, 'Vitor', '12314', NULL, 'aluno', 5, 'masculino'),
+(18, 'Dhiogo', '15512421', NULL, 'aluno', 5, 'masculino'),
+(19, 'Fernando', '152421', NULL, 'aluno', 5, 'masculino'),
+(20, 'Kayky', '51214124', NULL, 'aluno', 5, 'masculino'),
+(21, 'Esdra', '253523', NULL, 'aluno', 5, 'masculino'),
+(22, 'Arthur', '51315', NULL, 'aluno', 5, 'masculino'),
+(23, 'Marcela', '51351', NULL, 'aluno', 5, 'feminino'),
+(24, 'Guilherma', '25325', NULL, 'aluno', 5, 'feminino'),
+(26, 'Ana', '421421', NULL, 'aluno', 5, 'feminino'),
+(27, 'Laura', '13123', NULL, 'aluno', 5, 'feminino'),
+(28, 'Amanda', '616', '$2y$10$nwMcJVHjkdDP4helGVZesOoB3752AzkaZalsLc408fPgkPO/Gu5wa', 'representante', 5, 'feminino'),
+(30, 'Samanta', '421232', NULL, 'aluno', 5, 'feminino'),
+(34, 'Lucas', '781234', NULL, 'aluno', 4, 'masculino'),
+(35, 'Matheus', '781235', NULL, 'aluno', 4, 'masculino'),
+(36, 'Rafael', '781236', NULL, 'aluno', 4, 'masculino'),
+(37, 'Pedro', '781237', NULL, 'aluno', 4, 'masculino'),
+(38, 'Gustavo', '781238', NULL, 'aluno', 4, 'masculino'),
+(39, 'Enzo', '781239', NULL, 'aluno', 4, 'masculino'),
+(40, 'Bruno', '781240', NULL, 'aluno', 4, 'masculino'),
+(41, 'Thiago', '781241', NULL, 'aluno', 4, 'masculino'),
+(42, 'Felipe', '781242', NULL, 'aluno', 4, 'masculino'),
+(43, 'Cauã', '781243', NULL, 'aluno', 4, 'masculino'),
+(44, 'Mariana', '781244', NULL, 'aluno', 4, 'feminino'),
+(45, 'Beatriz', '781245', NULL, 'aluno', 4, 'feminino'),
+(46, 'Camila', '999', '$2y$10$bKVr1R8QNGg6wMHlSIdL1OgI/qcYRwOW.Wxydb7VwB5icqch1NJKe', 'representante', 4, 'feminino'),
+(47, 'Júlia', '781247', NULL, 'aluno', 4, 'feminino'),
+(48, 'Larissa', '781248', NULL, 'aluno', 4, 'feminino'),
 (49, 'Lorena', '3553', NULL, 'aluno', 4, 'feminino'),
-(51, 'banana', '0334', NULL, 'aluno', 4, 'feminino'),
-(52, 'André', '2001', NULL, 'aluno', 3, 'masculino'),
-(53, 'Bernardo', '2002', NULL, 'aluno', 3, 'masculino'),
-(54, 'Caio', '2003', NULL, 'aluno', 3, 'masculino'),
-(55, 'Daniel', '2004', NULL, 'aluno', 3, 'masculino'),
-(56, 'Eduardo', '2005', NULL, 'aluno', 3, 'masculino'),
-(57, 'Gabriel', '2006', NULL, 'aluno', 3, 'masculino'),
-(58, 'Heitor', '2007', NULL, 'aluno', 3, 'masculino'),
-(59, 'Igor', '2008', NULL, 'aluno', 3, 'masculino'),
-(60, 'Leonardo', '2009', NULL, 'aluno', 3, 'masculino'),
-(61, 'Nicolas', '2010', NULL, 'aluno', 3, 'masculino'),
-(62, 'Alice', '2011', NULL, 'aluno', 3, 'feminino'),
-(63, 'Bianca', '2012', NULL, 'aluno', 3, 'feminino'),
-(64, 'Clara', '2013', NULL, 'aluno', 3, 'feminino'),
-(65, 'Eduarda', '2014', NULL, 'aluno', 3, 'feminino'),
-(66, 'Gabriela', '2015', NULL, 'aluno', 3, 'feminino'),
-(67, 'Isabela', '2016', NULL, 'aluno', 3, 'feminino'),
-(68, 'Letícia', '2017', NULL, 'aluno', 3, 'feminino'),
-(69, 'Manuela', '2018', NULL, 'aluno', 3, 'feminino'),
-(70, 'Nicole', '2019', NULL, 'aluno', 3, 'feminino'),
-(71, 'Sofia', '2020', NULL, 'aluno', 3, 'feminino');
+(51, 'banana', '334', NULL, 'aluno', 4, 'feminino');
 
 --
 -- Índices para tabelas despejadas
@@ -259,9 +239,9 @@ ALTER TABLE `placar`
 --
 -- Índices de tabela `sala`
 --
-ALTER TABLE `sala`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uk_sala_nome` (`nome`);
+  ALTER TABLE `sala`
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `uk_sala_nome` (`nome`);
 
 --
 -- Índices de tabela `time`
@@ -282,10 +262,10 @@ ALTER TABLE `time_jogador`
 --
 -- Índices de tabela `usuario`
 --
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uk_usuario_rm` (`rm`),
-  ADD KEY `fk_usuario_sala` (`id_sala`);
+  ALTER TABLE `usuario`
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `uk_usuario_rm` (`rm`),
+    ADD KEY `fk_usuario_sala` (`id_sala`);
 
 --
 -- AUTO_INCREMENT para tabelas despejadas
