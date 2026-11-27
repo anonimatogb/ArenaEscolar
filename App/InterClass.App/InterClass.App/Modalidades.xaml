@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="InterClass.App.Modalidades"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="#F8FAFC">
+    <Grid RowDefinitions="Auto,*">
+
+    <VerticalStackLayout Grid.Row="0"
+                     Padding="16,12,16,10"
+                     Spacing="16">
+
+        <Grid ColumnDefinitions="44,*,44"
+HeightRequest="48">
+
+            <!-- Logo -->
+            <Image Source="logo.png"
+     Grid.Column="2"
+     WidthRequest="68"
+     HeightRequest="68"
+     Aspect="AspectFit"
+     HorizontalOptions="End"
+     VerticalOptions="Center"/>
+
+            <Label Grid.Column="1"
+ Text="MODALIDADE"
+ FontSize="18"
+ FontAttributes="Bold"
+ TextColor="{StaticResource Secondary}"
+ VerticalOptions="Center"
+ HorizontalTextAlignment="Center"/>
+
+            <!-- Voltar -->
+            <Button Grid.Column="0"
+      ImageSource="seta.png"
+      HorizontalOptions="Start"
+      HeightRequest="32"
+      WidthRequest="38"
+      BackgroundColor="Transparent"
+      Padding="2"
+      Clicked="Botao_Voltar"/>
+
+        </Grid>
+    </VerticalStackLayout>
+    <!-- CONTEÚDO -->
+        <ScrollView Grid.Row="1">
+
+            <VerticalStackLayout Padding="20"
+                                 Spacing="18">
+
+
+                <CollectionView ItemsSource="{Binding ModalidadesLista}"
+                                SelectionMode="None">
+
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Padding="20"
+                                             Spacing="8"
+                                             HorizontalOptions="Center">
+
+                            <Label Text="Nenhuma modalidade encontrada."
+                                   TextColor="#64748B"
+                                   FontSize="14"
+                                   HorizontalTextAlignment="Center"/>
+
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate>
+
+                            <Border BackgroundColor="White"
+                                    Stroke="#E2E8F0"
+                                    StrokeThickness="1"
+                                    Padding="16"
+                                    Margin="0,0,0,16">
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="14"/>
+                                </Border.StrokeShape>
+
+                                <VerticalStackLayout Spacing="14">
+
+                                    <!-- NOME DA MODALIDADE -->
+                                    <Grid ColumnDefinitions="*,Auto">
+
+                                        <VerticalStackLayout Spacing="3">
+
+                                            <Label Text="{Binding Nome}"
+                                                   FontSize="20"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#0F172A"/>
+
+                                            <Label Text="{Binding Genero}"
+                                                   FontSize="12"
+                                                   TextColor="#64748B"/>
+
+                                        </VerticalStackLayout>
+
+                                        <Border Grid.Column="1"
+                                                BackgroundColor="#FFF1E6"
+                                                Padding="10,5"
+                                                VerticalOptions="Center">
+
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8"/>
+                                            </Border.StrokeShape>
+
+                                            <Label Text="{Binding Times.Count, StringFormat='{0} times'}"
+                                                   TextColor="#F97316"
+                                                   FontSize="12"
+                                                   FontAttributes="Bold"/>
+
+                                        </Border>
+
+                                    </Grid>
+
+                                    <BoxView HeightRequest="1"
+                                             Color="#E2E8F0"/>
+
+                                    <!-- TIMES DA MODALIDADE -->
+                                    <VerticalStackLayout
+                                        BindableLayout.ItemsSource="{Binding Times}"
+                                        Spacing="10">
+
+                                        <BindableLayout.ItemTemplate>
+
+                                            <DataTemplate>
+
+                                                <Border BackgroundColor="#F8FAFC"
+                                                        Stroke="#E2E8F0"
+                                                        StrokeThickness="1"
+                                                        Padding="12">
+
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="10"/>
+                                                    </Border.StrokeShape>
+
+                                                    <VerticalStackLayout Spacing="10">
+
+                                                        <!-- NOME DA SALA -->
+                                                        <Grid ColumnDefinitions="*,Auto">
+
+                                                            <Label Text="{Binding NomeSala}"
+                                                                   FontSize="16"
+                                                                   FontAttributes="Bold"
+                                                                   TextColor="#F97316"
+                                                                   VerticalOptions="Center"/>
+
+                                                            <Label Grid.Column="1"
+                                                                   Text="{Binding QuantidadeIntegrantes, StringFormat='{0} integrantes'}"
+                                                                   FontSize="11"
+                                                                   TextColor="#64748B"
+                                                                   VerticalOptions="Center"/>
+
+                                                        </Grid>
+
+                                                        <BoxView HeightRequest="1"
+                                                                 Color="#E2E8F0"/>
+
+                                                        <!-- INTEGRANTES -->
+                                                        <VerticalStackLayout
+                                                            BindableLayout.ItemsSource="{Binding Integrantes}"
+                                                            Spacing="7">
+
+                                                            <BindableLayout.ItemTemplate>
+
+                                                                <DataTemplate>
+
+                                                                    <Grid ColumnDefinitions="Auto,*"
+                                                                          ColumnSpacing="9">
+
+                                                                        <Border BackgroundColor="#E2E8F0"
+                                                                                HeightRequest="28"
+                                                                                WidthRequest="28"
+                                                                                StrokeThickness="0"
+                                                                                VerticalOptions="Center">
+
+                                                                            <Border.StrokeShape>
+                                                                                <RoundRectangle CornerRadius="14"/>
+                                                                            </Border.StrokeShape>
+
+                                                                            <Label Text="A"
+                                                                                   TextColor="#0F172A"
+                                                                                   FontSize="12"
+                                                                                   FontAttributes="Bold"
+                                                                                   HorizontalOptions="Center"
+                                                                                   VerticalOptions="Center"/>
+
+                                                                        </Border>
+
+                                                                        <Label Grid.Column="1"
+                                                                               Text="{Binding .}"
+                                                                               FontSize="14"
+                                                                               TextColor="#1E293B"
+                                                                               VerticalOptions="Center"/>
+
+                                                                    </Grid>
+
+                                                                </DataTemplate>
+
+                                                            </BindableLayout.ItemTemplate>
+
+                                                        </VerticalStackLayout>
+
+                                                        <Label Text="Nenhum integrante cadastrado."
+                                                               TextColor="#94A3B8"
+                                                               FontSize="12"
+                                                               IsVisible="{Binding QuantidadeIntegrantes, Converter={StaticResource ZeroToBoolConverter}}"/>
+
+                                                    </VerticalStackLayout>
+
+                                                </Border>
+
+                                            </DataTemplate>
+
+                                        </BindableLayout.ItemTemplate>
+
+                                    </VerticalStackLayout>
+
+                                    <Label Text="Nenhum time cadastrado nesta modalidade."
+                                           TextColor="#94A3B8"
+                                           FontSize="12"
+                                           IsVisible="{Binding Times.Count, Converter={StaticResource ZeroToBoolConverter}}"/>
+
+                                </VerticalStackLayout>
+
+                            </Border>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+    </Grid>
+
+</ContentPage>

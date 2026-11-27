@@ -1,9 +1,119 @@
+using BCrypt.Net;
 using MySqlConnector;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using static InterClass.App.MainPage;
 
 namespace InterClass.App.Database
 {
+    public class DadosSala
+    {
+        public int Posicao { get; set; }
+        public int IdSala { get; set; }
+        public string NomeSala { get; set; }
+        public int QuantidadeAlunos { get; set; }
+    }
+
+    public class DadosClassificacao
+    {
+        public int Posicao { get; set; }
+        public int IdSala { get; set; }
+        public string NomeSala { get; set; } = "";
+        public int Pontos { get; set; }
+
+        public bool IsMinhaSala { get; set; }
+
+        public string PosicaoFormatada => $"{Posicao}º";
+
+        public string PontosFormatados => $"{Pontos} pontos";
+
+        public string CorFundo =>
+            IsMinhaSala ? "#FFF1E6" : "#FFFFFF";
+
+        public string CorBorda =>
+            IsMinhaSala ? "#F97316" : "#E2E8F0";
+
+        public string CorPosicao =>
+            IsMinhaSala ? "#F97316" : "#64748B";
+
+        public string Identificacao =>
+            IsMinhaSala ? "MINHA SALA" : "";
+    }
+    public class DadosAluno
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string Modalidades { get; set; }
+    }
+    public class DadosJogo
+    {
+        public int Id { get; set; }
+        public string Modalidade { get; set; }
+        public string TimeA { get; set; }
+        public string TimeB { get; set; }
+        public DateTime Dia { get; set; }
+        public TimeSpan Horario { get; set; }
+        public string Quadra { get; set; }
+        public string Status { get; set; }
+        public bool IsMinhaSala { get; set; }
+
+        public DateTime DataHora => Dia.Date.Add(Horario);
+
+        public string DiaFormatado =>
+            Dia.ToString("dddd, dd/MM/yyyy",
+                new System.Globalization.CultureInfo("pt-BR"));
+
+        public string HorarioFormatado =>
+            Horario.ToString(@"hh\:mm");
+
+        public string CorFundo =>
+            IsMinhaSala ? "#FFF1E6" :
+            DataHora < DateTime.Now ? "#F1F5F9" : "#FFFFFF";
+
+        public string CorBorda =>
+            IsMinhaSala ? "#F97316" : "#E2E8F0";
+
+        public string Identificacao =>
+            IsMinhaSala ? "JOGO DA SUA SALA" : "INTERCLASSE";
+
+        public string StatusExibicao
+        {
+            get
+            {
+                if (Status == "finalizado")
+                    return "Finalizado";
+
+                if (DataHora < DateTime.Now)
+                    return "Data passada";
+
+                return "Agendado";
+            }
+        }
+
+        public string DescricaoProximoJogo =>
+            $"{TimeA} × {TimeB} — {Modalidade}";
+
+        }
+    public class DadosModalidade
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = "";
+        public string Genero { get; set; } = "";
+
+        public ObservableCollection<DadosTimeModalidade> Times { get; set; } = new();
+    }
+
+    public class DadosTimeModalidade
+    {
+        public int Id { get; set; }
+        public string NomeSala { get; set; } = "";
+
+        public ObservableCollection<string> Integrantes { get; set; } = new();
+
+        public int QuantidadeIntegrantes => Integrantes.Count;
+    }
+
     public class Service
     {
         private string _connectionString;
@@ -31,25 +141,7 @@ namespace InterClass.App.Database
             cmd.ExecuteNonQuery();
         }
 
-        public bool VerificarUsuario(int rm, string senha)
-        {
-            using var connection =
-                new MySqlConnection(_connectionString);
-
-            connection.Open();
-
-            using var cmd = new MySqlCommand(
-                "SELECT COUNT(*) FROM usuario WHERE rm = @rm AND senha = @senha",
-                connection);
-
-            cmd.Parameters.AddWithValue("@rm", rm);
-            cmd.Parameters.AddWithValue("@senha", senha);
-
-            long count = (long)cmd.ExecuteScalar();
-
-            return count > 0;
-        }
-        public bool VerificarRM(int rm)
+        public bool VerificarUsuario(int rm)
         {
             using var connection =
                 new MySqlConnection(_connectionString);
@@ -66,18 +158,28 @@ namespace InterClass.App.Database
 
             return count > 0;
         }
-        public void AtualizarSenha(int id, int novasenha)
+        public bool VerificarUsuarioeSenha(int rm, string senha)
         {
-            using var connection =
-                new MySqlConnection(_connectionString);
+            using var connection = new MySqlConnection(_connectionString);
+
             connection.Open();
+
             using var cmd = new MySqlCommand(
-                "UPDATE usuario SET senha = @senha WHERE id = @id",
+                "SELECT senha FROM usuario WHERE rm = @rm",
                 connection);
-            cmd.Parameters.AddWithValue("@id", id);
-            cmd.Parameters.AddWithValue("@senha", novasenha);
-            cmd.ExecuteNonQuery();
+
+            cmd.Parameters.AddWithValue("@rm", rm);
+
+            var resultado = cmd.ExecuteScalar();
+
+            if (resultado == null || resultado == DBNull.Value)
+                return false;
+
+            string senhaHash = resultado.ToString();
+
+            return BCrypt.Net.BCrypt.Verify(senha, senhaHash);
         }
+
 
         public void InserirUsuario(string nome, string cargo)
         {
@@ -91,18 +193,7 @@ namespace InterClass.App.Database
             cmd.Parameters.AddWithValue("@cargo", cargo);
             cmd.ExecuteNonQuery();
         }
-        public void Cadastro(string senha, int rm)
-        {
-            using var connection =
-                new MySqlConnection(_connectionString);
-            connection.Open();
-            using var cmd = new MySqlCommand(
-                "UPDATE usuario SET senha = @senha WHERE rm = @rm",
-                connection);
-            cmd.Parameters.AddWithValue("@rm", rm);
-            cmd.Parameters.AddWithValue("@senha", senha);
-            cmd.ExecuteNonQuery();
-        }
+
         public bool Senha(int rm)
         {
             using var connection = new MySqlConnection(_connectionString);
@@ -119,6 +210,26 @@ namespace InterClass.App.Database
             return resultado != null &&
                    resultado != DBNull.Value &&
                    !string.IsNullOrWhiteSpace(resultado.ToString());
+        }
+        public string Cargo(int rm)
+        {
+            using var connection = new MySqlConnection(_connectionString);
+            connection.Open();
+
+            using var cmd = new MySqlCommand(
+                "SELECT tipo FROM usuario WHERE rm = @rm",
+                connection);
+
+            cmd.Parameters.AddWithValue("@rm", rm);
+
+            var resultado = cmd.ExecuteScalar();
+
+            if (resultado != null)
+            {
+                return resultado.ToString();
+            }
+
+            return "";
         }
 
         public string NomeUsuario(int id)
@@ -188,12 +299,7 @@ namespace InterClass.App.Database
             return 0;
         }
 
-        public class DadosSala
-        {
-            public int IdSala { get; set; }
-            public string NomeSala { get; set; }
-            public int QuantidadeAlunos { get; set; }
-        }
+        
 
         public DadosSala BuscarDadosSala(int idUsuario)
         {
@@ -230,6 +336,296 @@ namespace InterClass.App.Database
             }
 
             return null;
+        }
+         
+        public DadosClassificacao BuscarClassificacaoSala(int idSala)
+        {
+            using var connection = new MySqlConnection(_connectionString);
+            connection.Open();
+
+            string sql = @"
+        SELECT 
+            id,
+            nome,
+            pontos,
+            (SELECT COUNT(*) + 1
+             FROM sala AS s2
+             WHERE s2.pontos > s1.pontos) AS posicao
+        FROM sala AS s1
+        WHERE id = @idSala";
+
+            using var cmd = new MySqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@idSala", idSala);
+
+            using var reader = cmd.ExecuteReader();
+
+            if (reader.Read())
+            {
+                return new DadosClassificacao
+                {
+                    Posicao = Convert.ToInt32(reader["posicao"]),
+                    IdSala = Convert.ToInt32(reader["id"]),
+                    NomeSala = reader["nome"].ToString(),
+                    Pontos = Convert.ToInt32(reader["pontos"])
+                };
+            }
+
+            return null;
+        }
+        public List<DadosAluno> BuscarAlunosSala(int idUsuario)
+        {
+            var alunos = new List<DadosAluno>();
+
+            using var connection = new MySqlConnection(_connectionString);
+            connection.Open();
+
+            string sql = @"
+        SELECT
+            u.id,
+            u.nome,
+            '' AS modalidades
+        FROM usuario u
+        WHERE u.id_sala = (
+            SELECT id_sala
+            FROM usuario
+            WHERE id = @idUsuario
+        )
+        ORDER BY
+            CASE WHEN u.id = @idUsuario THEN 0 ELSE 1 END,
+            u.nome ASC";
+
+            using var cmd = new MySqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                alunos.Add(new DadosAluno
+                {
+                    Id = Convert.ToInt32(reader["id"]),
+                    Nome = reader["nome"].ToString(),
+                    Modalidades = reader["modalidades"].ToString()
+                });
+            }
+
+            return alunos;
+        }
+        public List<DadosJogo> BuscarJogos(int idUsuario)
+        {
+            var jogos = new List<DadosJogo>();
+
+            using var connection = new MySqlConnection(_connectionString);
+            connection.Open();
+
+            string sql = @"
+        SELECT
+            j.id,
+            m.nome AS modalidade,
+            sA.nome AS timeA,
+            sB.nome AS timeB,
+            j.dia,
+            j.horario,
+            j.quadra,
+            j.status,
+
+            CASE
+                WHEN u.id_sala IS NOT NULL
+                AND (tA.id_sala = u.id_sala OR tB.id_sala = u.id_sala)
+                THEN 1
+                ELSE 0
+            END AS minha_sala
+
+        FROM jogo j
+
+        INNER JOIN modalidade m
+            ON j.id_modalidade = m.id
+
+        INNER JOIN `time` tA
+            ON j.id_timeA = tA.id
+
+        INNER JOIN `time` tB
+            ON j.id_timeB = tB.id
+
+        INNER JOIN sala sA
+            ON tA.id_sala = sA.id
+
+        INNER JOIN sala sB
+            ON tB.id_sala = sB.id
+
+        LEFT JOIN usuario u
+            ON u.id = @idUsuario
+
+        ORDER BY j.dia ASC, j.horario ASC";
+
+            using var cmd = new MySqlCommand(sql, connection);
+
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                jogos.Add(new DadosJogo
+                {
+                    Id = Convert.ToInt32(reader["id"]),
+                    Modalidade = reader["modalidade"].ToString(),
+                    TimeA = reader["timeA"].ToString(),
+                    TimeB = reader["timeB"].ToString(),
+                    Dia = Convert.ToDateTime(reader["dia"]),
+                    Horario = reader["horario"] == DBNull.Value
+                        ? TimeSpan.Zero
+                        : TimeSpan.Parse(reader["horario"].ToString()),
+                    Quadra = reader["quadra"].ToString(),
+                    Status = reader["status"].ToString(),
+                    IsMinhaSala = Convert.ToInt32(reader["minha_sala"]) == 1
+                });
+            }
+
+            return jogos;
+        }
+        public List<DadosClassificacao> BuscarClassificacao()
+        {
+            var salas = new List<DadosClassificacao>();
+
+            using var connection = new MySqlConnection(_connectionString);
+            connection.Open();
+
+            string sql = @"
+    SELECT
+        s1.id,
+        s1.nome,
+        COALESCE(s1.pontos, 0) AS pontos,
+
+        (
+            SELECT COUNT(*) + 1
+            FROM sala s2
+            WHERE s2.id <> 1
+              AND COALESCE(s2.pontos, 0) >
+                  COALESCE(s1.pontos, 0)
+        ) AS posicao
+
+    FROM sala s1
+
+    WHERE s1.id <> 1
+
+    ORDER BY
+        COALESCE(s1.pontos, 0) DESC,
+        s1.nome ASC";
+
+            using var cmd = new MySqlCommand(sql, connection);
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                salas.Add(new DadosClassificacao
+                {
+                    IdSala = Convert.ToInt32(reader["id"]),
+                    NomeSala = reader["nome"]?.ToString() ?? "",
+                    Pontos = Convert.ToInt32(reader["pontos"]),
+                    Posicao = Convert.ToInt32(reader["posicao"])
+                });
+            }
+
+            return salas;
+        }
+        public List<DadosModalidade> BuscarModalidades()
+        {
+            List<DadosModalidade> modalidades = new();
+
+            string connectionString = "Server=localhost;Database=interclass;User=root;Password=;SslMode=None;";
+
+            using (MySqlConnection conexao = new MySqlConnection(connectionString))
+            {
+                conexao.Open();
+
+                string sql = @"
+            SELECT
+                m.id AS id_modalidade,
+                m.nome AS nome_modalidade,
+                m.genero,
+                t.id AS id_time,
+                s.nome AS nome_sala,
+                u.id AS id_usuario,
+                u.nome AS nome_usuario
+
+            FROM modalidade m
+
+            LEFT JOIN time t
+                ON t.id_modalidade = m.id
+
+            LEFT JOIN sala s
+                ON s.id = t.id_sala
+                AND s.id <> 1
+
+            LEFT JOIN time_jogador tj
+                ON tj.id_time = t.id
+
+            LEFT JOIN usuario u
+                ON u.id = tj.id_usuario
+
+            WHERE t.id IS NULL OR s.id IS NOT NULL
+
+            ORDER BY
+                m.nome,
+                m.genero,
+                s.nome,
+                u.nome;
+        ";
+
+                using (MySqlCommand comando = new MySqlCommand(sql, conexao))
+                using (MySqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int idModalidade = Convert.ToInt32(reader["id_modalidade"]);
+
+                        var modalidade = modalidades.FirstOrDefault(m => m.Id == idModalidade);
+
+                        if (modalidade == null)
+                        {
+                            modalidade = new DadosModalidade
+                            {
+                                Id = idModalidade,
+                                Nome = reader["nome_modalidade"].ToString() ?? "",
+                                Genero = reader["genero"].ToString() ?? ""
+                            };
+
+                            modalidades.Add(modalidade);
+                        }
+
+                        if (reader["id_time"] == DBNull.Value)
+                            continue;
+
+                        int idTime = Convert.ToInt32(reader["id_time"]);
+
+                        var time = modalidade.Times.FirstOrDefault(t => t.Id == idTime);
+
+                        if (time == null)
+                        {
+                            time = new DadosTimeModalidade
+                            {
+                                Id = idTime,
+                                NomeSala = reader["nome_sala"].ToString() ?? ""
+                            };
+
+                            modalidade.Times.Add(time);
+                        }
+
+                        if (reader["id_usuario"] != DBNull.Value)
+                        {
+                            string nomeUsuario = reader["nome_usuario"].ToString() ?? "";
+
+                            if (!time.Integrantes.Contains(nomeUsuario))
+                            {
+                                time.Integrantes.Add(nomeUsuario);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return modalidades;
         }
     }
 }
