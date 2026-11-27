@@ -67,23 +67,25 @@ O backup já contém modalidades, salas e usuários de exemplo. Consulte os dado
 
 ## Como executar o aplicativo MAUI
 
-O projeto está em `App/InterClass.App/InterClass.App.csproj`.
+Faça o download utilizando seu dispositivo móvel (Android) : https://github.com/anonimatogb/ArenaEscolar/releases/download/v1.0.0/interclass.apk
 
-Pré-requisitos:
-
-- .NET 10 SDK.
-- Visual Studio com carga de trabalho **.NET Multi-platform App UI development**.
-- Android, Windows, iOS ou Mac Catalyst configurado conforme a plataforma desejada.
-- MariaDB/MySQL acessível a partir da plataforma escolhida.
+ou então:
 
 Na raiz do projeto do aplicativo, execute:
+O projeto está em `App/InterClass.App/InterClass.App.csproj`.
 
 ```powershell
 dotnet restore
 dotnet build
 dotnet run
 ```
+Pré-requisitos:
 
+- .NET 10 SDK.
+- Visual Studio com carga de trabalho **.NET Multi-platform App UI development**.
+- Android, Windows, iOS ou Mac Catalyst configurado conforme a plataforma desejada.
+- MariaDB/MySQL acessível a partir da plataforma escolhida.
+  
 Também é possível abrir `App/InterClass.App/InterClass.App.slnx` no Visual Studio e escolher o dispositivo na barra de execução.
 
 A conexão do aplicativo usa `Server=localhost;Database=interclass;User=root;Password=;SslMode=None;` em `App/InterClass.App/InterClass.App/Database/Service.cs`. Em celulares ou dispositivos físicos, `localhost` representa o próprio dispositivo; nesse caso é necessário informar o IP da máquina que hospeda o banco e garantir que o MySQL aceite conexões remotas.
