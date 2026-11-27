@@ -207,6 +207,26 @@ INSERT INTO `usuario` (`id`, `nome`, `rm`, `senha`, `tipo`, `id_sala`, `genero`)
 (48, 'Larissa', '781248', NULL, 'aluno', 4, 'feminino'),
 (49, 'Lorena', '3553', NULL, 'aluno', 4, 'feminino'),
 (51, 'banana', '334', NULL, 'aluno', 4, 'feminino');
+(52, 'André', '2001', NULL, 'aluno', 3, 'masculino'),
+(53, 'Bernardo', '2002', NULL, 'aluno', 3, 'masculino'),
+(54, 'Caio', '2003', NULL, 'aluno', 3, 'masculino'),
+(55, 'Daniel', '2004', NULL, 'aluno', 3, 'masculino'),
+(56, 'Eduardo', '2005', NULL, 'aluno', 3, 'masculino'),
+(57, 'Gabriel', '2006', NULL, 'aluno', 3, 'masculino'),
+(58, 'Heitor', '2007', NULL, 'aluno', 3, 'masculino'),
+(59, 'Igor', '2008', NULL, 'aluno', 3, 'masculino'),
+(60, 'Leonardo', '2009', NULL, 'aluno', 3, 'masculino'),
+(61, 'Nicolas', '2010', NULL, 'aluno', 3, 'masculino'),
+(62, 'Alice', '2011', NULL, 'aluno', 3, 'feminino'),
+(63, 'Bianca', '2012', NULL, 'aluno', 3, 'feminino'),
+(64, 'Clara', '2013', NULL, 'aluno', 3, 'feminino'),
+(65, 'Eduarda', '2014', NULL, 'aluno', 3, 'feminino'),
+(66, 'Gabriela', '2015', NULL, 'aluno', 3, 'feminino'),
+(67, 'Isabela', '2016', NULL, 'aluno', 3, 'feminino'),
+(68, 'Letícia', '2017', NULL, 'aluno', 3, 'feminino'),
+(69, 'Manuela', '2018', NULL, 'aluno', 3, 'feminino'),
+(70, 'Nicole', '2019', NULL, 'aluno', 3, 'feminino'),
+(71, 'Sofia', '2020', NULL, 'aluno', 3, 'feminino');
 
 --
 -- Índices para tabelas despejadas
