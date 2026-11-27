@@ -53,6 +53,13 @@ public function cadastrarAdministrador($nome, $senha) {
     return $this->usuarioModel->cadastrarAdministrador($nome, $senha);
 }
 
+public function deletar($id)
+{
+    return $this->usuarioModel->deletar(
+        $id,
+    );
 
 }
+}
+
 ?>

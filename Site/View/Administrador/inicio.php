@@ -51,9 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $idSala === false ||
                 $idSala < 1 ||
                 !in_array($genero, ['masculino', 'feminino'], true) ||
-                strlen($senha) < 8
+                strlen($senha) < 4
             ) {
-                $mensagem = 'Preencha os dados corretamente. A senha deve ter pelo menos 8 caracteres.';
+                $mensagem = 'Preencha os dados corretamente. A senha deve ter pelo menos 4 caracteres.';
                 $tipoMensagem = 'error';
             } elseif ($usuarioController->cadastrarRepresentante(
                 $nome,
@@ -259,7 +259,7 @@ $escape = static function ($valor): string {
                     <label for="rep_rm">RM</label>
                     <input id="rep_rm" name="rm" type="text" maxlength="30" required>
                     <label for="rep_senha">Senha</label>
-                    <input id="rep_senha" name="senha" type="password" minlength="8" required>
+                    <input id="rep_senha" name="senha" type="password" minlength="4" required>
                     <label for="rep_sala">Sala</label>
                     <select id="rep_sala" name="id_sala" required>
                         <option value="">Selecione uma sala</option>
@@ -315,6 +315,7 @@ $escape = static function ($valor): string {
                                 <?= $escape($modalidade['nome']) ?>
                                 (<?= $escape($modalidade['genero']) ?>) —
                                 <?= (int) $modalidade['max_jogadores'] ?> participantes
+                                <a  href="deletarModalidade.php?id_modalidade=<?= (int) $modalidade['id'] ?>" onclick="return confirm('Deseja realmente deletar esta modalidade?')">Deletar</a>
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -332,7 +333,7 @@ $escape = static function ($valor): string {
                         <?php endforeach; ?>
                     </ul>
                 <?php endif; ?>
-                <a class="dashboard-secondary-link" href="../Sala/CadastroSala.php">Abrir consulta de salas</a>
+                <a class="dashboard-secondary-link" href="salas.php">Abrir consulta de salas</a>
             </section>
 
             <section class="dashboard-card dashboard-card-wide" id="jogos">
@@ -387,7 +388,6 @@ $escape = static function ($valor): string {
                         </div>
                         <button type="submit">Agendar confronto</button>
                     </form>
-                
                     <?php endif; ?>
 
                 <h2>Jogos e lançamento de placares</h2>
@@ -395,7 +395,7 @@ $escape = static function ($valor): string {
                     <p>Nenhum jogo cadastrado.</p>
                 <?php else: ?>
                     <?php foreach ($jogos as $jogo): ?>
-                        <article style="flex-warp"class="dashboard-game">
+                        <article style="flex-wrap;" class="dashboard-game">
                             <p>
                                 <strong><?= $escape($jogo['modalidade']) ?> (<?= $escape($jogo['genero']) ?>)</strong>
                                 — <?= $escape(date('d/m/Y', strtotime($jogo['dia']))) ?>

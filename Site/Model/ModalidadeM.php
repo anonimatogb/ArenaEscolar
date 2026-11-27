@@ -54,4 +54,16 @@ class Modalidade {
 
         return $stmt->fetchAll();
     }
+
+     public function deletar($id)
+    {
+        try {
+            $sql = "DELETE FROM modalidade WHERE id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }

@@ -12,6 +12,13 @@ class SalaController {
     public function listarSalas() {
         return $this->salaModel->listarSalas();
     }
+
+
+
+    public function listarIntegrantesPorSala()
+{
+    return $this->salaModel->listarIntegrantesPorSala();
+}
 }
 
 ?>

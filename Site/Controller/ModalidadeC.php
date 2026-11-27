@@ -58,4 +58,14 @@ class ModalidadeController {
 
         require __DIR__ . '/../View/Modalidade/formulario.php';
     }
+
+
+
+
+    public function deletar($id)
+    {
+        $modalidade = new Modalidade();
+        return $modalidade->deletar($id);
+    }
+    
 }

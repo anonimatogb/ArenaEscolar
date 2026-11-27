@@ -33,47 +33,46 @@ class UsuarioModel
     }
 
 
-public function cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha)
-{
-    if (!is_string($senha) || strlen($senha) < 4) {
-        return false;
-    }
-
-    try {
-        $stmt = $this->pdo->prepare(
-            "SELECT COUNT(*) FROM usuario
-             WHERE id_sala = :id_sala
-             AND tipo = 'representante'"
-        );
-
-        $stmt->bindParam(':id_sala', $id_sala);
-        $stmt->execute();
-
-        if ($stmt->fetchColumn() >= 2) {
+    public function cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha)
+    {
+        if (!is_string($senha) || strlen($senha) < 4) {
             return false;
         }
 
-      
-        $tipo = "representante";
-        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+        try {
+            $stmt = $this->pdo->prepare(
+                "SELECT COUNT(*) FROM usuario
+             WHERE id_sala = :id_sala
+             AND tipo = 'representante'"
+            );
 
-        $sql = "INSERT INTO usuario (nome, rm, senha, tipo, id_sala, genero)
+            $stmt->bindParam(':id_sala', $id_sala);
+            $stmt->execute();
+
+            if ($stmt->fetchColumn() >= 2) {
+                return false;
+            }
+
+
+            $tipo = "representante";
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+            $sql = "INSERT INTO usuario (nome, rm, senha, tipo, id_sala, genero)
                 VALUES (:nome, :rm, :senha, :tipo, :id_sala, :genero)";
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':nome', $nome);
-        $stmt->bindParam(':rm', $rm);
-        $stmt->bindParam(':senha', $senhaHash);
-        $stmt->bindParam(':tipo', $tipo);
-        $stmt->bindParam(':id_sala', $id_sala);
-        $stmt->bindParam(':genero', $genero);
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':rm', $rm);
+            $stmt->bindParam(':senha', $senhaHash);
+            $stmt->bindParam(':tipo', $tipo);
+            $stmt->bindParam(':id_sala', $id_sala);
+            $stmt->bindParam(':genero', $genero);
 
-        return $stmt->execute();
-
-    } catch (PDOException $e) {
-        return false;
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
-}
 
 
     public function login($rm, $senha)
@@ -124,7 +123,7 @@ public function cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha)
             $stmt->bindParam(':rm', $rm);
             $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);    
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             return false;
         }
@@ -147,37 +146,36 @@ public function cadastrarRepresentante($nome, $rm, $id_sala, $genero, $senha)
     }
 
 
-public function listarAlunosPorSala($id_sala)
-{
-    try {
-        $sql = "SELECT id, nome, rm, genero, tipo
+    public function listarAlunosPorSala($id_sala)
+    {
+        try {
+            $sql = "SELECT id, nome, rm, genero, tipo
                 FROM usuario
                 WHERE id_sala = :id_sala
                 AND tipo IN ('aluno', 'representante')
                 ORDER BY nome";
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id_sala', $id_sala);
-        $stmt->execute();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id_sala', $id_sala);
+            $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    } catch (PDOException $e) {
-        return [];
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
     }
-}
-public function obterAlunoPorId($id_aluno)
-{
-    try {
-        $sql = "SELECT id, nome, rm, genero FROM usuario WHERE id = :id AND tipo = 'aluno'";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id', $id_aluno);
-        $stmt->execute();
+    public function obterAlunoPorId($id_aluno)
+    {
+        try {
+            $sql = "SELECT id, nome, rm, genero FROM usuario WHERE id = :id AND tipo = 'aluno'";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id_aluno);
+            $stmt->execute();
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        return false;
-    }
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
     public function atualizarAluno($id_aluno, $nome, $rm, $genero)
     {
@@ -195,67 +193,71 @@ public function obterAlunoPorId($id_aluno)
         }
     }
 
-public function atualizarRepresentante($id_representante, $nome, $senha)
-{
-    if (!is_string($senha) || strlen($senha) < 4) {
-        return false;
+    public function atualizarRepresentante($id_representante, $nome, $senha)
+    {
+        if (!is_string($senha) || strlen($senha) < 4) {
+            return false;
+        }
+
+        try {
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+            $sql = "UPDATE usuario SET nome = :nome, senha = :senha WHERE id = :id AND tipo = 'representante'";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':senha', $senhaHash);
+            $stmt->bindParam(':id', $id_representante);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
-    try {
-        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+    public function obterRepresentantePorId($id_representante)
+    {
+        try {
+            $sql = "SELECT id, nome, rm FROM usuario WHERE id = :id AND tipo = 'representante'";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id_representante);
+            $stmt->execute();
 
-        $sql = "UPDATE usuario SET nome = :nome, senha = :senha WHERE id = :id AND tipo = 'representante'";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':nome', $nome);
-        $stmt->bindParam(':senha', $senhaHash);
-        $stmt->bindParam(':id', $id_representante);
-
-        return $stmt->execute();
-    } catch (PDOException $e) {
-        return false;
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
-}
+    public function cadastrarAdministrador($nome_usuario, $senha)
+    {
+        try {
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-public function obterRepresentantePorId($id_representante)
-{
-    try {
-        $sql = "SELECT id, nome, rm FROM usuario WHERE id = :id AND tipo = 'representante'";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id', $id_representante);
-        $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        return false;
-    }
-    }
-
-public function cadastrarAdministrador($nome_usuario, $senha)
-{
-    try {
-        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
-
-        $sql = "INSERT INTO usuario (nome, rm, senha, tipo, id_sala)
+            $sql = "INSERT INTO usuario (nome, rm, senha, tipo, id_sala)
                 SELECT :nome, NULL, :senha, 'admin', id
                 FROM sala
                 WHERE nome = 'Diretoria'
                 LIMIT 1";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':nome', $nome_usuario);
-        $stmt->bindParam(':senha', $senhaHash);
-        $stmt->execute();
-        return $stmt->rowCount() === 1;
-
-    } catch (PDOException $e) {
-        return false;
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':nome', $nome_usuario);
+            $stmt->bindParam(':senha', $senhaHash);
+            $stmt->execute();
+            return $stmt->rowCount() === 1;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
-    } 
 
-
-
-
-
-
+    public function deletar($id)
+    {
+        try {
+            $sql = "DELETE FROM usuario WHERE id = :id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
