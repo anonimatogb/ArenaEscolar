@@ -109,6 +109,49 @@ class JogoModel
         }
     }
 
+    public function excluir(int $idJogo): bool
+    {
+        if ($idJogo < 1) {
+            return false;
+        }
+
+        $this->pdo->beginTransaction();
+
+        try {
+            $buscarJogo = $this->pdo->prepare(
+                'SELECT id FROM jogo WHERE id = :id'
+            );
+            $buscarJogo->execute(['id' => $idJogo]);
+
+            if ($buscarJogo->fetchColumn() === false) {
+                $this->pdo->commit();
+                return false;
+            }
+
+            $excluirPlacar = $this->pdo->prepare(
+                'DELETE FROM placar WHERE id_jogo = :id_jogo'
+            );
+            $excluirPlacar->execute(['id_jogo' => $idJogo]);
+
+            $excluirJogo = $this->pdo->prepare(
+                'DELETE FROM jogo WHERE id = :id'
+            );
+            $excluirJogo->execute(['id' => $idJogo]);
+
+            if ($excluirJogo->rowCount() !== 1) {
+                throw new RuntimeException('O confronto não foi excluído.');
+            }
+
+            $this->pdo->commit();
+            return true;
+        } catch (Throwable $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $e;
+        }
+    }
+
     public function registrarPlacar(int $idJogo, int $pontosA, int $pontosB): void
     {
         if ($pontosA < 0 || $pontosB < 0) {

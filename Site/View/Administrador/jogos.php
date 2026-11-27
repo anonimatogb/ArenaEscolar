@@ -17,9 +17,24 @@ require_once __DIR__ . '/../../Controller/JogoController.php';
 $jogoController = new JogoController($pdo);
 
 $mensagem = '';
+if (!isset($_SESSION['csrf_excluir_jogo']) || !is_string($_SESSION['csrf_excluir_jogo'])) {
+    $_SESSION['csrf_excluir_jogo'] = bin2hex(random_bytes(32));
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (($_POST['acao'] ?? '') === 'placar') {
+    $acao = is_string($_POST['acao'] ?? null) ? $_POST['acao'] : '';
+    if ($acao === 'excluir_jogo') {
+        $token = $_POST['csrf_token'] ?? null;
+        if (
+            !is_string($token) ||
+            !hash_equals($_SESSION['csrf_excluir_jogo'], $token)
+        ) {
+            $mensagem = 'Solicitação inválida ou expirada. Atualize a página e tente novamente.';
+        } else {
+            $mensagem = $jogoController->excluir($_POST);
+            $_SESSION['csrf_excluir_jogo'] = bin2hex(random_bytes(32));
+        }
+    } elseif ($acao === 'placar') {
         $mensagem = $jogoController->registrarPlacar($_POST);
     } else {
         $mensagem = $jogoController->cadastrar($_POST);
@@ -167,6 +182,7 @@ $jogos = $jogoController->listar();
 
             <br><br>
 
+            <input type="hidden" name="acao" value="cadastrar">
 
             <button type="submit">
                 Cadastrar confronto
@@ -233,6 +249,17 @@ $jogos = $jogoController->listar();
                                 value="<?= $jogo['status'] === 'finalizado' ? (int) $jogo['gols_pts_b'] : '' ?>">
                         </label>
                         <button type="submit">Registrar placar</button>
+                    </form>
+                    <form
+                        action="jogos.php"
+                        method="POST"
+                        onsubmit="return confirm('Deseja realmente excluir este confronto e seu placar?')"
+                    >
+                        <input type="hidden" name="acao" value="excluir_jogo">
+                        <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
+                        <input type="hidden" name="csrf_token"
+                            value="<?= htmlspecialchars($_SESSION['csrf_excluir_jogo'], ENT_QUOTES, 'UTF-8') ?>">
+                        <button type="submit">Excluir confronto</button>
                     </form>
 
                 </li>

@@ -10,14 +10,22 @@ require_once dirname(__DIR__, 3) . '/DB/database.php';
 require_once __DIR__ . '/../../Controller/UsuarioController.php';
 require_once __DIR__ . '/../../Controller/SalaController.php';
 require_once __DIR__ . '/../../Controller/JogoController.php';
+require_once __DIR__ . '/../../Model/AdministradorModel.php';
 require_once __DIR__ . '/../../Model/ModalidadeM.php';
 
 $usuarioController = new UsuarioController($pdo);
 $salaController = new SalaController($pdo);
 $jogoController = new JogoController($pdo);
+$administradorModel = new AdministradorModel($pdo);
 $mensagem = '';
 $tipoMensagem = 'success';
 $ancora = 'inicio';
+if (!isset($_SESSION['csrf_reiniciar_ano']) || !is_string($_SESSION['csrf_reiniciar_ano'])) {
+    $_SESSION['csrf_reiniciar_ano'] = bin2hex(random_bytes(32));
+}
+if (!isset($_SESSION['csrf_excluir_jogo']) || !is_string($_SESSION['csrf_excluir_jogo'])) {
+    $_SESSION['csrf_excluir_jogo'] = bin2hex(random_bytes(32));
+}
 $postValue = static function (string $key): string {
     return is_string($_POST[$key] ?? null) ? $_POST[$key] : '';
 };
@@ -138,6 +146,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tipoMensagem = strpos($mensagem, 'sucesso') !== false ? 'success' : 'error';
             break;
 
+        case 'excluir_jogo':
+            $ancora = 'jogos';
+            $token = $_POST['csrf_token'] ?? null;
+
+            if (
+                !is_string($token) ||
+                !hash_equals($_SESSION['csrf_excluir_jogo'], $token)
+            ) {
+                $mensagem = 'Solicitação inválida ou expirada. Atualize a página e tente novamente.';
+                $tipoMensagem = 'error';
+                break;
+            }
+
+            $mensagem = $jogoController->excluir($_POST);
+            $tipoMensagem = strpos($mensagem, 'sucesso') !== false ? 'success' : 'error';
+            $_SESSION['csrf_excluir_jogo'] = bin2hex(random_bytes(32));
+            break;
+
+        case 'reiniciar_ano':
+            $ancora = 'reiniciar-ano';
+            $token = $_POST['csrf_token'] ?? null;
+
+            if (
+                !is_string($token) ||
+                !hash_equals($_SESSION['csrf_reiniciar_ano'], $token)
+            ) {
+                $mensagem = 'Solicitação inválida ou expirada. Atualize a página e tente novamente.';
+                $tipoMensagem = 'error';
+                break;
+            }
+
+            if ($postValue('confirmacao') !== 'REINICIAR') {
+                $mensagem = 'Digite REINICIAR para confirmar a operação.';
+                $tipoMensagem = 'error';
+                break;
+            }
+
+            try {
+                $administradorModel->reiniciarAnoLetivo();
+                $mensagem = 'Ano reiniciado. Times, jogos, representantes e alunos foram removidos; administradores, salas e modalidades foram mantidos.';
+            } catch (Throwable $e) {
+                error_log('Erro ao reiniciar o ano letivo pelo painel ADM: ' . $e->getMessage());
+                $mensagem = 'Não foi possível reiniciar o ano. Nenhum dado foi alterado.';
+                $tipoMensagem = 'error';
+            }
+
+            $_SESSION['csrf_reiniciar_ano'] = bin2hex(random_bytes(32));
+            break;
+
         default:
             $mensagem = 'Ação inválida.';
             $tipoMensagem = 'error';
@@ -169,7 +226,7 @@ $escape = static function ($valor): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel do professor</title>
     <link rel="stylesheet" href="../../Style/common.css">
-    <link rel="stylesheet" href="../../Style/Dashboard.css">
+    <link rel="stylesheet" href="../../Style/Dashboard.css?v=20261127">
 </head>
 <body class="dashboard-page">
     <header class="dashboard-header">
@@ -191,6 +248,7 @@ $escape = static function ($valor): string {
             </p>
         <?php endif; ?>
 
+       
         <div class="dashboard-grid">
             <section class="dashboard-card" id="representantes">
                 <h2>Cadastrar representante</h2>
@@ -329,14 +387,15 @@ $escape = static function ($valor): string {
                         </div>
                         <button type="submit">Agendar confronto</button>
                     </form>
-                <?php endif; ?>
+                
+                    <?php endif; ?>
 
                 <h2>Jogos e lançamento de placares</h2>
                 <?php if ($jogos === []): ?>
                     <p>Nenhum jogo cadastrado.</p>
                 <?php else: ?>
                     <?php foreach ($jogos as $jogo): ?>
-                        <article class="dashboard-game">
+                        <article style="flex-warp"class="dashboard-game">
                             <p>
                                 <strong><?= $escape($jogo['modalidade']) ?> (<?= $escape($jogo['genero']) ?>)</strong>
                                 — <?= $escape(date('d/m/Y', strtotime($jogo['dia']))) ?>
@@ -347,15 +406,58 @@ $escape = static function ($valor): string {
                             <?php if ($jogo['status'] === 'finalizado'): ?>
                                 <p>Placar final: <?= (int) $jogo['gols_pts_a'] ?> x <?= (int) $jogo['gols_pts_b'] ?></p>
                             <?php endif; ?>
-                            <form class="dashboard-open-score" action="placar.php" method="GET">
-                                <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
-                                <button type="submit">Alterar placar</button>
-                            </form>
+                            <div class="dashboard-game-actions">
+                                <form class="dashboard-open-score" action="placar.php" method="GET">
+                                    <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
+                                    <button type="submit">Alterar placar</button>
+                                </form>
+                                <form
+                                    class="dashboard-delete-game"
+                                    action="inicio.php#jogos"
+                                    method="POST"
+                                    onsubmit="return confirm('Deseja realmente excluir este confronto e seu placar?')"
+                                >
+                                    <input type="hidden" name="acao" value="excluir_jogo">
+                                    <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
+                                    <input type="hidden" name="csrf_token" value="<?= $escape($_SESSION['csrf_excluir_jogo']) ?>">
+                                    <button class="dashboard-danger-button" type="submit">Excluir confronto</button>
+                                </form>
+                            </div>
                         </article>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </section>
-        </div>
-    </main>
+           </div>
+           
+         <section style="margin-top: 24px;" class="dashboard-card dashboard-danger-zone" id="reiniciar-ano">
+            <h2><strong style="color:red">Reiniciar ano letivo</strong></h2>
+            <p>
+                Esta ação apaga todos os jogos, times, representantes e alunos.
+                Os administradores, as salas e as modalidades serão mantidos.
+                Os pontos e a quantidade de times das salas serão zerados.
+            </p>
+            <form action="inicio.php#reiniciar-ano" method="POST">
+                <input type="hidden" name="acao" value="reiniciar_ano">
+                <input type="hidden" name="csrf_token" value="<?= $escape($_SESSION['csrf_reiniciar_ano']) ?>">
+                <label for="confirmacao_reset">
+                    Para confirmar, digite <strong style="color:red">REINICIAR</strong>
+                </label>
+                <input
+                    id="confirmacao_reset"
+                    name="confirmacao"
+                    type="text"
+                    autocomplete="off"
+                    required
+                >
+                <button style="background: #b91c1c; border-color: #b91c1c;" type="submit">
+                    Reiniciar ano e apagar dados
+                </button>
+            </form>
+        </section>
+
+        </main>
+        
+     
+    
 </body>
 </html>

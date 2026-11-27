@@ -180,6 +180,38 @@
     margin-bottom: 8px;
 }
 
+#jogos .dashboard-game-actions {
+    display: flex !important;
+    flex-flow: row wrap !important;
+    align-items: center;
+    gap: 10px;
+}
+
+#jogos .dashboard-game-actions > form {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+#jogos .dashboard-game-actions button {
+    margin-top: 0 !important;
+}
+
+#jogos .dashboard-danger-button {
+    background: #c2410c !important;
+    border-color: #c2410c !important;
+}
+
+#jogos .dashboard-danger-button:hover {
+    background: #9a3412 !important;
+}
+
 .dashboard-score-form {
     display: flex;
     flex-wrap: wrap;

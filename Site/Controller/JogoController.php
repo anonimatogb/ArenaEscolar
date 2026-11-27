@@ -92,6 +92,28 @@ class JogoController
         }
     }
 
+    public function excluir(array $dados): string
+    {
+        $idJogo = filter_var($dados['id_jogo'] ?? null, FILTER_VALIDATE_INT);
+        if ($idJogo === false || $idJogo < 1) {
+            return 'Informe um confronto válido.';
+        }
+
+        try {
+            if ($this->jogoModel->excluir($idJogo)) {
+                return 'Confronto excluído com sucesso.';
+            }
+
+            return 'O confronto não foi encontrado.';
+        } catch (PDOException $e) {
+            error_log('Erro ao excluir confronto: ' . $e->getMessage());
+            return 'Não foi possível excluir o confronto.';
+        } catch (RuntimeException $e) {
+            error_log('Erro ao excluir confronto: ' . $e->getMessage());
+            return 'Não foi possível excluir o confronto.';
+        }
+    }
+
     // Lista as salas
     public function listarSalas(): array
     {
