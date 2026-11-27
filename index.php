@@ -65,12 +65,14 @@ $pontosAnteriores = null;
 
                     <?php elseif (($_SESSION['tipo'] ?? '') === 'ADM'): ?>
                         <li><a style="font-size: 20px;" href="Site/View/Administrador/inicio.php">Painel do professor</a></li>
+                        <li><a style="font-size: 20px;" href="Site/View/Usuario/sair.php">Sair</a></li>
 
                     <?php elseif (($_SESSION['tipo'] ?? '') === 'representante'): ?>
                         <li><a style="font-size: 20px;" href="Site/View/Representante/inicio.php">Painel do representante</a></li>
+                        <li><a style="font-size: 20px;" href="Site/View/Usuario/sair.php">Sair</a></li>
 
                     <?php elseif (($_SESSION['tipo'] ?? '') === 'aluno'): ?>
-                        <li><a style="font-size: 20px;" href="Site/View/Usuario/inicio.php">Minha página</a></li>
+                        <li><a style="font-size: 20px;" href="Site/View/Usuario/sair.php">Sair</a></li>
                     <?php endif; ?>
                 </ul>
             </div>

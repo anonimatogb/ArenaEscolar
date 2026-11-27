@@ -280,6 +280,7 @@ $escape = static function ($valor): string {
             <p>Bem-vindo, <?= $escape($_SESSION['nome'] ?? '') ?>. Gerencie sua sala.</p>
         </div>
         <nav class="dashboard-nav" aria-label="Navegação do painel">
+            <a href="editarrepresentante.php">Editar perfil</a>
             <a href="../../../index.php">Ver site</a>
             <a href="../Usuario/sair.php">Sair</a>
         </nav>

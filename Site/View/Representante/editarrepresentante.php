@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <input type="submit" value="Atualizar representante">
     </form>
-
     <a href="inicio.php">Voltar</a>
+
 </body>
 </html>
