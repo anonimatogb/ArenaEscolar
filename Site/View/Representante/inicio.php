@@ -65,48 +65,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $modalidadesSelecionadas = array_values(array_unique($modalidadesSelecionadas));
             }
 
-            if (
-                $nome === '' ||
-                $rm === '' ||
-                !in_array($genero, ['masculino', 'feminino'], true) ||
-                $modalidadesSelecionadas === []
-            ) {
-                $mensagem = 'Preencha os dados do aluno e marque ao menos uma modalidade válida.';
-                $tipoMensagem = 'error';
-            } else {
-                try {
-                    // Se o seu TimeController tiver um método para várias modalidades, use-o aqui.
-                    // Caso contrário, se cadastrarAlunoNaModalidade aceitar 1 modalidade por vez:
-                    if (method_exists($timeController, 'cadastrarAlunoEmModalidades')) {
-                        $timeController->cadastrarAlunoEmModalidades(
-                            $idUsuario,
-                            $nome,
-                            $rm,
-                            $genero,
-                            $modalidadesSelecionadas
-                        );
-                    } else {
-                        foreach ($modalidadesSelecionadas as $idMod) {
-                            $timeController->cadastrarAlunoNaModalidade(
-                                $idUsuario,
-                                $nome,
-                                $rm,
-                                $genero,
-                                $idMod
-                            );
-                        }
-                    }
-                    $mensagem = 'Aluno cadastrado e adicionado às modalidades selecionadas.';
-                } catch (DomainException $e) {
-                    $mensagem = $e->getMessage();
+                if (
+                    $nome === '' ||
+                    $rm === '' ||
+                    !in_array($genero, ['masculino', 'feminino'], true) ||
+                    $modalidadesSelecionadas === []
+                ) {
+                    $mensagem = 'Preencha os dados do aluno e marque ao menos uma modalidade válida.';
                     $tipoMensagem = 'error';
-                } catch (PDOException $e) {
-                    error_log('Erro ao cadastrar aluno na modalidade: ' . $e->getMessage());
-                    $mensagem = 'Não foi possível cadastrar. Verifique se o RM já está cadastrado.';
-                    $tipoMensagem = 'error';
+                } else {
+                   
+try {
+
+    $timeController->cadastrarAlunoEmModalidades(
+        $idUsuario,
+        $nome,
+        $rm,
+        $genero,
+        $modalidadesSelecionadas
+    );
+
+    $mensagem = 'Aluno cadastrado e adicionado às modalidades selecionadas.';
+
+} catch (DomainException $e) {
+
+    $mensagem = $e->getMessage();
+    $tipoMensagem = 'error';
+
+} catch (PDOException $e) {
+
+    error_log(
+        'Erro ao cadastrar aluno nas modalidades: '
+        . $e->getMessage()
+    );
+
+    $mensagem = 'Não foi possível cadastrar. Verifique se o RM já está cadastrado.';
+    $tipoMensagem = 'error';
+}
+
                 }
-            }
-            break;
+                break;
 
         case 'atualizar_aluno':
             $ancora = 'editar-aluno';

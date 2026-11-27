@@ -235,4 +235,33 @@ class TimeController
             $alunos
         );
     }
+
+
+   public function cadastrarAlunoEmModalidades(
+    $idUsuario,
+    $nome,
+    $rm,
+    $genero,
+    $modalidadesSelecionadas
+) {
+    // Busca a sala vinculada ao representante
+    $sala = $this->timeModel->buscarSalaRepresentante($idUsuario);
+
+    if (!$sala) {
+        throw new DomainException(
+            'Sala do representante não encontrada.'
+        );
+    }
+
+    // Cadastra o aluno nas modalidades selecionadas
+    return $this->timeModel->cadastrarAlunoEmModalidades(
+        (int) $sala['id_sala'],
+        $nome,
+        $rm,
+        $genero,
+        $modalidadesSelecionadas
+    );
+}
+
+
 }
