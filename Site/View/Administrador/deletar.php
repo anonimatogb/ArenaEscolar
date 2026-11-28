@@ -36,7 +36,7 @@ if (!empty($id)) {
         $deletarsala = $salaController->deletar($sala);
 
         if ($deletarsala) {
-            header('Location: incio.php?mensagem=Sala deletada com sucesso');
+            header('Location: inicio.php?mensagem=Sala deletada com sucesso');
             exit();
         } else {
             header('Location: inicio.php?erro=Erro ao deletar sala');
