@@ -123,6 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             break;
 
+
+
         case 'agendar_jogo':
             $ancora = 'jogos';
             $mensagem = $jogoController->cadastrar([
@@ -194,6 +196,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $_SESSION['csrf_reiniciar_ano'] = bin2hex(random_bytes(32));
             break;
+
+     case 'cadastrar_sala':
+    $ancora = 'salas';
+
+    $nomeSala = is_string($_POST['nome'] ?? null)
+        ? trim($_POST['nome'])
+        : '';
+
+    if ($nomeSala === '') {
+        $mensagem = 'Preencha o nome da sala corretamente.';
+        $tipoMensagem = 'error';
+        break;
+    }
+
+    try {
+        $sala = new salaModel($pdo);
+
+        if ($sala->cadastrarsala($nomeSala)) {
+            $mensagem = 'Sala cadastrada com sucesso.';
+            $tipoMensagem = 'success';
+        } else {
+            $mensagem = 'Não foi possível cadastrar a sala.';
+            $tipoMensagem = 'error';
+        }
+
+    } catch (PDOException $e) {
+        error_log('Erro ao cadastrar sala: ' . $e->getMessage());
+        $mensagem = 'Erro ao cadastrar sala no banco de dados.';
+        $tipoMensagem = 'error';
+    }
+
+    break;
 
         default:
             $mensagem = 'Ação inválida.';
@@ -325,13 +359,22 @@ $escape = static function ($valor): string {
             </section>
 
             <section class="dashboard-card" id="salas">
-                <h2>Salas cadastradas</h2>
+                <h2>Cadastrar Sala</h2>
+                <form action="inicio.php#salas" method="POST">
+                    <input type="hidden" name="acao" value="cadastrar_sala">
+
+                    <label for="sala_nome">Nome da sala</label>
+                    <input id="sala_nome" name="nome" type="text" maxlength="100" required>
+
+                    <button type="submit">Salvar Sala</button>
+                </form>
+                <h3>Salas cadastradas</h3>
                 <?php if ($salas === []): ?>
                     <p>Nenhuma sala cadastrada.</p>
                 <?php else: ?>
                     <ul>
                         <?php foreach ($salas as $sala): ?>
-                            <li><?= $escape($sala['nome']) ?></li>
+                            <li><?= $escape($sala['nome']) ?><a href="deletar.php?id_sala=<?= (int) $sala['id'] ?>" onclick="return confirm('Deseja realmente deletar esta sala?')">Deletar</a></li>
                         <?php endforeach; ?>
                     </ul>
                 <?php endif; ?>
@@ -397,7 +440,7 @@ $escape = static function ($valor): string {
                     <p>Nenhum jogo cadastrado.</p>
                 <?php else: ?>
                     <?php foreach ($jogos as $jogo): ?>
-                        <article style="flex-wrap;" class="dashboard-game">
+                        <article style="flex-wrap: wrap;" class="dashboard-game">
                             <p>
                                 <strong><?= $escape($jogo['modalidade']) ?> (<?= $escape($jogo['genero']) ?>)</strong>
                                 — <?= $escape(date('d/m/Y', strtotime($jogo['dia']))) ?>
@@ -415,17 +458,17 @@ $escape = static function ($valor): string {
                                         <button type="submit">Alterar placar</button>
                                     </form>
                                     <form
-                                    class="dashboard-delete-game"
-                                    action="inicio.php#jogos"
-                                    method="POST"
-                                    onsubmit="return confirm('Deseja realmente excluir este confronto e seu placar?')">
-                                    <input type="hidden" name="acao" value="excluir_jogo">
-                                    <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
-                                    <input type="hidden" name="csrf_token" value="<?= $escape($_SESSION['csrf_excluir_jogo']) ?>">
-                                    <button class="dashboard-danger-button" type="submit">Excluir confronto</button>
-                                </form>
+                                        class="dashboard-delete-game"
+                                        action="inicio.php#jogos"
+                                        method="POST"
+                                        onsubmit="return confirm('Deseja realmente excluir este confronto e seu placar?')">
+                                        <input type="hidden" name="acao" value="excluir_jogo">
+                                        <input type="hidden" name="id_jogo" value="<?= (int) $jogo['id'] ?>">
+                                        <input type="hidden" name="csrf_token" value="<?= $escape($_SESSION['csrf_excluir_jogo']) ?>">
+                                        <button class="dashboard-danger-button" type="submit">Excluir confronto</button>
+                                    </form>
                                 <?php endif; ?>
-                                
+
                             </div>
                         </article>
                     <?php endforeach; ?>

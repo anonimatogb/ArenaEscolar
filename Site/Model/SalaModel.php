@@ -62,4 +62,38 @@ class SalaModel
             return [];
         }
     }
+      public function deletar($sala)
+    {
+        try {
+            $sql = "DELETE FROM sala WHERE id = :id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $sala, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+
+    public function cadastrarsala($nome)
+{
+    try {
+        $sql = "INSERT INTO sala (nome, pontos, qtdtimes)
+                VALUES (:nome, :pontos, :qtdtimes)";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->bindValue(':nome', $nome);
+        $stmt->bindValue(':pontos', 0);
+        $stmt->bindValue(':qtdtimes', 0);
+
+        return $stmt->execute();
+
+    } catch (PDOException $e) {
+        error_log('Erro ao cadastrar sala: ' . $e->getMessage());
+        return false;
+    }
+}
+
+
 }

@@ -19,6 +19,15 @@ class SalaController {
 {
     return $this->salaModel->listarIntegrantesPorSala();
 }
+
+public function deletar($sala) {
+    return $this->salaModel->deletar($sala);
+}
+
+public function cadastrarsala($nome){
+    return $this->salaModel->cadastrarsala($nome);
+}
+
 }
 
 ?>
